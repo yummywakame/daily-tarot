@@ -16,20 +16,28 @@
 
 .form-container {
     position: relative;
-
     margin: auto;
     padding-bottom: 65px;
 }
+
 .form-container div {
     background-color: #1d2024bd;
-
     padding: 25px;
     border-radius: 10px;
 }
+
 .form-container p {
-    margin-top: 25px;
+    margin: 25px 0;
     cursor: pointer;
     color: #fCb21C;
+}
+
+.form-container p.error-message {
+    cursor: default;
+    padding: 25px;
+    background-color: #1d2024;
+    color: red;
+    border-radius: 5px;
 }
 
 input, button {
@@ -41,16 +49,19 @@ input, button {
     margin-right: 10px;
     transition: all 0.3s ease-in;
 }
+
 input:hover {
     background-color: #f5f5f5ba;
 }
+
 button {
     background-color: whitesmoke;
     color: #1d2024;
     cursor: pointer;
     transition: all 0.3s ease-in;
 }
-button:hover{
+
+button:hover {
     background-color: #fCb21C;
     border-color: #fCb21C;
 }

@@ -53,6 +53,9 @@ class AuthContainer extends Component {
                         ?
                         <div>
                             <h2>Sign up</h2>
+                            
+                            { this.props.errMsg && <p className="error-message">{this.props.errMsg}</p>}
+                            
                             <AuthForm
                                 handleChange={this.handleChange}
                                 handleSubmit={this.handleSignup}
@@ -60,11 +63,15 @@ class AuthContainer extends Component {
                                 password={this.state.password}
                                 btnText="Sign up"
                             />
+                        
                             <p onClick={this.toggler}>Are you already a member?</p>
                         </div>
                         :
                         <div>
                             <h2>Sign in</h2>
+                            
+                            { this.props.errMsg && <p className="error-message">{this.props.errMsg}</p>}
+
                             <AuthForm
                                 handleChange={this.handleChange}
                                 handleSubmit={this.handleLogin}
@@ -72,6 +79,7 @@ class AuthContainer extends Component {
                                 password={this.state.password}
                                 btnText="Login"
                             />
+                            
                             <p onClick={this.toggler}>Create an account</p>
                         </div>
                     }
