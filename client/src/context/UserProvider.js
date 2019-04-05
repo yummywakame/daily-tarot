@@ -8,7 +8,8 @@ class UserProvider extends Component {
         super()
         this.state = {
             user: JSON.parse(localStorage.getItem("user")) || {}, 
-            token: localStorage.token || ""
+            token: localStorage.token || "",
+            errMsg: ""
         }
     }
 
@@ -21,7 +22,7 @@ class UserProvider extends Component {
             // , this.props.history.push("/home")
             )
         })
-        .catch(err => console.log(err))
+        .catch(err => this.handleErr(err.response.data.errMsg))
     }
 
     login = (credentials) => {
@@ -33,9 +34,11 @@ class UserProvider extends Component {
             // , this.props.history.push("/home")
             )
         })
-        .catch(err => console.log(err))
+        .catch(err => this.handleErr(err.response.data.errMsg))
     }
-
+    
+    handleErr = (errMsg) => { this.setState({ errMsg }) }
+    
     render(){
         return( 
             <UserContext.Provider

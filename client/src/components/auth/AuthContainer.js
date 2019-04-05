@@ -59,6 +59,7 @@ class AuthContainer extends Component {
                         password={this.state.password}
                         btnText="Sign up"
                     />
+                    <p className="error-message">{this.props.errMsg}</p>
                     <p onClick={this.toggler}>Are you already a member?</p>
                 </>
                 :
@@ -71,6 +72,7 @@ class AuthContainer extends Component {
                         password={this.state.password}
                         btnText="Login"
                     />
+                    <p className="error-message">{this.props.errMsg}</p>
                     <p onClick={this.toggler}>Create an account</p>
                 </>
                 }

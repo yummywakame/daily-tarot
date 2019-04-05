@@ -20,8 +20,9 @@ authRouter.post("/signup", (req, res, next) => {
         // pre-hook fires on "save", encrypts password, and then save() is executed
         newUser.save((err, savedUser) => {
             if(err) {
+                console.error(err)
                 res.status(500)
-                return next(err)
+                return next(new Error("Username and password are required."))
             }
             // Create Token
             const token = jwt.sign(savedUser.withoutPassword(), process.env.SECRET)
