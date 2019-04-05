@@ -10,14 +10,14 @@ import Nav from './components/Nav.js'
 const App = (props) => {
   const { user, token, logout } = props
   
-  // document.title = "Daily Tarot ~ " + props.location.pathname.slice(1)[0].toUpperCase() + props.location.pathname.slice(2)
+  document.title = "Daily Tarot ~ " + props.location.pathname.slice(1)[0].toUpperCase() + props.location.pathname.slice(2)
   
   return (
     <div id="outer-container">
 
       {token && <Nav />}
       <header><h1>Daily Tarot</h1></header>
-      <main id="page-wrap">
+      
         <Switch>
         
           <Route exact path="/" render={() => token ? <Redirect to="/home"/> : <Redirect to="/login"/> } />
@@ -42,7 +42,7 @@ const App = (props) => {
           <Route path="*" component={ NotFound } />
 
         </Switch>
-      </main>
+
     </div>
   )
 }

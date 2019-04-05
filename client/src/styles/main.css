@@ -14,15 +14,22 @@ body {
     font-family: 'Lato', sans-serif;
     height: 100%;
     background: #31373E;
+    color: whitesmoke;
+    font-size: 16px;
 }
 
 #outer-container {
     height: 100vh;
+    overflow: hidden;
 }
 
 h1, h2, h3 {
     font-family: 'Libre Baskerville', serif;
     font-style: italic;
+    margin: 25px 0;
+}
+h1:first-of-type, h2:first-of-type, h3:first-of-type {
+    margin-top: 0px;
 }
 
 header {
@@ -39,10 +46,9 @@ header h1 {
 }
 
 main {
-    text-align: left;
+    max-width: 650px;
     padding: 25px;
     margin: auto;
-    max-width: 650px;
     overflow: auto;
     text-align: center;
 }
