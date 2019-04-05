@@ -27,8 +27,8 @@ class AuthContainer extends Component {
             password: this.state.password
         }
         this.props.signup(credentials)
-    } 
-    
+    }
+
     // handleSubmit for our login form
     handleLogin = (event) => {
         event.preventDefault()
@@ -38,43 +38,44 @@ class AuthContainer extends Component {
         }
         this.props.login(credentials)
     }
-    
+
     toggler = () => {
-        this.setState(prevState=> ({
+        this.setState(prevState => ({
             authToggle: !prevState.authToggle
         }))
     }
 
     render() {
         return (
-            <div>
-                { this.state.authToggle
-                ?
-                <>
-                    <h3>Sign up</h3>
-                    <AuthForm
-                        handleChange={this.handleChange}
-                        handleSubmit={this.handleSignup}
-                        username={this.state.username}
-                        password={this.state.password}
-                        btnText="Sign up"
-                    />
-                    <p onClick={this.toggler}>Are you already a member?</p>
-                </>
-                :
-                <>
-                    <h3>Sign in</h3>
-                    <AuthForm
-                        handleChange={this.handleChange}
-                        handleSubmit={this.handleLogin}
-                        username={this.state.username}
-                        password={this.state.password}
-                        btnText="Login"
-                    />
-                    <p onClick={this.toggler}>Create an account</p>
-                </>
-                }
-                
+            <div id="auth-wrap">
+                <div className="form-container">
+                    {this.state.authToggle
+                        ?
+                        <div>
+                            <h2>Sign up</h2>
+                            <AuthForm
+                                handleChange={this.handleChange}
+                                handleSubmit={this.handleSignup}
+                                username={this.state.username}
+                                password={this.state.password}
+                                btnText="Sign up"
+                            />
+                            <p onClick={this.toggler}>Are you already a member?</p>
+                        </div>
+                        :
+                        <div>
+                            <h2>Sign in</h2>
+                            <AuthForm
+                                handleChange={this.handleChange}
+                                handleSubmit={this.handleLogin}
+                                username={this.state.username}
+                                password={this.state.password}
+                                btnText="Login"
+                            />
+                            <p onClick={this.toggler}>Create an account</p>
+                        </div>
+                    }
+                </div>
             </div>
         )
     }

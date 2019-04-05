@@ -13,7 +13,7 @@ const App = (props) => {
 
       {token && <Nav />}
       <header><h1>Daily Tarot</h1></header>
-      <main id="page-wrap">
+      
         <Switch>
 
           <Route exact path="/" render={routerProps => token
@@ -34,7 +34,7 @@ const App = (props) => {
           />
 
         </Switch>
-      </main>
+
     </div>
   )
 }

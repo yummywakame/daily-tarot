@@ -2,9 +2,9 @@ import React from 'react'
 
 const Home = (props) => {
     return(
-        <div>
+        <main id="page-wrap">
             <p>Welcome home {props.username}</p>
-        </div>
+        </main>
     )
 }
 
