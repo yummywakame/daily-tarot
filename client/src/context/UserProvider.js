@@ -43,7 +43,8 @@ class UserProvider extends Component {
         localStorage.removeItem("user")
         this.setState({
             user: {},
-            token: ""
+            token: "",
+            errMsg: ""
         })
     }
     
