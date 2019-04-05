@@ -10,7 +10,7 @@ import Nav from './components/Nav.js'
 const App = (props) => {
   const { user, token, logout } = props
   
-  document.title = "Daily Tarot ~ " + props.location.pathname.slice(1)[0].toUpperCase() + props.location.pathname.slice(2)
+  document.title = "Daily Tarot ~ " + (props.location.pathname === "/" ? "" : props.location.pathname.slice(1)[0].toUpperCase() + props.location.pathname.slice(2))
   
   return (
     <div id="outer-container">

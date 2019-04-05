@@ -16,18 +16,16 @@
 
 .form-container {
     position: relative;
-
     margin: auto;
     padding-bottom: 65px;
 }
 .form-container div {
     background-color: #1d2024bd;
-
     padding: 25px;
     border-radius: 10px;
 }
 .form-container p {
-    margin-top: 25px;
+    margin: 25px 0;
     cursor: pointer;
     color: #fCb21C;
 }
