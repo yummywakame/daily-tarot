@@ -8,7 +8,7 @@ import NotFound from './components/NotFound.js'
 import Nav from './components/Nav.js'
 
 const App = (props) => {
-  const { user, token } = props
+  const { user, token, logout } = props
   
   // document.title = "Daily Tarot ~ " + props.location.pathname.slice(1)[0].toUpperCase() + props.location.pathname.slice(2)
   
@@ -19,22 +19,24 @@ const App = (props) => {
       <header><h1>Daily Tarot</h1></header>
       <main id="page-wrap">
         <Switch>
+        
+          <Route exact path="/" render={() => token ? <Redirect to="/home"/> : <Redirect to="/login"/> } />
 
-          <Route exact path="/" render={routerProps => token
+          <Route path="/login" render={routerProps => token
             ?
             <Redirect to="/home" />
             :
             <AuthContainer {...routerProps} />}
           />
 
-
           {/* Protected Routes */}
           <ProtectedRoute
             token={token}
             path={"/home"}
-            redirectTo={"/"}
-            component={Home}
+            redirectTo={"/login"}
+            component={ Home }
             username={user.username}
+            logout={logout}
           />
           
           <Route path="*" component={ NotFound } />

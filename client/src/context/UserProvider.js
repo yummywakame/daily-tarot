@@ -37,6 +37,16 @@ class UserProvider extends Component {
         .catch(err => this.handleErr(err.response.data.errMsg))
     }
     
+    logout = () => {
+        // Clear up localStorage and State
+        localStorage.remoeItem("token")
+        localStorage.remoeItem("user")
+        this.setState({
+            user: {},
+            token: ""
+        })
+    }
+    
     handleErr = (errMsg) => { this.setState({ errMsg }) }
     
     render(){
@@ -45,7 +55,8 @@ class UserProvider extends Component {
                 value={{
                     ...this.state,
                     signup: this.signup,
-                    login: this.login
+                    login: this.login,
+                    logout: this.logout
                 }}>
                 {this.props.children}
             </UserContext.Provider>
