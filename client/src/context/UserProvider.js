@@ -39,8 +39,8 @@ class UserProvider extends Component {
     
     logout = () => {
         // Clear up localStorage and State
-        localStorage.remoeItem("token")
-        localStorage.remoeItem("user")
+        localStorage.removeItem("token")
+        localStorage.removeItem("user")
         this.setState({
             user: {},
             token: ""
