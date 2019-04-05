@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css?family=Lato|Libre+Baskerville:400i');
+*, *:after, *:before {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+    height: 100%;
+    background: #31373E;
+}
+
+#outer-container {
+    height: 100vh;
+}
+
+h1, h2, h3 {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+}
+
+header {
+    text-align: center;
+    color: #fCb21C;
+    width: 100%;
+    height: 65px;
+    background-color: rgb(29, 32, 36);
+}
+
+header h1 {
+    line-height: 65px;
+    text-align: center;
+}
+
+main {
+    text-align: left;
+    padding: 25px;
+    margin: auto;
+    max-width: 650px;
+    overflow: auto;
+    text-align: center;
+}
