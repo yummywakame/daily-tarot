@@ -3,7 +3,7 @@ import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
 import { withUser } from './context/UserProvider.js'
 import AuthContainer from './components/auth/AuthContainer.js'
 import ProtectedRoute from './shared/ProtectedRoute.js'
-import Home from './components/Home.js'
+import Today from './components/Today.js'
 import NotFound from './components/NotFound.js'
 import Nav from './components/Nav.js'
 
@@ -15,16 +15,16 @@ const App = (props) => {
   return (
     <div id="outer-container">
 
-      {token && <Nav />}
+      {token && <Nav logout={logout} />}
       <header><h1>Daily Tarot</h1></header>
       
         <Switch>
         
-          <Route exact path="/" render={() => token ? <Redirect to="/home"/> : <Redirect to="/login"/> } />
+          <Route exact path="/" render={() => token ? <Redirect to="/today"/> : <Redirect to="/login"/> } />
 
           <Route path="/login" render={routerProps => token
             ?
-            <Redirect to="/home" />
+            <Redirect to="/today" />
             :
             <AuthContainer {...routerProps} />}
           />
@@ -32,11 +32,10 @@ const App = (props) => {
           {/* Protected Routes */}
           <ProtectedRoute
             token={token}
-            path={"/home"}
+            path={"/today"}
             redirectTo={"/login"}
-            component={ Home }
+            component={ Today }
             username={user.username}
-            logout={logout}
           />
           
           <Route path="*" component={ NotFound } />

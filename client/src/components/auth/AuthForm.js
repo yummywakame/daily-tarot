@@ -19,7 +19,7 @@ const AuthForm = (props) => {
                 value={password} 
                 placeholder="Password" 
                 required />
-            <button>{btnText}</button>
+            <button>{ (btnText === "Login") ? <i className="fas fa-sign-in-alt"></i> : <i className="fas fa-user-plus"></i> }</button>
         </form>
     )
 

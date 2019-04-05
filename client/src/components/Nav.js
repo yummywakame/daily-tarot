@@ -3,7 +3,7 @@ import { bubble as Menu } from 'react-burger-menu'
 
 class Nav extends Component {
 
-  render () {
+  render (props) {
     return (
       <Menu 
         push id={ "sidebar" }
@@ -14,6 +14,7 @@ class Nav extends Component {
         <a href="#!" className="bm-item" tabIndex="1"><i className="far fa-question-circle"></i><span>Ask a Question</span></a>
         <a href="#!" className="bm-item" tabIndex="2"><i className="far fa-calendar-alt"></i><span>Past Dailies</span></a>
         <a href="#!" className="bm-item" tabIndex="3"><i className="far fa-calendar-check"></i><span>Past Questions</span></a>
+        <a href="#!" className="bm-item" tabIndex="4" onClick={this.props.logout}><i className="fas fa-sign-out-alt"></i><span>Log out</span></a>
       </Menu>
     )
   }
