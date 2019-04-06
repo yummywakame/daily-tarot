@@ -1,48 +1,48 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-const readingAxios = axios.create()
+const cardAxios = axios.create()
 
 // On every request, use the following middleware function
-readingAxios.interceptors.request.use((config) => {
+cardAxios.interceptors.request.use((config) => {
     const token = localStorage.token
     config.headers.Authorization = `Bearer ${token}`
     return config // return header with user and token for Auth
 })
 
-const ReadingContext = React.createContext()
+const CardContext = React.createContext()
 
-class ReadingProvider extends Component {
+class CardProvider extends Component {
     constructor() {
         super()
         this.state = {
-            readings: []
+            cards: []
         }
     }
-
-    createReading = (newReading) => {
-        readingAxios.post("/api/readings", newReading).then(res => {
-            console.log(res)
+    
+    getRandomCard = () => {
+        cardAxios.get("/api/cards/random/1/21").then(res => {
+            this.setState({cards: res.data})
         }).catch(err => console.log(err))
     }
 
     render() {
         return (
-            <ReadingContext.Provider
+            <CardContext.Provider
                 value={{
                     ...this.state,
-                    createReading: this.createReading
+                    getRandomCard: this.getRandomCard
                 }}>
                 {this.props.children}
-            </ReadingContext.Provider>
+            </CardContext.Provider>
         )
     }
 
 }
 
-export default ReadingProvider
+export default CardProvider
 
-export const withReading = C => props => (
-    <ReadingContext.Consumer>
+export const withCard = C => props => (
+    <CardContext.Consumer>
         {value => <C {...props} {...value} />}
-    </ReadingContext.Consumer>
+    </CardContext.Consumer>
 )

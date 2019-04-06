@@ -20,16 +20,64 @@ body {
 
 #outer-container {
     height: 100vh;
-    overflow: hidden;
 }
 
-h1, h2, h3 {
+#fill-page {
+    /* height: 100vh; */
+}
+
+h1, h2 {
     font-family: 'Libre Baskerville', serif;
     font-style: italic;
     margin: 25px 0;
 }
-h1:first-of-type, h2:first-of-type, h3:first-of-type {
+
+h1:first-of-type, h2:first-of-type {
     margin-top: 0px;
+}
+
+h3, h4 {
+    font-family: 'Lato', sans;
+    margin: 25px 0;
+    font-size: 170%;
+}
+h3 {
+    color: #51ABC1;
+}
+
+h4 {
+    font-size: 120%;
+}
+
+.gold {
+    color: #fCb21C;
+}
+
+.card {
+    background-color: #37515B;
+    margin: 25px;
+    padding: 50px;
+    border-radius: 10px;
+}
+
+.card h2 {
+    color: #fCb21C;
+}
+
+.card p {
+    margin: 20px 0;
+}
+
+.flex-grid {
+    display: flex;
+}
+
+.col {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
 }
 
 header {
@@ -51,4 +99,13 @@ main {
     margin: auto;
     overflow: auto;
     text-align: center;
+}
+
+/* Tarot Card Styles */
+
+.tarot-card {
+    height: auto;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
 }
