@@ -4,8 +4,8 @@
     text-align: center;
     width: 100vw;
     max-width: 100vw !important;
-    height: 100%;
-    background-image: url('../../images/login-bg.jpg');
+    height: calc(100vh - 65px);
+    background-image: url('../images/login-bg.jpg');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -40,14 +40,30 @@
     border-radius: 5px;
 }
 
-input, button {
+input, button, textarea {
     border: 2px solid whitesmoke;
     padding: 10px;
     background-color: rgba(245, 245, 245, 0.269);
     font-size: 16px;
     font-family: 'Lato', sans-serif;
-    margin-right: 10px;
+    /* margin: 0 10px 0 0; */
     transition: all 0.3s ease-in;
+}
+input[type="checkbox"] {
+    margin-right: 10px;
+    
+}
+#auth-wrap input:first-of-type {
+    margin-right: 10px;
+}
+
+#auth-wrap button:first-of-type {
+    margin-left: 10px;
+}
+
+textarea {
+    /* height: 200px; */
+    position: relative;
 }
 
 input:hover {
@@ -71,4 +87,12 @@ button:hover {
 .form-container button {
     margin-right: 0;
     width: 50px;
+}
+
+#profile-form button {
+    max-width: 100px;
+}
+
+input:focus, textarea:focus, button:focus {
+    outline: none;
 }

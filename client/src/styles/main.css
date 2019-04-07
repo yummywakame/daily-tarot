@@ -145,14 +145,6 @@ main {
     text-align: left;
 }
 
-#profile-form button {
-    max-width: 100px;
-}
-
-button:focus {
-    outline: none;
-}
-
 .center-stuff {
     text-align: center !important;
 }

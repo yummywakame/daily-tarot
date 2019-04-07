@@ -19,7 +19,8 @@ class Today extends React.Component {
     toggleOnce = (event) => {
         event.preventDefault()
         if (!this.state.isFlipped) {
-            this.saveReading(1, "daily", this.state.isReversed ? "rev" : "up")
+            window.scrollTo(0, 0)
+            this.saveReading("save", 1, "daily", this.state.isReversed ? "rev" : "up")
             this.setState(prevState => {
                 return { isFlipped: !prevState.isFlipped }
             })
@@ -33,19 +34,10 @@ class Today extends React.Component {
         })
     }
 
-    // handleSubmit = (e) => {
-    //     e.preventDefault()
-    //     const UserUpdate = {
-    //         username: this.state.username,
-    //         email: this.state.email,
-    //         firstName: this.state.firstName,
-    //         lastName: this.state.lastName,
-    //         password: this.state.password,
-    //         isAdmin: this.state.isAdmin.toString(),
-    //         allowRev: this.state.allowRev.toString(),
-    //     }
-    //     this.props.updateUser(this.props.user._id, UserUpdate)
-    // }
+    handleSubmit = (e) => {
+        e.preventDefault()
+        this.saveReading("update", 1, "daily", this.state.isReversed ? "rev" : "up")
+    }
 
     componentDidMount() {
         window.scrollTo(0, 0)
@@ -57,7 +49,7 @@ class Today extends React.Component {
         this.props.getRandomCard()
     }
 
-    saveReading(saveSpread, saveChoice, savePosition) {
+    saveReading(type, saveSpread, saveChoice, savePosition) {
         console.log(this.props.cards._id)
 
         const newReading = {
@@ -76,7 +68,12 @@ class Today extends React.Component {
             ]
 
         }
-        this.props.createReading(newReading)
+        if (type === "save"){
+            this.props.createReading(newReading)
+        } else if (type === "update") {
+            this.props.updateReading(this.props.readings._id, newReading)
+        }
+        
     }
 
     uprightOrReverse() {
@@ -156,7 +153,7 @@ class Today extends React.Component {
                         </div>
 
                         <div className="card" id="add-form">
-                            <h2>Today's Diary Notes</h2>
+                            <h2>Diary Notes</h2>
                             <NotesForm
                                 handleChange={this.handleChange}
                                 handleSubmit={this.handleSubmit}

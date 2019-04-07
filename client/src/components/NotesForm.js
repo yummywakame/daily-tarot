@@ -6,11 +6,12 @@ const NotesForm = props => {
         <form onSubmit={handleSubmit} id="profile-form">
 
             <textarea
-                type="text"
                 name="notes"
                 value={notes}
                 placeholder="Notes..."
                 onChange={handleChange}
+                rows="8"
+                data-gramm_editor="false" // grammarly causes textarea to jump on focus
             />
 
             <button>Save</button>
