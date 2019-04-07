@@ -10,9 +10,10 @@ class Today extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isFlipped: false,
+            isAlreadyRead: false,
+            isFlipped: this.isAlreadyRead || false,
             isReversed: false,
-            notes: ""
+            notes: this.props.readings.notes || ""
         }
     }
 
@@ -45,8 +46,19 @@ class Today extends React.Component {
         // Randomly select upright or reversed
         this.uprightOrReverse()
 
-        // Get a random card
-        this.props.getRandomCard()
+        // If there is no reading for today, get a random card
+        // Otherwise, display today's card
+        if (this.props.readings.length === 0) {
+            this.setState({
+                isAlreadyRead: true
+            })
+            this.props.getRandomCard()
+        } else {
+            this.setState({
+                isFlipped: true
+            })
+        }
+        
     }
 
     saveReading(type, saveSpread, saveChoice, savePosition) {
@@ -115,8 +127,9 @@ class Today extends React.Component {
                             <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
                                 <Card key="back" img={`/decks/prisma-visions/${name_short ? name_short : `cardback`}.jpg`} altText="Tarot Card Front" toggler={this.toggleOnce} isReversed={isReversed} />
 
+                                { !isFlipped &&
                                 <Card key="front" img="/decks/prisma-visions/cardback.jpg" altText="Tarot Card Back" toggler={this.toggleOnce} />
-
+                                }
                             </ReactCardFlip>
 
                         </div>
