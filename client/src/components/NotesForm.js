@@ -12,7 +12,7 @@ const NotesForm = props => {
                 onChange={handleChange}
                 rows="8"
                 data-gramm_editor="false" // grammarly causes textarea to jump on focus
-            />
+                required />
 
             <button>Save</button>
         </form>

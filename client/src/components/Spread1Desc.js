@@ -47,7 +47,6 @@ class Spread1Desc extends React.Component {
 
     render() {
         const { isFlipped, isReversed, name, meaning_rev_long, meaning_up_long, desc } = this.props
-        console.log(this.props.user)
         return (
             <>
                 {/* Only display the rest if card has been flipped */}

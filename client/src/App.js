@@ -18,7 +18,7 @@ const App = (props) => {
   return (
     <div id="outer-container">
     
-      <NavInfo />
+      <NavInfo token={token} routeLink={props.location.pathname}/>
 
       {token && <Nav logout={logout} />}
       <header><h1>Daily Tarot</h1></header>
@@ -52,7 +52,7 @@ const App = (props) => {
             user={user}
           />
           
-          <ProtectedRoute
+          <Route
             token={token}
             path={"/about"}
             redirectTo={"/login"}

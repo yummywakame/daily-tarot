@@ -72,7 +72,6 @@ class Today extends React.Component {
     uprightOrReverse() {
         // If Reversed Cards are allowed, randomly select upright or reverse
         // 70% chance of upright, 30% chance of reverse
-        console.log(this.props.user.allowRev)
         if (this.props.user.allowRev) {
             this.setState({
                 isReversed: Math.random() >= 0.7
