@@ -5,12 +5,6 @@ import { withReading } from '../context/ReadingProvider.js'
 import NotesForm from './NotesForm.js'
 
 class Spread1Desc extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            notes: this.props.notes || ""
-        }
-    }
 
     handleChange = (e) => {
         const value = e.target.type === "checkbox" ? e.target.checked : e.target.value
@@ -30,7 +24,7 @@ class Spread1Desc extends React.Component {
         const newReading = {
             user: this.props.user._id,
             spread: saveSpread,
-            notes: this.state.notes,
+            notes: this.props.notes,
             choice: saveChoice,
             cards: [
                 {

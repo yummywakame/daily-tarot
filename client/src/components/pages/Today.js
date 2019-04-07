@@ -11,7 +11,8 @@ class Today extends React.Component {
         this.state = {
             isAlreadyRead: false,
             isFlipped: this.isAlreadyRead || false,
-            isReversed: false
+            isReversed: false,
+            notes: this.props.readings.notes || ""
         }
     }
 
@@ -35,6 +36,7 @@ class Today extends React.Component {
         this.setState({
             isAlreadyRead: false,
             isFlipped: false,
+            notes: ""
         })
         
         // Randomly select upright or reversed
@@ -95,11 +97,14 @@ class Today extends React.Component {
         // If there is no reading for today, get a random card
         // Otherwise, display today's card
         if (this.props.readings.length === 0) {
+            // Get new reading
             this.setState({
-                isAlreadyRead: true
+                isAlreadyRead: true,
+                notes: ""
             })
             this.props.getRandomCard()
         } else {
+            // display today's card
             this.setState({
                 isFlipped: true
             })
