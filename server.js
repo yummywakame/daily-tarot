@@ -29,6 +29,7 @@ app.use("/auth", require("./routes/authRouter.js"))
 app.use("/api", expressJwt({secret: process.env.SECRET})) // all /api/ urls check if authenticated
 app.use("/api/cards", require('./routes/cardRouter.js'))
 app.use("/api/readings", require('./routes/readingRouter.js'))
+app.use("/api/users", require('./routes/userRouter.js'))
 
 
 // Global Server Error Handler

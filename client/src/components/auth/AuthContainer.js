@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import AuthForm from './AuthForm'
 import { withUser } from '../../context/UserProvider.js'
+import { withToggler } from '../shared/Toggle.js'
 import './login.css'
 
 class AuthContainer extends Component {
@@ -8,8 +9,7 @@ class AuthContainer extends Component {
         super()
         this.state = {
             username: "",
-            password: "",
-            authToggle: false
+            password: ""
         }
     }
 
@@ -39,17 +39,11 @@ class AuthContainer extends Component {
         this.props.login(credentials)
     }
 
-    toggler = () => {
-        this.setState(prevState => ({
-            authToggle: !prevState.authToggle
-        }))
-    }
-
     render() {
         return (
             <div id="auth-wrap">
                 <div className="form-container">
-                    {this.state.authToggle
+                    {this.props.isToggled
                         ?
                         <div>
                             <h2>Sign up</h2>
@@ -64,7 +58,7 @@ class AuthContainer extends Component {
                                 btnText="Sign up"
                             />
                         
-                            <p onClick={this.toggler}>Are you already a member?</p>
+                            <p onClick={this.props.toggler}>Are you already a member?</p>
                         </div>
                         :
                         <div>
@@ -80,7 +74,7 @@ class AuthContainer extends Component {
                                 btnText="Login"
                             />
                             
-                            <p onClick={this.toggler}>Create an account</p>
+                            <p onClick={this.props.toggler}>Create an account</p>
                         </div>
                     }
                 </div>
@@ -90,4 +84,4 @@ class AuthContainer extends Component {
 
 }
 
-export default withUser(AuthContainer)
+export default withToggler(withUser(AuthContainer))
