@@ -1,9 +1,8 @@
 import React from 'react'
-import ReactCardFlip from 'react-card-flip'
-import Card from '../Card.js'
 import { withUser } from '../../context/UserProvider.js'
 import { withCard } from '../../context/CardProvider.js'
 import { withReading } from '../../context/ReadingProvider.js'
+import Spread1 from '../Spread1.js'
 import NotesForm from '../NotesForm.js'
 
 class Today extends React.Component {
@@ -40,6 +39,61 @@ class Today extends React.Component {
         this.saveReading("update", 1, "daily", this.state.isReversed ? "rev" : "up")
     }
 
+    // Get new reading when the button is clicked
+    getNewReading = (e) => {
+        e.preventDefault()
+        // reset everything card reading related
+        this.setState({
+            isAlreadyRead: false,
+            isFlipped: false,
+            notes: ""
+        })
+
+        // get a new random card after 1 second delay
+        setTimeout(() => {
+            this.props.getRandomCard()
+        }, 500)
+    }
+
+    // Both saves, or updates a reading
+    saveReading(type, saveSpread, saveChoice, savePosition) {
+        console.log(this.props.cards._id)
+
+        const newReading = {
+            user: this.props.user._id,
+            spread: saveSpread,
+            notes: this.state.notes,
+            choice: saveChoice,
+            cards: [
+                {
+                    position: savePosition,
+                    cardId: this.props.cards._id,
+                    name: this.props.cards.name,
+                    name_short: this.props.cards.name_short,
+                    meaning: (savePosition === "rev") ? this.props.cards.meaning_rev : this.props.cards.meaning_up
+                }
+            ]
+        }
+        
+        if (type === "save") {
+            this.props.createReading(newReading)
+        } else if (type === "update") {
+            this.props.updateReading(this.props.readings._id, newReading)
+        }
+
+    }
+
+    uprightOrReverse() {
+        // If Reversed Cards are allowed, randomly select upright or reverse
+        // 70% chance of upright, 30% chance of reverse
+        console.log(this.props.user.allowRev)
+        if (this.props.user.allowRev) {
+            this.setState({
+                isReversed: Math.random() >= 0.7
+            })
+        }
+    }
+    
     componentDidMount() {
         window.scrollTo(0, 0)
 
@@ -58,57 +112,7 @@ class Today extends React.Component {
                 isFlipped: true
             })
         }
-        
-    }
-    
-    getNewReading = (e) => {
-        e.preventDefault()
-        // reset everything card reading related
-        this.setState({
-            isAlreadyRead: false,
-            isFlipped: false,
-            notes: ""
-        })
-        // get a new random card
-        this.props.getRandomCard()
-    }
 
-    saveReading(type, saveSpread, saveChoice, savePosition) {
-        console.log(this.props.cards._id)
-
-        const newReading = {
-            user: this.props.user._id,
-            spread: saveSpread,
-            notes: this.state.notes,
-            choice: saveChoice,
-            cards: [
-                {
-                    position: savePosition,
-                    cardId: this.props.cards._id,
-                    name: this.props.cards.name,
-                    name_short: this.props.cards.name_short,
-                    meaning: (savePosition === "rev") ? this.props.cards.meaning_rev : this.props.cards.meaning_up
-                }
-            ]
-
-        }
-        if (type === "save"){
-            this.props.createReading(newReading)
-        } else if (type === "update") {
-            this.props.updateReading(this.props.readings._id, newReading)
-        }
-        
-    }
-
-    uprightOrReverse() {
-        // If Reversed Cards are allowed, randomly select upright or reverse
-        // 70% chance of upright, 30% chance of reverse
-        console.log(this.props.user.allowRev)
-        if (this.props.user.allowRev) {
-            this.setState({
-                isReversed: Math.random() >= 0.7
-            })
-        }
     }
 
     render() {
@@ -125,34 +129,19 @@ class Today extends React.Component {
 
                     <h2>Your Card of the Day</h2>
 
-                    <h3>{isFlipped ? `${name} ${isReversed ? "(Reversed)" : ""}` : `Click card to Reveal`}</h3>
-
-                    <div className="flex-grid">
-
-                        <div className="col">
-                            <h4>Element</h4>
-                            <p className="gold">{isFlipped ? `${element}` : `?`}</p>
-                        </div>
-
-                        <div className="col">
-
-                            <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
-                                <Card key="back" img={`/decks/prisma-visions/${name_short ? name_short : `cardback`}.jpg`} altText="Tarot Card Front" toggler={this.toggleOnce} isReversed={isReversed} />
-                                <Card key="front" img="/decks/prisma-visions/cardback.jpg" altText="Tarot Card Back" toggler={this.toggleOnce} />
-                            </ReactCardFlip>
-
-                        </div>
-
-                        <div className="col">
-                            <h4>Astrology</h4>
-                            <p className="gold">{isFlipped ? `${astrology}` : `?`}</p>
-                        </div>
-
-                    </div>
+                    <Spread1
+                        isFlipped={isFlipped}
+                        isReversed={isReversed}
+                        name={name}
+                        name_short={name_short}
+                        element={element}
+                        astrology={astrology}
+                        toggleOnce={this.toggleOnce}
+                    />
 
                     {isFlipped && <h4 className="blue">{isReversed ? meaning_rev : meaning_up}</h4>}
-                    
-                    {isFlipped && <button onClick={this.getNewReading}>Get Another Card</button> }
+
+                    {isFlipped && <button onClick={this.getNewReading}>Get Another Card</button>}
 
 
                 </div>
