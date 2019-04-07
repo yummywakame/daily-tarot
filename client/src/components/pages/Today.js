@@ -71,7 +71,7 @@ class Today extends React.Component {
                     cardId: this.props.cards._id,
                     name: this.props.cards.name,
                     name_short: this.props.cards.name_short,
-                    meaning: (savePosition === "rev") ? this.props.cards.meaning_rev : this.props.cards.meaning
+                    meaning: (savePosition === "rev") ? this.props.cards.meaning_rev : this.props.cards.meaning_up
                 }
             ]
 
