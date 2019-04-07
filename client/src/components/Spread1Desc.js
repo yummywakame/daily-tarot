@@ -73,6 +73,7 @@ class Spread1Desc extends React.Component {
                             <NotesForm
                                 handleChange={this.handleChange}
                                 handleSubmit={this.handleSubmit}
+                                readingMsg={this.props.readingMsg}
                                 {...this.state}
                             />
                         </div>

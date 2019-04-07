@@ -29,11 +29,12 @@ class Today extends React.Component {
     // Get new reading when the button is clicked
     getNewReading = (e) => {
         e.preventDefault()
+        // Clear messages
+        this.props.clearReadingMessages()
         // reset everything card reading related
         this.setState({
             isAlreadyRead: false,
             isFlipped: false,
-            notes: ""
         })
         
         // Randomly select upright or reversed
@@ -84,6 +85,9 @@ class Today extends React.Component {
 
     componentDidMount() {
         window.scrollTo(0, 0)
+        
+        // Clear messages
+        this.props.clearReadingMessages()
 
         // Randomly select upright or reversed
         this.uprightOrReverse()
@@ -131,7 +135,6 @@ class Today extends React.Component {
 
                     {isFlipped && <button onClick={this.getNewReading}>Get Another Card</button>}
 
-
                 </div>
 
                 <Spread1Desc
@@ -147,7 +150,6 @@ class Today extends React.Component {
             </main>
         )
     }
-
 }
 
 export default withUser(withCard(withReading(Today)))

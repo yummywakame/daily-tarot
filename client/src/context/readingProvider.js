@@ -15,7 +15,8 @@ class ReadingProvider extends Component {
     constructor() {
         super()
         this.state = {
-            readings: []
+            readings: [],
+            readingMsg: ""
         }
     }
 
@@ -27,8 +28,18 @@ class ReadingProvider extends Component {
     
     updateReading = (_id, updates) => {
         readingAxios.put(`/api/readings/${_id}`, updates).then(res => {
-            this.setState({readings: res.data})
+            this.setState({
+                readings: res.data,
+                readingMsg: "Updated successfully!"
+            })
         }).catch(err => console.log(err))
+    }
+    
+    clearReadingMessages = () => {
+        // Clear away messages
+        this.setState({
+            readingMsg: ""
+        })
     }
 
     render() {
@@ -37,7 +48,8 @@ class ReadingProvider extends Component {
                 value={{
                     ...this.state,
                     createReading: this.createReading,
-                    updateReading: this.updateReading
+                    updateReading: this.updateReading,
+                    clearReadingMessages: this.clearReadingMessages
                 }}>
                 {this.props.children}
             </ReadingContext.Provider>
