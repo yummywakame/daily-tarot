@@ -29,7 +29,7 @@
 .form-container p {
     margin: 25px 0;
     cursor: pointer;
-    color: #fCb21C;
+    color: #51ABC1;
 }
 
 .form-container p.error-message {
@@ -59,11 +59,13 @@ button {
     color: #1d2024;
     cursor: pointer;
     transition: all 0.3s ease-in;
+    background-color: #fCb21C;
+    border-color: #fCb21C;
 }
 
 button:hover {
-    background-color: #fCb21C;
-    border-color: #fCb21C;
+    background-color: #51ABC1;
+    border-color: #51ABC1;
 }
 
 .form-container button {

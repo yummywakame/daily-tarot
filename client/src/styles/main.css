@@ -22,10 +22,6 @@ body {
     height: 100vh;
 }
 
-#fill-page {
-    /* height: 100vh; */
-}
-
 h1, h2 {
     font-family: 'Libre Baskerville', serif;
     font-style: italic;
@@ -41,6 +37,7 @@ h3, h4 {
     margin: 25px 0;
     font-size: 170%;
 }
+
 h3 {
     color: #51ABC1;
 }
@@ -51,6 +48,14 @@ h4 {
 
 .gold {
     color: #fCb21C;
+}
+
+.blue {
+    color: #51ABC1;
+}
+
+a {
+    color: #51ABC1;
 }
 
 .card {
@@ -66,6 +71,13 @@ h4 {
 
 .card p {
     margin: 20px 0;
+}
+
+#about p, #about li {
+    text-align: left;
+}
+#about ul {
+    margin-left: 25px;
 }
 
 .flex-grid {
@@ -108,4 +120,39 @@ main {
     width: 100%;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.rev {
+    -moz-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    transform: scaleY(-1);
+    filter: flipv;
+    /*IE*/
+}
+
+/* FORM STUFF */
+
+#profile-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 10pt;
+}
+
+#profile-form .selections {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 10pt;
+    text-align: left;
+}
+
+#profile-form button {
+    max-width: 100px;
+}
+
+button:focus {
+    outline: none;
+}
+
+.center-stuff {
+    text-align: center !important;
 }
