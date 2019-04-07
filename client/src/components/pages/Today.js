@@ -60,6 +60,18 @@ class Today extends React.Component {
         }
         
     }
+    
+    getNewReading = (e) => {
+        e.preventDefault()
+        // reset everything card reading related
+        this.setState({
+            isAlreadyRead: false,
+            isFlipped: false,
+            notes: ""
+        })
+        // get a new random card
+        this.props.getRandomCard()
+    }
 
     saveReading(type, saveSpread, saveChoice, savePosition) {
         console.log(this.props.cards._id)
@@ -126,10 +138,7 @@ class Today extends React.Component {
 
                             <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
                                 <Card key="back" img={`/decks/prisma-visions/${name_short ? name_short : `cardback`}.jpg`} altText="Tarot Card Front" toggler={this.toggleOnce} isReversed={isReversed} />
-
-                                { !isFlipped &&
                                 <Card key="front" img="/decks/prisma-visions/cardback.jpg" altText="Tarot Card Back" toggler={this.toggleOnce} />
-                                }
                             </ReactCardFlip>
 
                         </div>
@@ -142,6 +151,8 @@ class Today extends React.Component {
                     </div>
 
                     {isFlipped && <h4 className="blue">{isReversed ? meaning_rev : meaning_up}</h4>}
+                    
+                    {isFlipped && <button onClick={this.getNewReading}>Get Another Card</button> }
 
 
                 </div>
