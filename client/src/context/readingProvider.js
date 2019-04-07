@@ -24,6 +24,12 @@ class ReadingProvider extends Component {
             console.log(res)
         }).catch(err => console.log(err))
     }
+    
+    updateReading = (_id, updates) => {
+        readingAxios.put(`/api/readings/${_id}`, updates).then(res => {
+            console.log(res)
+        }).catch(err => console.log(err))
+    }
 
     render() {
         return (

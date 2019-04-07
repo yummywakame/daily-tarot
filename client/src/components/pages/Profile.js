@@ -19,7 +19,7 @@ class Profile extends React.Component {
     componentDidMount() {
         window.scrollTo(0, 0)
     }
-    
+
     handleChange = (e) => {
         const value = e.target.type === "checkbox" ? e.target.checked : e.target.value
         this.setState({
@@ -46,14 +46,14 @@ class Profile extends React.Component {
         return (
             <main id="page-wrap">
                 <h2>Profile &amp; Preferences</h2>
-                
+
                 <div className="card" id="add-form">
-                        <EditProfileForm
-                            handleChange={this.handleChange}
-                            handleSubmit={this.handleSubmit}
-                            {...this.state}
-                        />
-                    </div>
+                    <EditProfileForm
+                        handleChange={this.handleChange}
+                        handleSubmit={this.handleSubmit}
+                        {...this.state}
+                    />
+                </div>
             </main>
         )
     }
