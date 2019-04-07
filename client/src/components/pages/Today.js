@@ -3,7 +3,7 @@ import { withUser } from '../../context/UserProvider.js'
 import { withCard } from '../../context/CardProvider.js'
 import { withReading } from '../../context/ReadingProvider.js'
 import Spread1 from '../Spread1.js'
-import NotesForm from '../NotesForm.js'
+import Spread1Desc from '../Spread1Desc.js'
 
 class Today extends React.Component {
     constructor(props) {
@@ -11,8 +11,7 @@ class Today extends React.Component {
         this.state = {
             isAlreadyRead: false,
             isFlipped: this.isAlreadyRead || false,
-            isReversed: false,
-            notes: this.props.readings.notes || ""
+            isReversed: false
         }
     }
 
@@ -25,18 +24,6 @@ class Today extends React.Component {
                 return { isFlipped: !prevState.isFlipped }
             })
         }
-    }
-
-    handleChange = (e) => {
-        const value = e.target.type === "checkbox" ? e.target.checked : e.target.value
-        this.setState({
-            [e.target.name]: value
-        })
-    }
-
-    handleSubmit = (e) => {
-        e.preventDefault()
-        this.saveReading("update", 1, "daily", this.state.isReversed ? "rev" : "up")
     }
 
     // Get new reading when the button is clicked
@@ -55,9 +42,8 @@ class Today extends React.Component {
         }, 500)
     }
 
-    // Both saves, or updates a reading
+    // Saves a reading to the database by User's ID and date
     saveReading(type, saveSpread, saveChoice, savePosition) {
-        console.log(this.props.cards._id)
 
         const newReading = {
             user: this.props.user._id,
@@ -74,7 +60,7 @@ class Today extends React.Component {
                 }
             ]
         }
-        
+
         if (type === "save") {
             this.props.createReading(newReading)
         } else if (type === "update") {
@@ -93,7 +79,7 @@ class Today extends React.Component {
             })
         }
     }
-    
+
     componentDidMount() {
         window.scrollTo(0, 0)
 
@@ -146,35 +132,15 @@ class Today extends React.Component {
 
                 </div>
 
-                {/* Only display the rest if card has been flipped */}
-                {isFlipped &&
-                    <div id="reveal">
-                        <div className="card">
-                            <h2>{name} {isReversed ? `Reversed Meaning` : `Upright Meaning`}</h2>
-                            {isReversed ?
-                                <div dangerouslySetInnerHTML={{ __html: meaning_rev_long }}></div>
-                                :
-                                <div dangerouslySetInnerHTML={{ __html: meaning_up_long }}></div>
-                            }
-
-                        </div>
-
-                        <div className="card">
-                            <h2>{name} Card Description</h2>
-                            <i className="blue">Based on the <a href="https://amzn.to/2I5FCMf">Rider-Waite</a> tarot deck</i>
-                            <div dangerouslySetInnerHTML={{ __html: desc }}></div>
-                        </div>
-
-                        <div className="card" id="add-form">
-                            <h2>Diary Notes</h2>
-                            <NotesForm
-                                handleChange={this.handleChange}
-                                handleSubmit={this.handleSubmit}
-                                {...this.state}
-                            />
-                        </div>
-                    </div>
-                }
+                <Spread1Desc
+                    isFlipped={isFlipped}
+                    isReversed={isReversed}
+                    name={name}
+                    meaning_rev_long={meaning_rev_long}
+                    meaning_up_long={meaning_up_long}
+                    desc={desc}
+                    notes={this.props.readings.notes}
+                />
 
             </main>
         )
