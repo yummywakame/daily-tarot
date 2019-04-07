@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import AuthForm from './AuthForm'
 import { withUser } from '../../context/UserProvider.js'
 import { withToggler } from '../shared/Toggle.js'
-import './login.css'
+import '../../styles/formstyles.css'
 
 class AuthContainer extends Component {
     constructor() {

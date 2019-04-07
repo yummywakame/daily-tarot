@@ -1,0 +1,82 @@
+.form-container {
+    position: relative;
+    margin: auto;
+    padding-bottom: 65px;
+}
+
+.form-container div {
+    background-color: #1d2024bd;
+    padding: 25px;
+    border-radius: 10px;
+}
+
+.form-container p {
+    margin: 25px 0;
+    cursor: pointer;
+    color: #51ABC1;
+}
+
+.form-container p.error-message {
+    cursor: default;
+    padding: 25px;
+    background-color: #1d2024;
+    color: red;
+    border-radius: 5px;
+}
+
+input, button, textarea {
+    border: 2px solid whitesmoke;
+    padding: 10px;
+    background-color: rgba(245, 245, 245, 0.269);
+    font-size: 16px;
+    font-family: 'Lato', sans-serif;
+    /* margin: 0 10px 0 0; */
+    transition: all 0.3s ease-in;
+}
+input[type="checkbox"] {
+    margin-right: 10px;
+    
+}
+#auth-wrap input:first-of-type {
+    margin-right: 10px;
+}
+
+#auth-wrap button:first-of-type {
+    margin-left: 10px;
+}
+
+textarea {
+    /* height: 200px; */
+    position: relative;
+}
+
+input:hover {
+    background-color: #f5f5f5ba;
+}
+
+button {
+    background-color: whitesmoke;
+    color: #1d2024;
+    cursor: pointer;
+    transition: all 0.3s ease-in;
+    background-color: #fCb21C;
+    border-color: #fCb21C;
+}
+
+button:hover {
+    background-color: #51ABC1;
+    border-color: #51ABC1;
+}
+
+.form-container button {
+    margin-right: 0;
+    width: 50px;
+}
+
+#profile-form button {
+    max-width: 100px;
+}
+
+input:focus, textarea:focus, button:focus {
+    outline: none;
+}

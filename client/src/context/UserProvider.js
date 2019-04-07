@@ -27,12 +27,14 @@ class UserProvider extends Component {
             this.setState({
                 user: response.data
             })
+            localStorage.setItem("user", JSON.stringify(this.state.user))
+            console.log(response)
         }).catch(err => this.handleErr(err.response.data.errMsg))
     }
 
     signup = (credentials) => {
-        axios.post("/auth/signup", credentials).then(res => {
-            const { user, token } = res.data
+        axios.post("/auth/signup", credentials).then(response => {
+            const { user, token } = response.data
             localStorage.setItem("user", JSON.stringify(user))
             localStorage.setItem("token", token)
             this.setState({ user, token }
@@ -41,8 +43,8 @@ class UserProvider extends Component {
     }
 
     login = (credentials) => {
-        axios.post("/auth/login", credentials).then(res => {
-            const { user, token } = res.data
+        axios.post("/auth/login", credentials).then(response => {
+            const { user, token } = response.data
             localStorage.setItem("user", JSON.stringify(user))
             localStorage.setItem("token", token)
             this.setState({ user, token }

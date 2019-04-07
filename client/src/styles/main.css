@@ -58,6 +58,22 @@ a {
     color: #51ABC1;
 }
 
+#auth-wrap {
+    position: relative;
+    float: left;
+    text-align: center;
+    width: 100vw;
+    max-width: 100vw !important;
+    height: calc(100vh - 65px);
+    background-image: url('../images/login-bg.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .card {
     background-color: #37515B;
     margin: 25px;
@@ -143,14 +159,6 @@ main {
     grid-template-columns: 1fr;
     grid-gap: 10pt;
     text-align: left;
-}
-
-#profile-form button {
-    max-width: 100px;
-}
-
-button:focus {
-    outline: none;
 }
 
 .center-stuff {

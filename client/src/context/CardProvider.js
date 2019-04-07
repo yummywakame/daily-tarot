@@ -19,6 +19,12 @@ class CardProvider extends Component {
         }
     }
     
+    clearCardState = () => {
+        this.setState({
+            cards: []
+        })
+    }
+    
     getRandomCard = () => {
         cardAxios.get("/api/cards/random/1/21").then(res => {
             this.setState({cards: res.data})
@@ -30,7 +36,8 @@ class CardProvider extends Component {
             <CardContext.Provider
                 value={{
                     ...this.state,
-                    getRandomCard: this.getRandomCard
+                    getRandomCard: this.getRandomCard,
+                    clearCardState: this.clearCardState
                 }}>
                 {this.props.children}
             </CardContext.Provider>
