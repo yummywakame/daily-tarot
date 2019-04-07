@@ -35,6 +35,9 @@ class Today extends React.Component {
             isFlipped: false,
             notes: ""
         })
+        
+        // Randomly select upright or reversed
+        this.uprightOrReverse()
 
         // get a new random card after 1 second delay
         setTimeout(() => {
