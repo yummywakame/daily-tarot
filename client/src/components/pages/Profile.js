@@ -18,6 +18,7 @@ class Profile extends React.Component {
 
     componentDidMount() {
         window.scrollTo(0, 0)
+        this.props.clearUserMessages()
     }
 
     handleChange = (e) => {
@@ -51,6 +52,7 @@ class Profile extends React.Component {
                     <EditProfileForm
                         handleChange={this.handleChange}
                         handleSubmit={this.handleSubmit}
+                        updateMsg={this.props.updateMsg}
                         {...this.state}
                     />
                 </div>

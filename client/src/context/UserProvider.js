@@ -18,14 +18,16 @@ class UserProvider extends Component {
         this.state = {
             user: JSON.parse(localStorage.getItem("user")) || {},
             token: localStorage.token || "",
-            errMsg: ""
+            errMsg: "",
+            updateMsg: ""
         }
     }
 
     updateUser = (_id, updates) => {
         userAxios.put(`/api/users/${_id}`, updates).then(response => {
             this.setState({
-                user: response.data
+                user: response.data,
+                updateMsg: "Updated successfully!"
             })
             localStorage.setItem("user", JSON.stringify(this.state.user))
             console.log(response)
@@ -59,7 +61,16 @@ class UserProvider extends Component {
         this.setState({
             user: {},
             token: "",
-            errMsg: ""
+            errMsg: "",
+            updateMsg: ""
+        })
+    }
+    
+    clearUserMessages = () => {
+        // Clear away messages
+        this.setState({
+            errMsg: "",
+            updateMsg: ""
         })
     }
 
@@ -73,7 +84,8 @@ class UserProvider extends Component {
                     signup: this.signup,
                     login: this.login,
                     logout: this.logout,
-                    updateUser: this.updateUser
+                    updateUser: this.updateUser,
+                    clearUserMessages: this.clearUserMessages
                 }}>
                 {this.props.children}
             </UserContext.Provider>

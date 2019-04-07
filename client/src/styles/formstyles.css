@@ -16,12 +16,16 @@
     color: #51ABC1;
 }
 
-.form-container p.error-message {
+.form-container p.error-message, p.response-message {
     cursor: default;
     padding: 25px;
     background-color: #1d2024;
     color: red;
     border-radius: 5px;
+}
+
+p.response-message {
+    color: #51ABC1;
 }
 
 input, button, textarea {

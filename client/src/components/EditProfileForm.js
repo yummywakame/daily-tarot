@@ -1,9 +1,11 @@
 import React from 'react'
 
 const EditProfileForm = props => {
-    const { handleSubmit, handleChange, email, firstName, lastName, allowRev } = props
+    const { handleSubmit, handleChange, email, firstName, lastName, allowRev, updateMsg } = props
     return (
         <form onSubmit={handleSubmit} id="profile-form">
+        
+        { updateMsg && <p className="response-message">{updateMsg}</p>}
 
             <input
                 type="text"
