@@ -22,8 +22,6 @@ class Today extends React.Component {
         // Clear form messages
         this.props.clearReadingMessages()
 
-        console.log("this.props.readings.length: " + this.props.readings.length)
-        console.log("this.props.readings: " + this.props.readings)
         // If there is no reading for today, get a random card
         // Otherwise, display today's card
         if (this.props.readings.length === 0) {
@@ -39,11 +37,14 @@ class Today extends React.Component {
             // Get new reading
             this.props.getRandomCard()
         } else {
-            console.log("show old reading")
-            // display today's card
-
+            // display today's saved card
+            this.setState({
+                isAlreadyRead: true,
+                isFlipped: true,
+                notes: ""
+                // isReversed: this.props.readings.
+            })
         }
-
     }
     
     
@@ -74,7 +75,6 @@ class Today extends React.Component {
 
     // Get new reading when the button is clicked
     getNewReading = (e) => {
-        console.log("get new reading")
         e.preventDefault()
         // Clear out old Reading
         this.props.clearReadings()
@@ -135,7 +135,6 @@ class Today extends React.Component {
 
     render() {
     
-        console.log(this.state)
         
         // Get Random Card Details
         const { name, name_short, desc, meaning_up, meaning_up_long, meaning_rev, meaning_rev_long, element, astrology } = this.props.cards
