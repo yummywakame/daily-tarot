@@ -40,7 +40,6 @@ const App = (props) => {
             path={"/today"}
             redirectTo={"/login"}
             component={ Today }
-            username={user.username}
             allowRev={user.allowRev}
           />
           
