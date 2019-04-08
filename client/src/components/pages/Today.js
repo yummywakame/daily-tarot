@@ -42,8 +42,7 @@ class Today extends React.Component {
                 isAlreadyRead: true,
                 isFlipped: true,
                 notes: "",
-                isReversed: this.props.readings.cards.map(this.getPosition)[0][0] === "rev" || false
-                // isReversed: this.props.readings.
+                isReversed: this.props.readings.cards.map(this.getPosition)[0][0] || false
             })
         }
     }
@@ -56,16 +55,16 @@ class Today extends React.Component {
         })
     }
 
-    handleSubmit = (e) => {
-        e.preventDefault()
-        this.saveReading("update", 1, "daily", this.props.isReversed ? "rev" : "up")
+    handleSubmit = (event) => {
+        event.preventDefault()
+        this.saveReading("update", 1, "daily", this.state.isReversed)
     }
 
     toggleOnce = (event) => {
         event.preventDefault()
         if (!this.state.isFlipped) {
             window.scrollTo(0, 0)
-            this.saveReading("save", 1, "daily", this.state.isReversed ? "rev" : "up")
+            this.saveReading("save", 1, "daily", this.state.isReversed)
 
             this.setState({
                 isAlreadyRead: true,
@@ -103,15 +102,16 @@ class Today extends React.Component {
         const newReading = {
             user: this.props.user._id,
             spread: saveSpread,
+            timeStamp: Date.now(),
             notes: this.state.notes,
             choice: saveChoice,
             cards: [
                 {
-                    position: savePosition,
+                    isReversed: savePosition,
                     cardId: this.props.cards._id,
                     name: this.props.cards.name,
                     name_short: this.props.cards.name_short,
-                    meaning: (savePosition === "rev") ? this.props.cards.meaning_rev : this.props.cards.meaning_up
+                    meaning: (savePosition === true) ? this.props.cards.meaning_rev : this.props.cards.meaning_up
                 }
             ]
         }
@@ -135,11 +135,15 @@ class Today extends React.Component {
     }
 
     getPosition(item, index) {
-        return [item.position]
+        return [item.isReversed]
     }
 
     render() {
         this.props.readings.cards && console.log(this.props.readings.cards.map(this.getPosition)[0][0])
+        this.props.readings && console.log(this.props.readings)
+        // this.props.readings && console.log("this.props.readings: " + this.props.readings)
+        // console.log("this.state.isReversed: " + this.state.isReversed)
+        
 
         // Get Random Card Details
         const { name, name_short, desc, meaning_up, meaning_up_long, meaning_rev, meaning_rev_long, element, astrology } = this.props.cards

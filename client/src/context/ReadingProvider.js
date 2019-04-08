@@ -45,6 +45,7 @@ class ReadingProvider extends Component {
     clearReadings = () => {
             // Clear all readings from state/props
             this.setState({
+                readings: [],
                 readingMsg: ""
             })
     }
