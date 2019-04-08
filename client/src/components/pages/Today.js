@@ -15,7 +15,7 @@ class Today extends React.Component {
             notes: this.props.readings.notes || ""
         }
     }
-    
+
     componentDidMount() {
         window.scrollTo(0, 0)
 
@@ -27,7 +27,7 @@ class Today extends React.Component {
         if (this.props.readings.length === 0) {
             // Randomly select upright or reversed
             this.uprightOrReverse()
-            
+
             // Clear State
             this.setState({
                 isAlreadyRead: false,
@@ -41,13 +41,14 @@ class Today extends React.Component {
             this.setState({
                 isAlreadyRead: true,
                 isFlipped: true,
-                notes: ""
+                notes: "",
+                isReversed: this.props.readings.cards.map(this.getPosition)[0][0] === "rev" || false
                 // isReversed: this.props.readings.
             })
         }
     }
-    
-    
+
+
     handleChange = (e) => {
         const value = e.target.type === "checkbox" ? e.target.checked : e.target.value
         this.setState({
@@ -65,7 +66,7 @@ class Today extends React.Component {
         if (!this.state.isFlipped) {
             window.scrollTo(0, 0)
             this.saveReading("save", 1, "daily", this.state.isReversed ? "rev" : "up")
-            
+
             this.setState({
                 isAlreadyRead: true,
                 isFlipped: true
@@ -133,9 +134,13 @@ class Today extends React.Component {
         }
     }
 
+    getPosition(item, index) {
+        return [item.position]
+    }
+
     render() {
-    
-        
+        this.props.readings.cards && console.log(this.props.readings.cards.map(this.getPosition)[0][0])
+
         // Get Random Card Details
         const { name, name_short, desc, meaning_up, meaning_up_long, meaning_rev, meaning_rev_long, element, astrology } = this.props.cards
 
