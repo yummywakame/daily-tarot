@@ -31,8 +31,8 @@ class ReadingProvider extends Component {
     deleteAllUsersReadings = (_id) => {
         readingAxios.delete(`/api/readings/user/${_id}`).then(res => {
             this.setState({
-                pastReadings: res.data.reverse(),
-                PastReadingMsg: res.statusText
+                pastReadings: [],
+                PastReadingMsg: "Successfully deleted all past readings."
             })
         }).catch(err => console.log(err))    
     }
@@ -77,6 +77,7 @@ class ReadingProvider extends Component {
                     updateReading: this.updateReading,
                     getAllUsersReadings: this.getAllUsersReadings,
                     clearReadingMessages: this.clearReadingMessages,
+                    deleteAllUsersReadings: this.deleteAllUsersReadings,
                     clearReadings: this.clearReadings
                 }}>
                 {this.props.children}
