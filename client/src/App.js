@@ -6,7 +6,7 @@ import ProtectedRoute from './shared/ProtectedRoute.js'
 import Today from './components/pages/Today.js'
 import Profile from './components/pages/Profile.js'
 import About from './components/pages/About.js'
-import NotFound from './components/NotFound.js'
+import NotFound from './components/pages/NotFound.js'
 import Nav from './components/Nav.js'
 import NavInfo from './components/NavInfo.js'
 
