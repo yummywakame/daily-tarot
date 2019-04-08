@@ -41,7 +41,7 @@ class PastDailies extends Component {
                                         <p>{new Date(item.timeStamp).toDateString()}<br />{new Date(item.timeStamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                                         <h2 className="">{item.cards[0].name} {item.cards[0].isReversed && " (Reversed)"}</h2>
                                         <h4 className="blue">{item.cards[0].meaning}</h4>
-                                        <p className="left-align history_notes"><strong className="gold">Notes: </strong>{item.notes}</p>
+                                        <p className="left-align history_notes"><strong className="gold">{item.notes && `Notes:`} </strong>{item.notes}</p>
                                     </div>
                                 </div>
                             )}
