@@ -4,6 +4,7 @@ import { withUser } from './context/UserProvider.js'
 import AuthContainer from './components/auth/AuthContainer.js'
 import ProtectedRoute from './shared/ProtectedRoute.js'
 import Today from './components/pages/Today.js'
+import PastDailies from './components/pages/PastDailies.js'
 import Profile from './components/pages/Profile.js'
 import About from './components/pages/About.js'
 import NotFound from './components/pages/NotFound.js'
@@ -40,6 +41,14 @@ const App = (props) => {
             path={"/today"}
             redirectTo={"/login"}
             component={ Today }
+            allowRev={user.allowRev}
+          />
+          
+          <ProtectedRoute
+            token={token}
+            path={"/pastdailies"}
+            redirectTo={"/login"}
+            component={ PastDailies }
             allowRev={user.allowRev}
           />
           

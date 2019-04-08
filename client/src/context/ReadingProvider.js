@@ -16,8 +16,25 @@ class ReadingProvider extends Component {
         super()
         this.state = {
             readings: [],
-            readingMsg: ""
+            pastReadings: [],
+            readingMsg: "",
+            PastReadingMsg: ""
         }
+    }
+    
+    getAllUsersReadings = (_id) => {
+        readingAxios.get(`/api/readings/user/${_id}`).then(res => {
+            this.setState({pastReadings: res.data.reverse()})
+        }).catch(err => console.log(err))
+    }
+    
+    deleteAllUsersReadings = (_id) => {
+        readingAxios.delete(`/api/readings/user/${_id}`).then(res => {
+            this.setState({
+                pastReadings: [],
+                PastReadingMsg: "Successfully deleted all past readings."
+            })
+        }).catch(err => console.log(err))    
     }
 
     createReading = (newReading) => {
@@ -46,7 +63,8 @@ class ReadingProvider extends Component {
             // Clear all readings from state/props
             this.setState({
                 readings: [],
-                readingMsg: ""
+                pastReadings: [],
+                readingMsg: "",
             })
     }
 
@@ -57,7 +75,9 @@ class ReadingProvider extends Component {
                     ...this.state,
                     createReading: this.createReading,
                     updateReading: this.updateReading,
+                    getAllUsersReadings: this.getAllUsersReadings,
                     clearReadingMessages: this.clearReadingMessages,
+                    deleteAllUsersReadings: this.deleteAllUsersReadings,
                     clearReadings: this.clearReadings
                 }}>
                 {this.props.children}

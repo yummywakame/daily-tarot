@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import AuthForm from './AuthForm'
 import { withUser } from '../../context/UserProvider.js'
-import { withToggler } from '../shared/Toggle.js'
 import '../../styles/formstyles.css'
 
 class AuthContainer extends Component {
@@ -38,6 +37,11 @@ class AuthContainer extends Component {
         }
         this.props.login(credentials)
     }
+    
+    handleToggle = () => {
+        this.props.clearUserMessages()
+        this.props.toggler()
+    }
 
     render() {
         return (
@@ -58,7 +62,7 @@ class AuthContainer extends Component {
                                 btnText="Sign up"
                             />
                         
-                            <p onClick={this.props.toggler}>Are you already a member?</p>
+                            <p onClick={this.handleToggle}>Are you already a member?</p>
                         </div>
                         :
                         <div>
@@ -74,7 +78,7 @@ class AuthContainer extends Component {
                                 btnText="Login"
                             />
                             
-                            <p onClick={this.props.toggler}>Create an account</p>
+                            <p onClick={this.handleToggle}>Create an account</p>
                         </div>
                     }
                 </div>
@@ -84,4 +88,4 @@ class AuthContainer extends Component {
 
 }
 
-export default withToggler(withUser(AuthContainer))
+export default withUser(AuthContainer)
