@@ -140,13 +140,6 @@ class Today extends React.Component {
     }
 
     render() {
-        // this.props.readings.cards && console.log(this.props.readings.cards.map(this.getPosition)[0][0])
-        // this.props.readings && console.log(this.props.readings)
-        console.log(this.state.notes)
-        // this.props.readings && console.log("this.props.readings: " + this.props.readings)
-        // console.log("this.state.isReversed: " + this.state.isReversed)
-        
-
         // Get Random Card Details
         const { name, name_short, desc, meaning_up, meaning_up_long, meaning_rev, meaning_rev_long, element, astrology } = this.props.cards
 
