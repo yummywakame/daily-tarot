@@ -7,7 +7,7 @@ import NotesForm from './NotesForm.js'
 class Spread1Desc extends React.Component {
 
     render() {
-        const { isFlipped, isReversed, name, meaning_rev_long, meaning_up_long, desc, handleSubmit, handleChange } = this.props
+        const { isFlipped, isReversed, name, meaning_rev_long, meaning_up_long, desc, handleSubmit, handleChange, readingMsg, notes } = this.props
         return (
             <>
                 {/* Only display the rest if card has been flipped */}
@@ -34,7 +34,8 @@ class Spread1Desc extends React.Component {
                             <NotesForm
                                 handleChange={handleChange}
                                 handleSubmit={handleSubmit}
-                                readingMsg={this.props.readingMsg}
+                                readingMsg={readingMsg}
+                                notes={notes}
                                 {...this.state}
                             />
                         </div>

@@ -29,10 +29,9 @@ const readingSchema = new Schema({
             ref: 'Card',
             required: true
         },
-        position: {
-            type: String,
-            enum: ["up", "rev" ],
-            default: "up"
+        isReversed: {
+            type: Boolean,
+            required: true
         },
         name: {
             type: String,

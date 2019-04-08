@@ -3,7 +3,6 @@ import { NavLink } from 'react-router-dom'
 
 const NavInfo = (props) => {
   let routeLink = props.routeLink
-  console.log(routeLink)
   return (
     <>
       <NavLink to="/about" id="info-button"><div>i</div></NavLink>

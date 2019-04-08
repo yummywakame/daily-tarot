@@ -11,25 +11,23 @@ class Today extends React.Component {
         this.state = {
             isAlreadyRead: false,
             isFlipped: false,
-            isReversed: false,
-            notes: this.props.readings.notes || ""
+            isReversed: (this.props.readings.cards && this.props.readings.cards.map(this.getPosition)[0][0]) || false,
+            notes: (this.props.readings.notes && this.props.readings.notes) || ""
         }
     }
-    
+
     componentDidMount() {
         window.scrollTo(0, 0)
 
         // Clear form messages
         this.props.clearReadingMessages()
 
-        console.log("this.props.readings.length: " + this.props.readings.length)
-        console.log("this.props.readings: " + this.props.readings)
         // If there is no reading for today, get a random card
         // Otherwise, display today's card
         if (this.props.readings.length === 0) {
             // Randomly select upright or reversed
             this.uprightOrReverse()
-            
+
             // Clear State
             this.setState({
                 isAlreadyRead: false,
@@ -38,15 +36,19 @@ class Today extends React.Component {
             })
             // Get new reading
             this.props.getRandomCard()
+            
         } else {
-            console.log("show old reading")
-            // display today's card
-
+            // display today's saved card
+            this.setState({
+                isAlreadyRead: true,
+                isFlipped: true,
+                notes: this.props.readings.notes || "",
+                isReversed: this.props.readings.cards.map(this.getPosition)[0][0] || false
+            })
         }
-
     }
-    
-    
+
+
     handleChange = (e) => {
         const value = e.target.type === "checkbox" ? e.target.checked : e.target.value
         this.setState({
@@ -54,17 +56,17 @@ class Today extends React.Component {
         })
     }
 
-    handleSubmit = (e) => {
-        e.preventDefault()
-        this.saveReading("update", 1, "daily", this.props.isReversed ? "rev" : "up")
+    handleSubmit = (event) => {
+        event.preventDefault()
+        this.saveReading("update", 1, "daily", this.state.isReversed)
     }
 
     toggleOnce = (event) => {
         event.preventDefault()
         if (!this.state.isFlipped) {
             window.scrollTo(0, 0)
-            this.saveReading("save", 1, "daily", this.state.isReversed ? "rev" : "up")
-            
+            this.saveReading("save", 1, "daily", this.state.isReversed)
+
             this.setState({
                 isAlreadyRead: true,
                 isFlipped: true
@@ -74,7 +76,6 @@ class Today extends React.Component {
 
     // Get new reading when the button is clicked
     getNewReading = (e) => {
-        console.log("get new reading")
         e.preventDefault()
         // Clear out old Reading
         this.props.clearReadings()
@@ -102,15 +103,16 @@ class Today extends React.Component {
         const newReading = {
             user: this.props.user._id,
             spread: saveSpread,
+            timeStamp: Date.now(),
             notes: this.state.notes,
             choice: saveChoice,
             cards: [
                 {
-                    position: savePosition,
+                    isReversed: savePosition,
                     cardId: this.props.cards._id,
                     name: this.props.cards.name,
                     name_short: this.props.cards.name_short,
-                    meaning: (savePosition === "rev") ? this.props.cards.meaning_rev : this.props.cards.meaning_up
+                    meaning: (savePosition === true) ? this.props.cards.meaning_rev : this.props.cards.meaning_up
                 }
             ]
         }
@@ -133,10 +135,18 @@ class Today extends React.Component {
         }
     }
 
+    getPosition(item, index) {
+        return [item.isReversed]
+    }
+
     render() {
-    
-        console.log(this.state)
+        // this.props.readings.cards && console.log(this.props.readings.cards.map(this.getPosition)[0][0])
+        // this.props.readings && console.log(this.props.readings)
+        console.log(this.state.notes)
+        // this.props.readings && console.log("this.props.readings: " + this.props.readings)
+        // console.log("this.state.isReversed: " + this.state.isReversed)
         
+
         // Get Random Card Details
         const { name, name_short, desc, meaning_up, meaning_up_long, meaning_rev, meaning_rev_long, element, astrology } = this.props.cards
 
