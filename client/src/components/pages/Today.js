@@ -27,7 +27,6 @@ class Today extends React.Component {
         // If there is no reading for today, get a random card
         // Otherwise, display today's card
         if (this.props.readings.length === 0) {
-            console.log("get new reading")
             // Randomly select upright or reversed
             this.uprightOrReverse()
             
