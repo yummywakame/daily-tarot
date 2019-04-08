@@ -10,10 +10,53 @@ class Today extends React.Component {
         super(props);
         this.state = {
             isAlreadyRead: false,
-            isFlipped: this.isAlreadyRead || false,
+            isFlipped: false,
             isReversed: false,
             notes: this.props.readings.notes || ""
         }
+    }
+    
+    componentDidMount() {
+        window.scrollTo(0, 0)
+
+        // Clear form messages
+        this.props.clearReadingMessages()
+
+        console.log("this.props.readings.length: " + this.props.readings.length)
+        console.log("this.props.readings: " + this.props.readings)
+        // If there is no reading for today, get a random card
+        // Otherwise, display today's card
+        if (this.props.readings.length === 0) {
+            // Randomly select upright or reversed
+            this.uprightOrReverse()
+            
+            // Clear State
+            this.setState({
+                isAlreadyRead: false,
+                isFlipped: false,
+                notes: ""
+            })
+            // Get new reading
+            this.props.getRandomCard()
+        } else {
+            console.log("show old reading")
+            // display today's card
+
+        }
+
+    }
+    
+    
+    handleChange = (e) => {
+        const value = e.target.type === "checkbox" ? e.target.checked : e.target.value
+        this.setState({
+            [e.target.name]: value
+        })
+    }
+
+    handleSubmit = (e) => {
+        e.preventDefault()
+        this.saveReading("update", 1, "daily", this.props.isReversed ? "rev" : "up")
     }
 
     toggleOnce = (event) => {
@@ -21,15 +64,20 @@ class Today extends React.Component {
         if (!this.state.isFlipped) {
             window.scrollTo(0, 0)
             this.saveReading("save", 1, "daily", this.state.isReversed ? "rev" : "up")
-            this.setState(prevState => {
-                return { isFlipped: !prevState.isFlipped }
+            
+            this.setState({
+                isAlreadyRead: true,
+                isFlipped: true
             })
         }
     }
 
     // Get new reading when the button is clicked
     getNewReading = (e) => {
+        console.log("get new reading")
         e.preventDefault()
+        // Clear out old Reading
+        this.props.clearReadings()
         // Clear messages
         this.props.clearReadingMessages()
         // reset everything card reading related
@@ -38,7 +86,7 @@ class Today extends React.Component {
             isFlipped: false,
             notes: ""
         })
-        
+
         // Randomly select upright or reversed
         this.uprightOrReverse()
 
@@ -85,34 +133,10 @@ class Today extends React.Component {
         }
     }
 
-    componentDidMount() {
-        window.scrollTo(0, 0)
-        
-        // Clear messages
-        this.props.clearReadingMessages()
-
-        // Randomly select upright or reversed
-        this.uprightOrReverse()
-
-        // If there is no reading for today, get a random card
-        // Otherwise, display today's card
-        if (this.props.readings.length === 0) {
-            // Get new reading
-            this.setState({
-                isAlreadyRead: true,
-                notes: ""
-            })
-            this.props.getRandomCard()
-        } else {
-            // display today's card
-            this.setState({
-                isFlipped: true
-            })
-        }
-
-    }
-
     render() {
+    
+        console.log(this.state)
+        
         // Get Random Card Details
         const { name, name_short, desc, meaning_up, meaning_up_long, meaning_rev, meaning_rev_long, element, astrology } = this.props.cards
 
@@ -149,7 +173,9 @@ class Today extends React.Component {
                     meaning_rev_long={meaning_rev_long}
                     meaning_up_long={meaning_up_long}
                     desc={desc}
-                    notes={this.props.readings.notes}
+                    notes={this.state.notes}
+                    handleSubmit={this.handleSubmit}
+                    handleChange={this.handleChange}
                 />
 
             </main>
