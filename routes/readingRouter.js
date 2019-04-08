@@ -27,6 +27,20 @@ readingRouter.get('/user/:user', (req, res) => {
     })
 })
 
+// DELETE ALL BY USER ID
+readingRouter.delete('/user/:user', (req, res) => {
+    // This {object} is our filtering criteria for what we are looking for
+
+    Reading.deleteMany({ user: req.params.user }, (err) => {
+        if (err) {
+            res.status(500)
+            return res.send(err)
+        }
+        // 202 allows for a response message, 204 deletes but has no message
+        return res.status(202).send("Successfully deleted all past readings.")
+    })
+})
+
 // GET ONE
 readingRouter.get('/:_id', (req, res) => {
     // This {object} is our filtering criteria for what we are looking for

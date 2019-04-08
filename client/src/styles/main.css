@@ -92,6 +92,7 @@ a {
 #about p, #about li {
     text-align: left;
 }
+
 #about ul {
     margin-left: 25px;
 }
@@ -99,6 +100,8 @@ a {
 .flex-grid {
     display: flex;
 }
+
+.col-2 {}
 
 .col {
     flex: 1;
@@ -163,4 +166,23 @@ main {
 
 .center-stuff {
     text-align: center !important;
+}
+
+#card-history img {
+    width: 200px;
+    height: auto;
+}
+
+#card-history h2 {
+    margin-bottom: 0;
+}
+
+.left-align {
+    text-align: left;
+}
+.right-align {
+    text-align: right;
+}
+.align-top {
+    align-self: flex-start;
 }
