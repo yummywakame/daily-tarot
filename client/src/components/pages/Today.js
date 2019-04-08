@@ -11,8 +11,8 @@ class Today extends React.Component {
         this.state = {
             isAlreadyRead: false,
             isFlipped: false,
-            isReversed: false,
-            notes: this.props.readings.notes || ""
+            isReversed: (this.props.readings.cards && this.props.readings.cards.map(this.getPosition)[0][0]) || false,
+            notes: (this.props.readings.notes && this.props.readings.notes) || ""
         }
     }
 
@@ -36,12 +36,13 @@ class Today extends React.Component {
             })
             // Get new reading
             this.props.getRandomCard()
+            
         } else {
             // display today's saved card
             this.setState({
                 isAlreadyRead: true,
                 isFlipped: true,
-                notes: "",
+                notes: this.props.readings.notes || "",
                 isReversed: this.props.readings.cards.map(this.getPosition)[0][0] || false
             })
         }
@@ -139,8 +140,9 @@ class Today extends React.Component {
     }
 
     render() {
-        this.props.readings.cards && console.log(this.props.readings.cards.map(this.getPosition)[0][0])
-        this.props.readings && console.log(this.props.readings)
+        // this.props.readings.cards && console.log(this.props.readings.cards.map(this.getPosition)[0][0])
+        // this.props.readings && console.log(this.props.readings)
+        console.log(this.state.notes)
         // this.props.readings && console.log("this.props.readings: " + this.props.readings)
         // console.log("this.state.isReversed: " + this.state.isReversed)
         
