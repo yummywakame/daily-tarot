@@ -41,6 +41,13 @@ class ReadingProvider extends Component {
             readingMsg: ""
         })
     }
+    
+    clearReadings = () => {
+            // Clear all readings from state/props
+            this.setState({
+                readingMsg: ""
+            })
+    }
 
     render() {
         return (
@@ -49,7 +56,8 @@ class ReadingProvider extends Component {
                     ...this.state,
                     createReading: this.createReading,
                     updateReading: this.updateReading,
-                    clearReadingMessages: this.clearReadingMessages
+                    clearReadingMessages: this.clearReadingMessages,
+                    clearReadings: this.clearReadings
                 }}>
                 {this.props.children}
             </ReadingContext.Provider>

@@ -15,6 +15,17 @@ class Today extends React.Component {
             notes: this.props.readings.notes || ""
         }
     }
+    handleChange = (e) => {
+        const value = e.target.type === "checkbox" ? e.target.checked : e.target.value
+        this.setState({
+            [e.target.name]: value
+        })
+    }
+
+    handleSubmit = (e) => {
+        e.preventDefault()
+        this.saveReading("update", 1, "daily", this.props.isReversed ? "rev" : "up")
+    }
 
     toggleOnce = (event) => {
         event.preventDefault()
@@ -30,6 +41,8 @@ class Today extends React.Component {
     // Get new reading when the button is clicked
     getNewReading = (e) => {
         e.preventDefault()
+        // Clear out old Reading
+        this.props.clearReadings()
         // Clear messages
         this.props.clearReadingMessages()
         // reset everything card reading related
@@ -38,7 +51,7 @@ class Today extends React.Component {
             isFlipped: false,
             notes: ""
         })
-        
+
         // Randomly select upright or reversed
         this.uprightOrReverse()
 
@@ -87,25 +100,29 @@ class Today extends React.Component {
 
     componentDidMount() {
         window.scrollTo(0, 0)
-        
-        // Clear messages
+
+        // Clear form messages
         this.props.clearReadingMessages()
 
-        // Randomly select upright or reversed
-        this.uprightOrReverse()
-
+        console.log("this.props.readings.length: " + this.props.readings.length)
+        console.log("this.props.readings: " + this.props.readings)
         // If there is no reading for today, get a random card
         // Otherwise, display today's card
         if (this.props.readings.length === 0) {
+            // Randomly select upright or reversed
+            this.uprightOrReverse()
+            
             // Get new reading
             this.setState({
-                isAlreadyRead: true,
+                isAlreadyRead: false,
+                isFlipped: false,
                 notes: ""
             })
             this.props.getRandomCard()
         } else {
             // display today's card
             this.setState({
+                isAlreadyRead: true,
                 isFlipped: true
             })
         }
@@ -149,7 +166,9 @@ class Today extends React.Component {
                     meaning_rev_long={meaning_rev_long}
                     meaning_up_long={meaning_up_long}
                     desc={desc}
-                    notes={this.props.readings.notes}
+                    notes={this.state.notes}
+                    handleSubmit={this.handleSubmit}
+                    handleChange={this.handleChange}
                 />
 
             </main>
