@@ -38,9 +38,10 @@ class PastDailies extends Component {
                                         <img className={item.cards[0].isReversed ? "rev" : ""} src={`/decks/prisma-visions/${item.cards[0].name_short}.jpg`} alt={`${item.cards[0].name}`} />
                                     </div>
                                     <div className="col align-top">
-                                        <p className="">{new Date(item.timeStamp).toDateString()}<br />{new Date(item.timeStamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                                        <p>{new Date(item.timeStamp).toDateString()}<br />{new Date(item.timeStamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                                         <h2 className="">{item.cards[0].name} {item.cards[0].isReversed && " (Reversed)"}</h2>
                                         <h4 className="blue">{item.cards[0].meaning}</h4>
+                                        <p className="left-align history_notes"><strong className="gold">Notes: </strong>{item.notes}</p>
                                     </div>
                                 </div>
                             )}

@@ -36,7 +36,7 @@ class Today extends React.Component {
             })
             // Get new reading
             this.props.getRandomCard()
-            
+
         } else {
             // display today's saved card
             this.setState({
@@ -48,7 +48,6 @@ class Today extends React.Component {
         }
     }
 
-
     handleChange = (e) => {
         const value = e.target.type === "checkbox" ? e.target.checked : e.target.value
         this.setState({
@@ -58,7 +57,11 @@ class Today extends React.Component {
 
     handleSubmit = (event) => {
         event.preventDefault()
-        this.saveReading("update", 1, "daily", this.state.isReversed)
+        this.props.readings.cards
+            ?
+            this.saveReading("update", 1, "daily", this.state.isReversed)
+            :
+            this.saveReading("save", 1, "daily", this.state.isReversed)
     }
 
     toggleOnce = (event) => {
