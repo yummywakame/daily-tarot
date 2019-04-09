@@ -58,6 +58,26 @@ a {
     color: #51ABC1;
 }
 
+.center-stuff {
+    text-align: center !important;
+}
+
+.left-align {
+    text-align: left;
+}
+
+.right-align {
+    text-align: right;
+}
+
+.align-top {
+    align-self: flex-start;
+}
+
+.hideme {
+    display: none;
+}
+
 #auth-wrap {
     position: relative;
     float: left;
@@ -92,6 +112,7 @@ a {
 #about p, #about li {
     text-align: left;
 }
+
 #about ul {
     margin-left: 25px;
 }
@@ -146,6 +167,38 @@ main {
     /*IE*/
 }
 
+#tabs {
+    margin-top: 25px;
+    margin-bottom: -25px;
+
+}
+
+#tabs button {
+    background-color: rgb(29, 32, 36) ;
+    border: rgb(29, 32, 36);
+    padding: 10px 25px;
+    color: #51abc1;
+    cursor: pointer;
+}
+#tabs button:hover {
+    background-color: #51ABC1;
+    color: #37515B;
+}
+#tabs button:first-of-type {
+    -webkit-border-top-left-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    border-top-left-radius: 5px;
+}
+#tabs button:last-of-type {
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topright: 5px;
+    border-top-right-radius: 5px;
+}
+#tabs button.selected {
+    background-color: #37515B;
+    color: white;
+}
+
 /* FORM STUFF */
 
 #profile-form {
@@ -161,6 +214,17 @@ main {
     text-align: left;
 }
 
-.center-stuff {
-    text-align: center !important;
+/* Past Readings Styles */
+
+#card-history img {
+    width: 200px;
+    height: auto;
+}
+
+#card-history h2 {
+    margin-bottom: 0;
+}
+
+.history_notes {
+    white-space: pre-line;
 }
