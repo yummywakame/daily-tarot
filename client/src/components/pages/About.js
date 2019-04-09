@@ -28,7 +28,7 @@ const About = () => {
                     </p>  
                     
                     <h2>Credits</h2>
-                    <p>All card images from the most beautiful tarot deck in the world ~ <a href="https://amzn.to/2G6kELm">The Universal Fantasy Tarot Deck</a></p>
+                    <p>All card images from the most beautiful tarot deck in the world ~ <a href="https://amzn.to/2G6kELm">The Universal Fantasy Tarot Deck</a>. The images were sourced <a href="http://www.marytcusack.com/maryc/tarot/UniversalFantasy.html">here</a>.</p>
                     <p>The deck is based on the high fantasy novel genre and the imagined literary setting fathered by J.R.R. Tolkien whose Middle-Earth is a blend of magic and the Middle Ages, and is inhabited by dragons, undead, demons, elves, dwarves, wizards, and heroes. This deck pictures all of these plus more mythical creatures: giant rodents, centaurs, satyrs, giant lammergeiers, water sprites, enormous flying snails, etc.</p>
                     <p>All tarot card descriptions are from <a href="https://www.biddytarot.com">Biddy Tarot</a> ~ by far the best and most accurate descriptions I have found on the web.</p>
                     <p>Burger menu created with the help of <a href="https://github.com/negomi/react-burger-menu">React Burger Menu</a></p>
