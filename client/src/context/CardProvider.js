@@ -26,7 +26,7 @@ class CardProvider extends Component {
     }
     
     getRandomCard = () => {
-        cardAxios.get("/api/cards/random/1/21").then(res => {
+        cardAxios.get("/api/cards/random/1/77").then(res => {
             this.setState({cards: res.data})
         }).catch(err => console.log(err))
     }
