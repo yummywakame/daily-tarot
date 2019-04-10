@@ -38,7 +38,7 @@ class AuthContainer extends Component {
         this.props.login(credentials)
     }
     
-    handleToggle = () => {
+    handleToggle() {
         this.props.clearUserMessages()
         this.props.toggler()
     }
