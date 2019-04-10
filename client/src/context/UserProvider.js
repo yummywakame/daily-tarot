@@ -65,7 +65,7 @@ class UserProvider extends Component {
             updateMsg: ""
         })
     }
-    
+
     clearUserMessages = () => {
         // Clear away messages
         this.setState({

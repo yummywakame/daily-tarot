@@ -7,7 +7,7 @@ class Toggle extends React.Component {
             isToggled: false
         }
     }
-    
+
     toggler = () => {
         this.setState(prevState => {
             return { isToggled: !prevState.isToggled }
@@ -15,15 +15,15 @@ class Toggle extends React.Component {
     }
 
     render() {
-        const {component } = this.props
+        const { component } = this.props
         const C = component
-        
+
         console.log(this.state)
 
         return (
-            <C 
-                isToggled={this.state.isToggled} 
-                toggler={this.toggler} 
+            <C
+                isToggled={this.state.isToggled}
+                toggler={this.toggler}
             />
         )
     }

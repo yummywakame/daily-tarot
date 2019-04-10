@@ -180,6 +180,7 @@ main {
     color: #51abc1;
     cursor: pointer;
 }
+
 #tabs button:hover {
     background-color: #51ABC1;
     color: #37515B;
@@ -189,11 +190,13 @@ main {
     -moz-border-radius-topleft: 5px;
     border-top-left-radius: 5px;
 }
+
 #tabs button:last-of-type {
     -webkit-border-top-right-radius: 5px;
     -moz-border-radius-topright: 5px;
     border-top-right-radius: 5px;
 }
+
 #tabs button.selected {
     background-color: #37515B;
     color: white;

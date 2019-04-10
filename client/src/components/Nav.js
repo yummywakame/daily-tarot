@@ -39,9 +39,7 @@ class Nav extends React.Component {
         onStateChange={(state) => this.handleStateChange(state)}>
 
         <NavLink to="/today" onClick={() => this.closeMenu()} className="bm-item" tabIndex="0" activeClassName="active"><i className="fas fa-sun"></i><span>Today's Tarot</span></NavLink>
-        {/* <NavLink to="#!" onClick={() => this.closeMenu()} className="bm-item" tabIndex="1" activeClassName="active"><i className="far fa-question-circle"></i><span>Ask a Question</span></NavLink> */}
         <NavLink to="/pastdailies" onClick={() => this.closeMenu()} className="bm-item" tabIndex="2" activeClassName="active"><i className="far fa-calendar-alt"></i><span>Past Dailies</span></NavLink>
-        {/* <NavLink to="#!" onClick={() => this.closeMenu()} className="bm-item" tabIndex="3" activeClassName="active"><i className="far fa-calendar-check"></i><span>Past Questions</span></NavLink> */}
         <NavLink to="/profile" onClick={() => this.closeMenu()} className="bm-item" tabIndex="4" activeClassName="active"><i className="fas fa-user-circle"></i><span>Profile</span></NavLink>
         <NavLink to="#!" onClick={this.props.logout} className="bm-item" tabIndex="5" activeClassName="active"><i className="fas fa-sign-out-alt"></i><span>Log out</span></NavLink>
       </Menu>

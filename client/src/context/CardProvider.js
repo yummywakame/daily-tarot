@@ -18,16 +18,16 @@ class CardProvider extends Component {
             cards: []
         }
     }
-    
+
     clearCardState = () => {
         this.setState({
             cards: []
         })
     }
-    
+
     getRandomCard = () => {
         cardAxios.get("/api/cards/random/1/77").then(res => {
-            this.setState({cards: res.data})
+            this.setState({ cards: res.data })
         }).catch(err => console.log(err))
     }
 

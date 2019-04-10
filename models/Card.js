@@ -13,12 +13,12 @@ const cardSchema = new Schema({
     },
     type: {
         type: String,
-        enum: ["major", "minor" ],
+        enum: ["major", "minor"],
         required: true
     },
     suit: {
         type: String,
-        enum: ["wands", "cups", "pentacles", "swords" ]
+        enum: ["wands", "cups", "pentacles", "swords"]
     },
     desc: {
         type: String,

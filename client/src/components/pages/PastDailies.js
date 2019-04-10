@@ -17,13 +17,12 @@ class PastDailies extends Component {
         // Get All User's Readings
         this.props.getAllUsersReadings(this.props.user._id)
     }
-    
+
     onDeleteHandle = () => {
         this.props.deleteAllUsersReadings(this.props.user._id)
     }
 
     render() {
-        console.log(this.props)
 
         return (
             <main id="page-wrap">

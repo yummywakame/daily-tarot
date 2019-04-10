@@ -9,10 +9,10 @@ class Spread1Desc extends React.Component {
         super(props);
         this.state = { text: "meaning" }
     }
-    
+
     showHideTabContents(tab) {
         this.setState({ currentTab: tab })
-      }
+    }
 
     render() {
         console.log(this.state)
@@ -30,37 +30,37 @@ class Spread1Desc extends React.Component {
                         </div>
 
                         {(this.state.currentTab === "meaning" || !this.state.currentTab) &&
-                        <div className="card">
-                            <h2>{name} {isReversed ? `Reversed Meaning` : `Upright Meaning`}</h2>
-                            {isReversed ?
-                                <div dangerouslySetInnerHTML={{ __html: meaning_rev_long }}></div>
-                                :
-                                <div dangerouslySetInnerHTML={{ __html: meaning_up_long }}></div>
-                            }
-                        </div>
+                            <div className="card">
+                                <h2>{name} {isReversed ? `Reversed Meaning` : `Upright Meaning`}</h2>
+                                {isReversed ?
+                                    <div dangerouslySetInnerHTML={{ __html: meaning_rev_long }}></div>
+                                    :
+                                    <div dangerouslySetInnerHTML={{ __html: meaning_up_long }}></div>
+                                }
+                            </div>
                         }
 
                         {this.state.currentTab === "description" &&
-                        <div className="card">
-                            <h2>{name} Card Description</h2>
-                            <i className="blue">Based on the <a href="https://amzn.to/2I5FCMf">Rider-Waite</a> tarot deck</i>
-                            <div dangerouslySetInnerHTML={{ __html: desc }}></div>
-                        </div>
+                            <div className="card">
+                                <h2>{name} Card Description</h2>
+                                <i className="blue">Based on the <a href="https://amzn.to/2I5FCMf">Rider-Waite</a> tarot deck</i>
+                                <div dangerouslySetInnerHTML={{ __html: desc }}></div>
+                            </div>
                         }
 
                         {this.state.currentTab === "notes" &&
-                        <div className="card" id="add-form">
-                            <h2>Diary Notes</h2>
-                            <NotesForm
-                                handleChange={handleChange}
-                                handleSubmit={handleSubmit}
-                                readingMsg={readingMsg}
-                                notes={notes}
-                                {...this.state}
-                            />
-                        </div>
+                            <div className="card" id="add-form">
+                                <h2>Diary Notes</h2>
+                                <NotesForm
+                                    handleChange={handleChange}
+                                    handleSubmit={handleSubmit}
+                                    readingMsg={readingMsg}
+                                    notes={notes}
+                                    {...this.state}
+                                />
+                            </div>
                         }
-                        
+
                     </div>
                 }
             </>

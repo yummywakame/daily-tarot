@@ -31,21 +31,21 @@ cardRouter.get('/:_id', (req, res) => {
 cardRouter.get('/random/:spreadcount/:max', (req, res) => {
 
     // spreadcount is 3 for a Past, Present, Future draw
-    if(Number(req.params.spreadcount) === 1) {
-    
+    if (Number(req.params.spreadcount) === 1) {
+
         // Get random value_int value between 0 and max number of cards available
         const cardNum = Math.floor(Math.random() * (Number(req.params.max) + 1))
 
         // Grab the card that has that value_int
         Card.findOne({ value_int: cardNum }, (err, foundCard) => {
-    
+
             if (err) {
                 res.status(500)
                 return res.send(err)
             }
             return res.status(200).send(foundCard)
         })
-    
+
     } else {
         // Generate a spreadcount length array of value_ints
         // with non-repeating values
@@ -53,25 +53,25 @@ cardRouter.get('/random/:spreadcount/:max', (req, res) => {
         let arr = []
         let randNum
         const spreadcount = Number(req.params.spreadcount)
-        
-        for(var len = 0; len < spreadcount; len++) {
-           do {
-               randNum = Math.floor(Math.random() * (Number(req.params.max) + 1)) 
-           } while (exists[randNum])
-           exists[randNum] = true
-           arr.push(randNum)
+
+        for (var len = 0; len < spreadcount; len++) {
+            do {
+                randNum = Math.floor(Math.random() * (Number(req.params.max) + 1))
+            } while (exists[randNum])
+            exists[randNum] = true
+            arr.push(randNum)
         }
-        
+
         // Now find cards that match those value_ids
         Card.find((err, foundCards) => {
-    
+
             if (err) {
                 res.status(500)
                 return res.send(err)
             }
             return res.status(200).send(foundCards)
         }).where('value_int').in(arr).exec()
-    
+
     }
 
 })

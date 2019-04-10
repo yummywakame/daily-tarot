@@ -10,66 +10,43 @@ import About from './components/pages/About.js'
 import NotFound from './components/pages/NotFound.js'
 import Nav from './components/Nav.js'
 import NavInfo from './components/NavInfo.js'
+import ErrorBoundary from './shared/ErrorBoundary.js'
 
 const App = (props) => {
   const { user, token, logout } = props
-  
+
   document.title = "Daily Tarot ~ " + (props.location.pathname === "/" ? "" : props.location.pathname.slice(1)[0].toUpperCase() + props.location.pathname.slice(2))
-  
+
   return (
     <div id="outer-container">
-    
-      <NavInfo token={token} routeLink={props.location.pathname}/>
+
+      <NavInfo token={token} routeLink={props.location.pathname} />
 
       {token && <Nav logout={logout} />}
       <header><h1>Daily Tarot</h1></header>
-      
-        <Switch>
-        
-          <Route exact path="/" render={() => token ? <Redirect to="/today"/> : <Redirect to="/login"/> } />
 
-          <Route path="/login" render={routerProps => token
-            ?
-            <Redirect to="/today" />
-            :
-            <AuthContainer {...routerProps} />}
-          />
+      <Switch>
 
-          {/* Protected Routes */}
-          <ProtectedRoute
-            token={token}
-            path={"/today"}
-            redirectTo={"/login"}
-            component={ Today }
-            allowRev={user.allowRev}
-          />
-          
-          <ProtectedRoute
-            token={token}
-            path={"/pastdailies"}
-            redirectTo={"/login"}
-            component={ PastDailies }
-            allowRev={user.allowRev}
-          />
-          
-          <ProtectedRoute
-            token={token}
-            path={"/profile"}
-            redirectTo={"/login"}
-            component={ Profile }
-            user={user}
-          />
-          
-          <Route
-            token={token}
-            path={"/about"}
-            redirectTo={"/login"}
-            component={ About }
-          />
-          
-          <Route path="*" component={ NotFound } />
+        <Route exact path="/" render={() =>
+          <ErrorBoundary> token ? <Redirect to="/today" /> : <Redirect to="/login" /> </ErrorBoundary>
+        } />
 
-        </Switch>
+        <Route path="/login" render={routerProps =>
+          <ErrorBoundary> token ? <Redirect to="/today" /> : <AuthContainer {...routerProps} /> </ErrorBoundary>
+        } />
+
+        {/* Protected Routes */}
+        <ProtectedRoute token={token} path={"/today"} redirectTo={"/login"} component={Today} allowRev={user.allowRev} />
+
+        <ProtectedRoute token={token} path={"/pastdailies"} redirectTo={"/login"} component={PastDailies} allowRev={user.allowRev} />
+
+        <ProtectedRoute token={token} path={"/profile"} redirectTo={"/login"} component={Profile} user={user} />
+
+        <Route path={"/about"} render={() => <ErrorBoundary><About /></ErrorBoundary>} />
+
+        <Route path="*" component={NotFound} />
+
+      </Switch>
 
     </div>
   )

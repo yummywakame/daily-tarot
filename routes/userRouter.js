@@ -2,7 +2,6 @@ const express = require('express')
 const userRouter = express.Router()
 const User = require('../models/user.js')
 
-
 // Get All Users
 userRouter.get("/", (req, res, next) => {
     // Find user by that username - returns (err, user)

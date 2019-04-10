@@ -2,10 +2,11 @@ import React from 'react'
 
 const NotesForm = props => {
     const { handleSubmit, handleChange, notes, readingMsg } = props
-    
+
     return (
         <form onSubmit={handleSubmit} id="profile-form">
-            { readingMsg && <p className="response-message">{readingMsg}</p>}
+            {readingMsg && <p className="response-message">{readingMsg}</p>}
+
             <textarea
                 name="notes"
                 value={notes}
