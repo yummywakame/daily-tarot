@@ -18,8 +18,6 @@ class Toggle extends React.Component {
         const { component } = this.props
         const C = component
 
-        console.log(this.state)
-
         return (
             <C
                 isToggled={this.state.isToggled}
