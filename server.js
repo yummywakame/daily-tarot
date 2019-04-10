@@ -2,13 +2,12 @@ const express = require('express')
 const app = express()
 require('dotenv').config()
 
-// ... other imports 
-const path = require("path")
-
 const morgan = require('morgan')
 const mongoose = require('mongoose')
 const expressJwt = require('express-jwt')
 const PORT = process.env.PORT || 7000
+// ... other imports 
+const path = require("path")
 
 // Middlewares for every request
 app.use(express.json())
