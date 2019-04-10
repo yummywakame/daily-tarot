@@ -25,7 +25,7 @@ class Spread1Desc extends React.Component {
 
                         <div id="tabs">
                             <button onClick={() => this.showHideTabContents("meaning")} className={(this.state.currentTab === "meaning" || !this.state.currentTab) ? "selected" : ""}>Meaning</button>
-                            <button onClick={() => this.showHideTabContents("description")} className={this.state.currentTab === "description" ? "selected" : ""}>Card Description</button>
+                            <button onClick={() => this.showHideTabContents("description")} className={this.state.currentTab === "description" ? "selected" : ""}>Description</button>
                             <button onClick={() => this.showHideTabContents("notes")} className={this.state.currentTab === "notes" ? "selected" : ""}>Notes</button>
                         </div>
 

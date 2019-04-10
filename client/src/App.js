@@ -28,11 +28,11 @@ const App = (props) => {
       <Switch>
 
         <Route exact path="/" render={() =>
-          <ErrorBoundary> token ? <Redirect to="/today" /> : <Redirect to="/login" /> </ErrorBoundary>
+          token ? <Redirect to="/today" /> : <Redirect to="/login" /> 
         } />
 
         <Route path="/login" render={routerProps =>
-          <ErrorBoundary> token ? <Redirect to="/today" /> : <AuthContainer {...routerProps} /> </ErrorBoundary>
+           token ? <Redirect to="/today" /> : <AuthContainer {...routerProps} /> 
         } />
 
         {/* Protected Routes */}
