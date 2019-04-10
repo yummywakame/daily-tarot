@@ -2,9 +2,9 @@
 ### > For V School // Full Stack JavaScript // January 2019 Cohort
 
 #### Screenshot:
-<img src="screenshot.png" width="75%">
+<a href="https://daily-tarot-reader.herokuapp.com" target="_blank"><img src="screenshot.png" width="75%"></a>
 
-#### Demo:
+#### Launch:
 - <a href="https://daily-tarot-reader.herokuapp.com" target="_blank">Full Stack Tarot App</a>
 
 #### YouTube Demo:
