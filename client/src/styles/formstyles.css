@@ -2,6 +2,7 @@
     position: relative;
     margin: auto;
     padding-bottom: 65px;
+    max-width: 90vw;
 }
 
 .form-container div {
@@ -40,7 +41,6 @@ input, button, textarea {
 
 input[type="checkbox"] {
     margin-right: 10px;
-    
 }
 
 #auth-wrap input:first-of-type {
@@ -84,4 +84,13 @@ button:hover {
 
 input:focus, textarea:focus, button:focus {
     outline: none;
+}
+
+/* TINY PHONES */
+
+@media (max-width: 767px) {
+    #auth-wrap input, #auth-wrap button {
+        margin: 0 0 10px 0 !important;
+        width: 100%;
+    }
 }

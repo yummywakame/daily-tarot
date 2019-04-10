@@ -238,14 +238,13 @@ main {
 /* TINY PHONES */
 @media (max-width: 767px) {
     .card {
-        background-color: #37515B;        margin: 25px 0;
+        background-color: #37515B;
+        margin: 25px 0;
         padding: 25px;
     }
-    
     #card-history img {
         width: 100px;
     }
-    
     #tabs button {
         padding: 10px 10px;
     }
