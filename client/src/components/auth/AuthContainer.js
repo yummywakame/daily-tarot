@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import AuthForm from './AuthForm'
 import { withUser } from '../../context/UserProvider.js'
+import { withToggler } from '../shared/Toggle.js'
 import '../../styles/formstyles.css'
 
 class AuthContainer extends Component {
@@ -38,7 +39,7 @@ class AuthContainer extends Component {
         this.props.login(credentials)
     }
     
-    handleToggle() {
+    handleToggle = () => {
         this.props.clearUserMessages()
         this.props.toggler()
     }
@@ -88,4 +89,4 @@ class AuthContainer extends Component {
 
 }
 
-export default withUser(AuthContainer)
+export default withToggler(withUser(AuthContainer))
