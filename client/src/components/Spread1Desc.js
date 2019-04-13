@@ -30,7 +30,7 @@ class Spread1Desc extends React.Component {
                         </div>
 
                         {(this.state.currentTab === "meaning" || !this.state.currentTab) &&
-                            <div className="card">
+                            <div className="card purple-bg">
                                 <h2>{name} {isReversed ? `Reversed Meaning` : `Upright Meaning`}</h2>
                                 {isReversed ?
                                     <div dangerouslySetInnerHTML={{ __html: meaning_rev_long }}></div>
@@ -41,7 +41,7 @@ class Spread1Desc extends React.Component {
                         }
 
                         {this.state.currentTab === "description" &&
-                            <div className="card">
+                            <div className="card purple-bg">
                                 <h2>{name} Card Description</h2>
                                 <i className="blue">Based on the <a href="https://amzn.to/2I5FCMf">Rider-Waite</a> tarot deck</i>
                                 <div dangerouslySetInnerHTML={{ __html: desc }}></div>
@@ -49,7 +49,7 @@ class Spread1Desc extends React.Component {
                         }
 
                         {this.state.currentTab === "notes" &&
-                            <div className="card" id="add-form">
+                            <div className="card purple-bg" id="add-form">
                                 <h2>Diary Notes</h2>
                                 <NotesForm
                                     handleChange={handleChange}

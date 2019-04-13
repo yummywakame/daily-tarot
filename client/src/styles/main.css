@@ -12,10 +12,50 @@ html {
 
 body {
     font-family: 'Lato', sans-serif;
-    height: 100%;
-    background: #31373E;
+    height: 100vh;
     color: whitesmoke;
     font-size: 16px;
+    background: linear-gradient(-45deg, #251e3e, #651e3e ,#451e3e, #851e3e);
+	background-size: 400% 400%;
+	-webkit-animation: Gradient 15s ease infinite;
+	-moz-animation: Gradient 15s ease infinite;
+	animation: Gradient 15s ease infinite;
+}
+
+@-webkit-keyframes Gradient {
+	0% {
+		background-position: 0% 50%
+	}
+	50% {
+		background-position: 100% 50%
+	}
+	100% {
+		background-position: 0% 50%
+	}
+}
+
+@-moz-keyframes Gradient {
+	0% {
+		background-position: 0% 50%
+	}
+	50% {
+		background-position: 100% 50%
+	}
+	100% {
+		background-position: 0% 50%
+	}
+}
+
+@keyframes Gradient {
+	0% {
+		background-position: 0% 50%
+	}
+	50% {
+		background-position: 100% 50%
+	}
+	100% {
+		background-position: 0% 50%
+	}
 }
 
 #outer-container {
@@ -39,7 +79,10 @@ h3, h4 {
 }
 
 h3 {
-    color: #51ABC1;
+    padding-top: 15px !important;
+    font-family: 'Libre Baskerville', serif;
+    color: #ff3366;
+    letter-spacing: 1px;
 }
 
 h4 {
@@ -47,15 +90,30 @@ h4 {
 }
 
 .gold {
-    color: #fCb21C;
+    color: #e4ab37;
 }
 
 .blue {
-    color: #51ABC1;
+    color: #51abc1;
+}
+
+.purple-bg {
+    background-color: #251e3e !important;
+}
+
+.padding {
+    margin-left: 50px;
+    margin-right: 50px;
 }
 
 a {
-    color: #51ABC1;
+    color: #ff3366;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+a:hover {
+    color: #ff3366;
+    text-decoration: underline;
 }
 
 .center-stuff {
@@ -96,14 +154,14 @@ a {
 }
 
 .card {
-    background-color: #37515B;
+    background-color: #050408;
     margin: 25px;
     padding: 50px;
     border-radius: 10px;
 }
 
 .card h2 {
-    color: #fCb21C;
+    color: #e4ab37;
 }
 
 .card p {
@@ -132,10 +190,10 @@ a {
 
 header {
     text-align: center;
-    color: #fCb21C;
+    color: #e4ab37;
     width: 100%;
     height: 65px;
-    background-color: rgb(29, 32, 36);
+    background-color: #050408;
     position: fixed;
     z-index: 10;
 }
@@ -147,7 +205,7 @@ header h1 {
 
 main {
     max-width: 650px;
-    padding: 25px;
+    padding: 90px 25px 25px 25px;
     margin: auto;
     overflow: auto;
     text-align: center;
@@ -173,19 +231,20 @@ main {
 #tabs {
     margin-top: 25px;
     margin-bottom: -25px;
-}
-
-#tabs button {
-    background-color: rgb(29, 32, 36);
-    border: rgb(29, 32, 36);
-    padding: 10px 25px;
-    color: #51abc1;
     cursor: pointer;
 }
 
+#tabs button {
+    background-color: black;
+    border: black;
+    padding: 10px 25px;
+    color: whitesmoke;
+
+}
+
 #tabs button:hover {
-    background-color: #51ABC1;
-    color: #37515B;
+    background-color: #322954;
+    border: #322954;
 }
 
 #tabs button:first-of-type {
@@ -201,7 +260,7 @@ main {
 }
 
 #tabs button.selected {
-    background-color: #37515B;
+    background-color: #251e3e;
     color: white;
 }
 
@@ -238,7 +297,7 @@ main {
 /* TINY PHONES */
 @media (max-width: 767px) {
     .card {
-        background-color: #37515B;
+        background-color: #050408;
         margin: 25px 0;
         padding: 25px;
     }
