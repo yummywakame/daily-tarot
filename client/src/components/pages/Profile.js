@@ -47,7 +47,7 @@ class Profile extends React.Component {
             <main id="page-wrap">
                 <h2>Profile &amp; Preferences</h2>
 
-                <div className="card" id="add-form">
+                <div className="card purple-bg" id="add-form">
                     <EditProfileForm
                         handleChange={this.handleChange}
                         handleSubmit={this.handleSubmit}

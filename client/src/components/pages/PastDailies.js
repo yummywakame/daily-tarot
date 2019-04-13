@@ -32,7 +32,7 @@ class PastDailies extends Component {
                     <>
                         <div id="card-history" className="cols-2">
                             {this.props.pastReadings.map((item, key) =>
-                                <div className="card flex-grid" key={key}>
+                                <div className="card flex-grid purple-bg" key={key}>
                                     <div className="col">
                                         <img className={item.cards[0].isReversed ? "rev" : ""} src={`/decks/prisma-visions/${item.cards[0].name_short}.jpg`} alt={`${item.cards[0].name}`} />
                                     </div>

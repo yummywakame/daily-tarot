@@ -6,7 +6,7 @@
 }
 
 .form-container div {
-    background-color: #1d2024bd;
+    background-color: #061e3ebd;
     padding: 25px;
     border-radius: 10px;
 }
@@ -14,19 +14,19 @@
 .form-container p {
     margin: 25px 0;
     cursor: pointer;
-    color: #51ABC1;
+    color: #7f7cc3;
 }
 
 .form-container p.error-message, p.response-message {
     cursor: default;
     padding: 25px;
-    background-color: #1d2024;
+    background-color: #061e3e;
     color: red;
     border-radius: 5px;
 }
 
 p.response-message {
-    color: #51ABC1;
+    color: #7f7cc3;
 }
 
 input, button, textarea {
@@ -60,17 +60,16 @@ input:hover {
 }
 
 button {
-    background-color: whitesmoke;
-    color: #1d2024;
+    color: black;
     cursor: pointer;
     transition: all 0.3s ease-in;
-    background-color: #fCb21C;
-    border-color: #fCb21C;
+    background-color: #e4ab37;
+    border-color: #e4ab37;
 }
 
 button:hover {
-    background-color: #51ABC1;
-    border-color: #51ABC1;
+    background-color: #ff3366;
+    border-color: #ff3366;
 }
 
 .form-container button {
