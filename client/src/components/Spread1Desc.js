@@ -15,7 +15,6 @@ class Spread1Desc extends React.Component {
     }
 
     render() {
-        console.log(this.state)
         const { isFlipped, isReversed, name, meaning_rev_long, meaning_up_long, desc, handleSubmit, handleChange, readingMsg, notes } = this.props
         return (
             <>

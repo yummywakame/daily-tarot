@@ -6,7 +6,7 @@
 }
 
 .form-container div {
-    background-color: #061e3ebd;
+    background-color: #251e3eBD;
     padding: 25px;
     border-radius: 10px;
 }
@@ -14,14 +14,14 @@
 .form-container p {
     margin: 25px 0;
     cursor: pointer;
-    color: #7f7cc3;
+    color: #ff3366;
 }
 
 .form-container p.error-message, p.response-message {
     cursor: default;
     padding: 25px;
-    background-color: #061e3e;
-    color: red;
+    background-color: #050408;
+    color: #ff3366;
     border-radius: 5px;
 }
 
