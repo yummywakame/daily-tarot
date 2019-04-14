@@ -9,7 +9,8 @@ class AuthContainer extends Component {
         super()
         this.state = {
             username: "",
-            password: ""
+            password: "",
+            email: ""
         }
     }
 
@@ -60,6 +61,8 @@ class AuthContainer extends Component {
                                 handleSubmit={this.handleSignup}
                                 username={this.state.username}
                                 password={this.state.password}
+                                email={this.state.email}
+                                isToggled ={this.props.isToggled}
                                 btnText="Sign up"
                             />
                         
@@ -76,6 +79,8 @@ class AuthContainer extends Component {
                                 handleSubmit={this.handleLogin}
                                 username={this.state.username}
                                 password={this.state.password}
+                                email={this.state.email}
+                                isToggled ={this.props.isToggled}
                                 btnText="Login"
                             />
                             

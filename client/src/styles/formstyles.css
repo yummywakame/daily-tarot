@@ -2,7 +2,7 @@
     position: relative;
     margin: auto;
     padding-bottom: 65px;
-    max-width: 90vw;
+    max-width: 450px;
 }
 
 .form-container div {
@@ -87,9 +87,8 @@ input:focus, textarea:focus, button:focus {
 
 /* TINY PHONES */
 
-@media (max-width: 767px) {
+
     #auth-wrap input, #auth-wrap button {
         margin: 0 0 10px 0 !important;
         width: 100%;
     }
-}
