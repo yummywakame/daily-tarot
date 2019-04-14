@@ -16,7 +16,7 @@ app.use(express.static(path.join(__dirname, "client", "build")))
 
 
 // DB Connect
-mongoose.connect(process.env.MONGOLAB_PINK_URI || 'mongodb://localhost:27017/tarot', { "useNewUrlParser": true }, () => {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/tarot', { "useNewUrlParser": true }, () => {
     console.log("[o] Connected to the DB")
 })
 
