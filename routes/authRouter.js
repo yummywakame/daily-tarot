@@ -25,7 +25,7 @@ authRouter.post("/signup", (req, res, next) => {
             if (err) {
                 console.error(err)
                 res.status(500)
-                return next(new Error("There was an error on signup."))
+                return next(new Error("There was an error on signup. Have you used the same email address as before?"))
             }
             // Create Token
             const token = jwt.sign(savedUser.withoutPassword(), process.env.SECRET)

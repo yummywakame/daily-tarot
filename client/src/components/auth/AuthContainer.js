@@ -25,7 +25,8 @@ class AuthContainer extends Component {
         event.preventDefault()
         const credentials = {
             username: this.state.username,
-            password: this.state.password
+            password: this.state.password,
+            email: this.state.email
         }
         this.props.signup(credentials)
     }
