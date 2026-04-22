@@ -6,7 +6,7 @@
 <a href="https://daily-tarot-reader.herokuapp.com" target="_blank"><img src="screenshot-new.png" width="75%"></a>
 
 #### Launch:
-- <a href="https://daily-tarot-reader.herokuapp.com" target="_blank">Full Stack Tarot App</a>
+- <a href="https://yummy-wakame.com/demos/daily-tarot" target="_blank">Full Stack Tarot App</a>
 
 #### YouTube Demo:
 <a href="https://youtu.be/m16gMcxs2N0" target="_blank"><img src="https://img.youtube.com/vi/m16gMcxs2N0/maxresdefault.jpg" width="75%"></a>

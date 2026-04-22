@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import AuthForm from './AuthForm'
-import { withUser } from '../../context/UserProvider.js'
-import { withToggler } from '../shared/Toggle.js'
+import { withUser } from '../../context/UserProvider.jsx'
+import { withToggler } from '../shared/Toggle.jsx'
 import '../../styles/formstyles.css'
 
 class AuthContainer extends Component {

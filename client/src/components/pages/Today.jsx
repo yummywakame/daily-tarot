@@ -1,9 +1,9 @@
 import React from 'react'
-import { withUser } from '../../context/UserProvider.js'
-import { withCard } from '../../context/CardProvider.js'
-import { withReading } from '../../context/ReadingProvider.js'
-import Spread1 from '../Spread1.js'
-import Spread1Desc from '../Spread1Desc.js'
+import { withUser } from '../../context/UserProvider.jsx'
+import { withCard } from '../../context/CardProvider.jsx'
+import { withReading } from '../../context/ReadingProvider.jsx'
+import Spread1 from '../Spread1.jsx'
+import Spread1Desc from '../Spread1Desc.jsx'
 
 class Today extends React.Component {
     constructor(props) {

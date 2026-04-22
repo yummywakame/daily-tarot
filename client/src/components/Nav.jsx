@@ -1,5 +1,5 @@
 import React from 'react'
-import { bubble as Menu } from 'react-burger-menu'
+import { slide as Menu } from 'react-burger-menu'
 import { NavLink } from 'react-router-dom'
 
 class Nav extends React.Component {
@@ -29,9 +29,7 @@ class Nav extends React.Component {
   render() {
     return (
       <Menu
-        push id={"sidebar"}
-        pageWrapId={"page-wrap"}
-        outerContainerId={"outer-container"}
+        id={"sidebar"}
         width={200}
         isOpen={this.state.menuOpen}
         onStateChange={(state) => this.handleStateChange(state)}>

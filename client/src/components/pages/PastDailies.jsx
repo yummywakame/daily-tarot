@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { withUser } from '../../context/UserProvider.js'
-import { withReading } from '../../context/ReadingProvider.js'
-import withNavigate from '../../shared/withNavigate.js'
+import { withUser } from '../../context/UserProvider.jsx'
+import { withReading } from '../../context/ReadingProvider.jsx'
+import withNavigate from '../../shared/withNavigate.jsx'
+import { publicUrl } from '../../publicUrl.js'
 
 class PastDailies extends Component {
     // eslint-disable-next-line no-useless-constructor
@@ -35,7 +36,7 @@ class PastDailies extends Component {
                             {this.props.pastReadings.map((item, key) =>
                                 <div className="card flex-grid purple-bg" key={key}>
                                     <div className="col">
-                                        <img className={item.cards[0].isReversed ? "rev" : ""} src={`/decks/prisma-visions/${item.cards[0].name_short}.jpg`} alt={`${item.cards[0].name}`} />
+                                        <img className={item.cards[0].isReversed ? "rev" : ""} src={publicUrl(`decks/prisma-visions/${item.cards[0].name_short}.jpg`)} alt={`${item.cards[0].name}`} />
                                     </div>
                                     <div className="col align-top">
                                         <p>{new Date(item.timeStamp).toDateString()}<br />{new Date(item.timeStamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>

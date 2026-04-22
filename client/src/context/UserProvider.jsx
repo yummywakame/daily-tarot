@@ -24,14 +24,14 @@ class UserProvider extends Component {
     }
 
     updateUser = (_id, updates) => {
-        userAxios.put(`/api/users/${_id}`, updates).then(response => {
+        userAxios.put(`api/users/${_id}`, updates).then(response => {
             localStorage.setItem("user", JSON.stringify(response.data))
             this.setState({ user: response.data, errMsg: "", updateMsg: "Updated successfully!" })
         }).catch(err => this.setState({ updateMsg: "", errMsg: err.response.data.errMsg }))
     }
 
     signup = (credentials) => {
-        axios.post("/auth/signup", credentials).then(response => {
+        axios.post("auth/signup", credentials).then(response => {
             const { user, token } = response.data
             localStorage.setItem("user", JSON.stringify(user))
             localStorage.setItem("token", token)
@@ -40,7 +40,7 @@ class UserProvider extends Component {
     }
 
     login = (credentials) => {
-        axios.post("/auth/login", credentials).then(response => {
+        axios.post("auth/login", credentials).then(response => {
             const { user, token } = response.data
             localStorage.setItem("user", JSON.stringify(user))
             localStorage.setItem("token", token)

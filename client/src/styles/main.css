@@ -230,38 +230,42 @@ main {
 
 #tabs {
     margin-top: 25px;
-    margin-bottom: -25px;
+    margin-bottom: 0;
     cursor: pointer;
+    display: inline-flex;
 }
 
 #tabs button {
     background-color: black;
-    border: black;
+    border: none;
+    border-radius: 0;
     padding: 10px 25px;
     color: whitesmoke;
-
 }
 
 #tabs button:hover {
     background-color: #322954;
-    border: #322954;
 }
 
 #tabs button:first-of-type {
-    -webkit-border-top-left-radius: 5px;
-    -moz-border-radius-topleft: 5px;
     border-top-left-radius: 5px;
 }
 
 #tabs button:last-of-type {
-    -webkit-border-top-right-radius: 5px;
-    -moz-border-radius-topright: 5px;
     border-top-right-radius: 5px;
 }
 
 #tabs button.selected {
     background-color: #251e3e;
     color: white;
+    border-bottom: 2px solid #251e3e;
+}
+
+/* Tab content panel connects flush to the tabs */
+#reveal .card {
+    margin-top: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
 }
 
 /* FORM STUFF */

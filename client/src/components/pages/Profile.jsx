@@ -1,6 +1,6 @@
 import React from 'react'
-import { withUser } from '../../context/UserProvider.js'
-import EditProfileForm from '../EditProfileForm.js'
+import { withUser } from '../../context/UserProvider.jsx'
+import EditProfileForm from '../EditProfileForm.jsx'
 
 class Profile extends React.Component {
     constructor(props) {

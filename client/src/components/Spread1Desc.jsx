@@ -1,8 +1,8 @@
 import React from 'react'
-import { withUser } from '../context/UserProvider.js'
-import { withCard } from '../context/CardProvider.js'
-import { withReading } from '../context/ReadingProvider.js'
-import NotesForm from './NotesForm.js'
+import { withUser } from '../context/UserProvider.jsx'
+import { withCard } from '../context/CardProvider.jsx'
+import { withReading } from '../context/ReadingProvider.jsx'
+import NotesForm from './NotesForm.jsx'
 
 class Spread1Desc extends React.Component {
     constructor(props) {
