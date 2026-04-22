@@ -1,0 +1,310 @@
+@import url('https://fonts.googleapis.com/css?family=Lato|Libre+Baskerville:400i');
+*, *:after, *:before {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+    height: 100vh;
+    color: whitesmoke;
+    font-size: 16px;
+    background: linear-gradient(-45deg, #251e3e, #651e3e ,#451e3e, #851e3e);
+	background-size: 400% 400%;
+	-webkit-animation: Gradient 15s ease infinite;
+	-moz-animation: Gradient 15s ease infinite;
+	animation: Gradient 15s ease infinite;
+}
+
+@-webkit-keyframes Gradient {
+	0% {
+		background-position: 0% 50%
+	}
+	50% {
+		background-position: 100% 50%
+	}
+	100% {
+		background-position: 0% 50%
+	}
+}
+
+@-moz-keyframes Gradient {
+	0% {
+		background-position: 0% 50%
+	}
+	50% {
+		background-position: 100% 50%
+	}
+	100% {
+		background-position: 0% 50%
+	}
+}
+
+@keyframes Gradient {
+	0% {
+		background-position: 0% 50%
+	}
+	50% {
+		background-position: 100% 50%
+	}
+	100% {
+		background-position: 0% 50%
+	}
+}
+
+#outer-container {
+    height: 100vh;
+}
+
+h1, h2 {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    margin: 25px 0;
+}
+
+h1:first-of-type, h2:first-of-type {
+    margin-top: 0px;
+}
+
+h3, h4 {
+    font-family: 'Lato', sans;
+    margin: 25px 0;
+    font-size: 170%;
+}
+
+h3 {
+    padding-top: 15px !important;
+    font-family: 'Libre Baskerville', serif;
+    color: #ff3366;
+    letter-spacing: 1px;
+}
+
+h4 {
+    font-size: 120%;
+}
+
+.gold {
+    color: #e4ab37;
+}
+
+.blue {
+    color: #51abc1;
+}
+
+.purple-bg {
+    background-color: #251e3e !important;
+}
+
+.padding {
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+a {
+    color: #ff3366;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+a:hover {
+    color: #ff3366;
+    text-decoration: underline;
+}
+
+.center-stuff {
+    text-align: center !important;
+}
+
+.left-align {
+    text-align: left;
+}
+
+.right-align {
+    text-align: right;
+}
+
+.align-top {
+    align-self: flex-start;
+}
+
+.hideme {
+    display: none;
+}
+
+#auth-wrap {
+    position: relative;
+    float: left;
+    text-align: center;
+    width: 100vw;
+    max-width: 100vw !important;
+    height: 100vh;
+    background-image: url('../images/login-bg.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 120px;
+}
+
+.card {
+    background-color: #050408;
+    margin: 25px;
+    padding: 50px;
+    border-radius: 10px;
+}
+
+.card h2 {
+    color: #e4ab37;
+}
+
+.card p {
+    margin: 20px 0;
+}
+
+#about p, #about li {
+    text-align: left;
+}
+
+#about ul {
+    margin-left: 25px;
+}
+
+.flex-grid {
+    display: flex;
+}
+
+.col {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+header {
+    text-align: center;
+    color: #e4ab37;
+    width: 100%;
+    height: 65px;
+    background-color: #050408;
+    position: fixed;
+    z-index: 10;
+}
+
+header h1 {
+    line-height: 65px;
+    text-align: center;
+}
+
+main {
+    max-width: 650px;
+    padding: 90px 25px 25px 25px;
+    margin: auto;
+    overflow: auto;
+    text-align: center;
+}
+
+/* Tarot Card Styles */
+
+.tarot-card {
+    height: auto;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.rev {
+    -moz-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    transform: scaleY(-1);
+    filter: flipv;
+    /*IE*/
+}
+
+#tabs {
+    margin-top: 25px;
+    margin-bottom: -25px;
+    cursor: pointer;
+}
+
+#tabs button {
+    background-color: black;
+    border: black;
+    padding: 10px 25px;
+    color: whitesmoke;
+
+}
+
+#tabs button:hover {
+    background-color: #322954;
+    border: #322954;
+}
+
+#tabs button:first-of-type {
+    -webkit-border-top-left-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    border-top-left-radius: 5px;
+}
+
+#tabs button:last-of-type {
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topright: 5px;
+    border-top-right-radius: 5px;
+}
+
+#tabs button.selected {
+    background-color: #251e3e;
+    color: white;
+}
+
+/* FORM STUFF */
+
+#profile-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 10pt;
+}
+
+#profile-form .selections {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 10pt;
+    text-align: left;
+}
+
+/* Past Readings Styles */
+
+#card-history img {
+    width: 200px;
+    height: auto;
+}
+
+#card-history h2 {
+    margin-bottom: 0;
+}
+
+.history_notes {
+    white-space: pre-line;
+}
+
+/* TINY PHONES */
+@media (max-width: 767px) {
+    .card {
+        background-color: #050408;
+        margin: 25px 0;
+        padding: 25px;
+    }
+    #card-history img {
+        width: 100px;
+    }
+    #tabs button {
+        padding: 10px 10px;
+    }
+}

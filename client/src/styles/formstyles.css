@@ -1,0 +1,126 @@
+.form-container {
+    position: relative;
+    margin: auto;
+    padding-bottom: 65px;
+    max-width: 450px;
+}
+
+.form-container div {
+    background-color: #251e3eBD;
+    padding: 25px;
+    border-radius: 10px;
+}
+
+.form-container p {
+    margin: 25px 0;
+    cursor: pointer;
+    color: #ff3366;
+}
+
+@keyframes fadeMessage {
+    0%, 70% { opacity: 1; }
+    100%     { opacity: 0; }
+}
+
+p.error-message, p.response-message {
+    cursor: default;
+    padding: 25px;
+    background-color: #050408;
+    color: #ff3366;
+    border-radius: 5px;
+    animation: fadeMessage 5s ease-in-out forwards;
+}
+
+p.response-message {
+    color: #7f7cc3;
+}
+
+input, textarea {
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 6px;
+    padding: 12px 14px;
+    background-color: rgba(255, 255, 255, 0.08);
+    color: white;
+    font-size: 16px;
+    font-family: 'Lato', sans-serif;
+    transition: border-color 0.25s ease, background-color 0.25s ease;
+}
+
+input::placeholder, textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+    font-style: italic;
+}
+
+input[type="checkbox"] {
+    width: auto;
+    margin-right: 10px;
+    accent-color: #e4ab37;
+}
+
+textarea {
+    position: relative;
+}
+
+input:hover, textarea:hover {
+    background-color: rgba(255, 255, 255, 0.13);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.13);
+    border-color: #e4ab37;
+}
+
+button {
+    border: none;
+    border-radius: 6px;
+    padding: 11px 22px;
+    color: #1a1230;
+    font-weight: 700;
+    font-size: 15px;
+    font-family: 'Lato', sans-serif;
+    cursor: pointer;
+    background-color: #e4ab37;
+    transition: background-color 0.25s ease, transform 0.1s ease;
+}
+
+button:hover {
+    background-color: #ff3366;
+    color: white;
+}
+
+button:active {
+    transform: scale(0.97);
+}
+
+button:focus {
+    outline: none;
+}
+
+.form-container button {
+    margin-right: 0;
+    width: auto;
+    min-width: 80px;
+}
+
+#profile-form button {
+    max-width: 120px;
+}
+
+#auth-wrap input:first-of-type {
+    margin-right: 0;
+}
+
+#auth-wrap button:first-of-type {
+    margin-left: 0;
+}
+
+/* TINY PHONES */
+
+#auth-wrap input, #auth-wrap button {
+    margin: 0 0 10px 0;
+    width: 100%;
+}
