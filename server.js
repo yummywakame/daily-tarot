@@ -19,12 +19,19 @@ const cors = require('cors')
 const path = require('path')
 
 const PORT = process.env.PORT || 7000
-const APP_BASE = (process.env.APP_BASE || '').replace(/\/$/, '')
+// APP_BASE auto-detection: use explicit env var if set; otherwise derive from NODE_ENV.
+// production → '/demos/daily-tarot'  |  anything else → '' (root)
+const APP_BASE = (
+    process.env.APP_BASE ??
+    (process.env.NODE_ENV === 'production' ? '/demos/daily-tarot' : '')
+).replace(/\/$/, '')
 
 // Trust proxy (needed for rate limiter when behind a proxy/dev server)
 app.set('trust proxy', 1)
 
 // Security headers — CSP must allow: Font Awesome (index.html), Google Fonts (@import in main.css)
+// upgrade-insecure-requests and HSTS are disabled locally — they break HTTP dev domains like *.test
+const isProd = process.env.NODE_ENV === 'production'
 app.use(helmet({
     contentSecurityPolicy: {
         directives: {
@@ -34,8 +41,11 @@ app.use(helmet({
             imgSrc: ["'self'", 'data:', 'blob:'],
             fontSrc: ["'self'", 'https://fonts.gstatic.com', 'https://use.fontawesome.com'],
             connectSrc: ["'self'"],
+            upgradeInsecureRequests: isProd ? [] : null,
         },
     },
+    // HSTS tells browsers to only use HTTPS — disable locally so HTTP *.test domains work
+    strictTransportSecurity: isProd ? { maxAge: 31536000, includeSubDomains: true } : false,
 }))
 
 // CORS

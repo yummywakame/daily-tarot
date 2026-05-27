@@ -31,21 +31,25 @@ class UserProvider extends Component {
     }
 
     signup = (credentials) => {
-        axios.post("auth/signup", credentials).then(response => {
-            const { user, token } = response.data
-            localStorage.setItem("user", JSON.stringify(user))
-            localStorage.setItem("token", token)
-            this.setState({ user, token })
-        }).catch(err => this.handleErr(err.response.data.errMsg))
+        this.setState({ errMsg: "" }, () => {
+            axios.post("auth/signup", credentials).then(response => {
+                const { user, token } = response.data
+                localStorage.setItem("user", JSON.stringify(user))
+                localStorage.setItem("token", token)
+                this.setState({ user, token })
+            }).catch(err => this.handleErr(err.response?.data?.errMsg || "Signup failed. Please try again."))
+        })
     }
 
     login = (credentials) => {
-        axios.post("auth/login", credentials).then(response => {
-            const { user, token } = response.data
-            localStorage.setItem("user", JSON.stringify(user))
-            localStorage.setItem("token", token)
-            this.setState({ user, token })
-        }).catch(err => this.handleErr(err.response.data.errMsg))
+        this.setState({ errMsg: "" }, () => {
+            axios.post("auth/login", credentials).then(response => {
+                const { user, token } = response.data
+                localStorage.setItem("user", JSON.stringify(user))
+                localStorage.setItem("token", token)
+                this.setState({ user, token })
+            }).catch(err => this.handleErr(err.response?.data?.errMsg || "Login failed. Please try again."))
+        })
     }
 
     logout = () => {

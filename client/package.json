@@ -15,6 +15,7 @@
     "dev": "vite",
     "start": "vite",
     "build": "vite build",
+    "build:local": "vite build --mode development",
     "preview": "vite preview",
     "test": "echo \"No client unit tests configured\" && exit 0"
   },
