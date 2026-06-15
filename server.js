@@ -112,9 +112,9 @@ const sendSpa = (req, res) => {
 if (APP_BASE) {
     app.get(APP_BASE, sendSpa)
     app.get(APP_BASE + '/', sendSpa)
-    app.get(APP_BASE + '/*', sendSpa)
+    app.get(APP_BASE + '/{*splat}', sendSpa)
 } else {
-    app.get('*', sendSpa)
+    app.get('/{*splat}', sendSpa)
 }
 
 // Global error handler
