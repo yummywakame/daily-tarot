@@ -4,11 +4,11 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "axios": "^1.16.0",
+    "axios": "^1.18.1",
     "react": "^19.2.7",
     "react-burger-menu": "^3.0.9",
     "react-dom": "^19.2.7",
-    "react-router-dom": "^7.17.0"
+    "react-router-dom": "^7.18.0"
   },
   "scripts": {
     "dev": "vite",
