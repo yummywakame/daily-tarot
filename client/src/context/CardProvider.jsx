@@ -1,13 +1,5 @@
 import React, { Component } from 'react'
-import axios from 'axios'
-const cardAxios = axios.create()
-
-// On every request, use the following middleware function
-cardAxios.interceptors.request.use((config) => {
-    const token = localStorage.token
-    config.headers.Authorization = `Bearer ${token}`
-    return config // return header with user and token for Auth
-})
+import cardAxios from '../authAxios.js'
 
 const CardContext = React.createContext()
 

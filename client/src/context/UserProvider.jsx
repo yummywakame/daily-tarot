@@ -1,14 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-
-const userAxios = axios.create()
-
-// On every request, use the following middleware function
-userAxios.interceptors.request.use((config) => {
-    const token = localStorage.token
-    config.headers.Authorization = `Bearer ${token}`
-    return config // return header with user and token for Auth
-})
+import userAxios from '../authAxios.js'
 
 const UserContext = React.createContext()
 

@@ -131,6 +131,8 @@ The app runs locally at **http://daily-tarot.test** via Laragon on Windows.
 | Hosts entry | `127.0.0.1 daily-tarot.test` in `C:\Windows\System32\drivers\etc\hosts` |
 | Laragon Procfile | `C:\laragon\usr\Procfile` — auto-starts `node server.js` when Laragon starts |
 
+> **Procfile gotcha — no spaces in `pwd`:** Laragon's parser doesn't reliably handle quoted paths. The Procfile uses the junction path (`C:/laragon/www/daily-tarot`) rather than the OneDrive path (`C:/Users/olivi/OneDrive/www/vschool/Daily Tarot App/daily-tarot-main`) because the latter has a space and caused silent startup failures. Both point to the same files.
+
 ### Local build
 
 The client must be built with `build:local` so assets use `/` as the base path (not the Mochahost subpath):

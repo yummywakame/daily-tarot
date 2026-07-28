@@ -1,13 +1,5 @@
 import React, { Component } from 'react'
-import axios from 'axios'
-const readingAxios = axios.create()
-
-// On every request, use the following middleware function
-readingAxios.interceptors.request.use((config) => {
-    const token = localStorage.token
-    config.headers.Authorization = `Bearer ${token}`
-    return config // return header with user and token for Auth
-})
+import readingAxios from '../authAxios.js'
 
 const ReadingContext = React.createContext()
 
