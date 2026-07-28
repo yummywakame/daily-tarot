@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv').config({ quiet: true })
 
 // Validate required environment variables before anything else
 const requiredEnvVars = ['MONGODB_URI', 'SECRET']
