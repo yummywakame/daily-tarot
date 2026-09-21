@@ -8,7 +8,7 @@
     "react": "^19.3.0",
     "react-burger-menu": "^3.0.9",
     "react-dom": "^19.3.0",
-    "react-router-dom": "^7.18.3"
+    "react-router-dom": "^7.18.4"
   },
   "scripts": {
     "dev": "vite",
