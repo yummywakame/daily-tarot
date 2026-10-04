@@ -80,7 +80,7 @@ daily-tarot-main/
 ## Dev Setup
 
 ### Prerequisites
-- Node.js >= 20
+- Node.js >= 20.19 (required by Mongoose 9)
 - Laragon (Windows local dev) — see **Local Dev with Laragon** section below
 
 ### Environment Variables

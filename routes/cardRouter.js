@@ -93,7 +93,7 @@ cardRouter.delete('/:_id', async (req, res) => {
 // PUT
 cardRouter.put('/:_id', async (req, res) => {
     try {
-        const updated = await Card.findByIdAndUpdate(req.params._id, req.body, { new: true })
+        const updated = await Card.findByIdAndUpdate(req.params._id, req.body, { returnDocument: 'after' })
         return res.status(200).json(updated)
     } catch (err) {
         console.error(err)
