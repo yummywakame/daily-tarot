@@ -135,6 +135,8 @@ The app runs locally at **http://daily-tarot.test** via Laragon on Windows.
 
 > **Procfile gotcha — no spaces in `pwd`:** Laragon's parser doesn't reliably handle quoted paths. The Procfile uses the junction path (`C:/laragon/www/daily-tarot`) rather than the OneDrive path (`C:/Users/olivi/OneDrive/www/vschool/Daily Tarot App/daily-tarot-main`) because the latter has a space and caused silent startup failures. Both point to the same files.
 
+> **"Service Unavailable" (503) at `daily-tarot.test`:** Apache is up but nothing is listening on port 7000. The Procfile `autorun` only fires when the Laragon *program* launches — **Start All** does not re-run it. Start Node via Laragon menu → **Procfile → Daily Tarot**, or fully exit and reopen Laragon. Node does not hot-reload: after backend changes (routes, models, `npm install`), stop the Node process and start it again.
+
 ### Local build
 
 The client must be built with `build:local` so assets use `/` as the base path (not the Mochahost subpath):
@@ -224,7 +226,8 @@ Two build scripts exist — **always use the right one**:
    ```
 2. Upload all files to the server (or push to git and pull on server)
 3. Ensure the server `.env` has `NODE_ENV=production` — this auto-sets `APP_BASE=/demos/daily-tarot` and re-enables HSTS + `upgrade-insecure-requests`
-4. Restart the Node process
+4. If `package.json` dependencies changed, run `npm install` on the server (cPanel → **Setup Node.js App** → **Run NPM Install**). The app's Node version is set on that page too — it must be ≥ 20.19 (prod runs 22.x)
+5. Restart the Node process
 
 Live at: `https://<domain>/demos/daily-tarot`
 
