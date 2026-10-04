@@ -1,9 +1,14 @@
 const express = require('express')
 const readingRouter = express.Router()
 const Reading = require('../models/Reading.js')
+const requireAdmin = require('../middleware/requireAdmin.js')
 
-// GET ALL
-readingRouter.get('/', async (req, res) => {
+// Readings are always owned by the logged-in user (req.user from the JWT).
+// The `user` field is never taken from the request body.
+const withoutOwner = ({ user, _id, ...rest }) => rest
+
+// GET ALL (admin only)
+readingRouter.get('/', requireAdmin, async (req, res) => {
     try {
         const readings = await Reading.find()
         return res.status(200).json(readings)
@@ -13,9 +18,12 @@ readingRouter.get('/', async (req, res) => {
     }
 })
 
-// GET ALL BY USER ID
+// GET ALL BY USER ID (self or admin)
 // Note: this route must come before /:_id to avoid 'user' being treated as an id
 readingRouter.get('/user/:user', async (req, res) => {
+    if (req.params.user !== req.user._id && !req.user.isAdmin) {
+        return res.status(403).json({ errMsg: 'Forbidden' })
+    }
     try {
         const readings = await Reading.find({ user: req.params.user })
         return res.status(200).json(readings)
@@ -25,10 +33,13 @@ readingRouter.get('/user/:user', async (req, res) => {
     }
 })
 
-// DELETE ALL BY USER ID
+// DELETE ALL BY USER ID (self only)
 readingRouter.delete('/user/:user', async (req, res) => {
+    if (req.params.user !== req.user._id) {
+        return res.status(403).json({ errMsg: 'Forbidden' })
+    }
     try {
-        await Reading.deleteMany({ user: req.params.user })
+        await Reading.deleteMany({ user: req.user._id })
         return res.status(200).json({ message: 'Successfully deleted all past readings.' })
     } catch (err) {
         console.error(err)
@@ -36,10 +47,12 @@ readingRouter.delete('/user/:user', async (req, res) => {
     }
 })
 
-// GET ONE
+// GET ONE (owner or admin)
 readingRouter.get('/:_id', async (req, res) => {
     try {
-        const reading = await Reading.findById(req.params._id)
+        const filter = req.user.isAdmin ? { _id: req.params._id } : { _id: req.params._id, user: req.user._id }
+        const reading = await Reading.findOne(filter)
+        if (!reading) return res.status(404).json({ errMsg: 'Reading not found.' })
         return res.status(200).json(reading)
     } catch (err) {
         console.error(err)
@@ -47,10 +60,10 @@ readingRouter.get('/:_id', async (req, res) => {
     }
 })
 
-// POST Add One
+// POST Add One (owned by the logged-in user)
 readingRouter.post('/', async (req, res) => {
     try {
-        const newReading = new Reading(req.body)
+        const newReading = new Reading({ ...withoutOwner(req.body), user: req.user._id })
         const saved = await newReading.save()
         return res.status(201).json(saved)
     } catch (err) {
@@ -59,10 +72,11 @@ readingRouter.post('/', async (req, res) => {
     }
 })
 
-// DELETE ONE
+// DELETE ONE (owner only)
 readingRouter.delete('/:_id', async (req, res) => {
     try {
-        await Reading.findByIdAndDelete(req.params._id)
+        const deleted = await Reading.findOneAndDelete({ _id: req.params._id, user: req.user._id })
+        if (!deleted) return res.status(404).json({ errMsg: 'Reading not found.' })
         return res.status(200).json({ message: `Successfully deleted reading with ID ${req.params._id}` })
     } catch (err) {
         console.error(err)
@@ -70,10 +84,15 @@ readingRouter.delete('/:_id', async (req, res) => {
     }
 })
 
-// PUT
+// PUT (owner only)
 readingRouter.put('/:_id', async (req, res) => {
     try {
-        const updated = await Reading.findByIdAndUpdate(req.params._id, req.body, { returnDocument: 'after' })
+        const updated = await Reading.findOneAndUpdate(
+            { _id: req.params._id, user: req.user._id },
+            withoutOwner(req.body),
+            { returnDocument: 'after', runValidators: true }
+        )
+        if (!updated) return res.status(404).json({ errMsg: 'Reading not found.' })
         return res.status(200).json(updated)
     } catch (err) {
         console.error(err)

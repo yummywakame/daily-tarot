@@ -1,6 +1,7 @@
 const express = require('express')
 const cardRouter = express.Router()
 const Card = require('../models/Card.js')
+const requireAdmin = require('../middleware/requireAdmin.js')
 
 // GET ALL
 cardRouter.get('/', async (req, res) => {
@@ -67,8 +68,8 @@ cardRouter.get('/:_id', async (req, res) => {
     }
 })
 
-// POST Add One
-cardRouter.post('/', async (req, res) => {
+// POST Add One (admin only)
+cardRouter.post('/', requireAdmin, async (req, res) => {
     try {
         const newCard = new Card(req.body)
         const saved = await newCard.save()
@@ -79,8 +80,8 @@ cardRouter.post('/', async (req, res) => {
     }
 })
 
-// DELETE ONE
-cardRouter.delete('/:_id', async (req, res) => {
+// DELETE ONE (admin only)
+cardRouter.delete('/:_id', requireAdmin, async (req, res) => {
     try {
         await Card.findByIdAndDelete(req.params._id)
         return res.status(200).json({ message: `Successfully deleted card with ID ${req.params._id}` })
@@ -90,8 +91,8 @@ cardRouter.delete('/:_id', async (req, res) => {
     }
 })
 
-// PUT
-cardRouter.put('/:_id', async (req, res) => {
+// PUT (admin only)
+cardRouter.put('/:_id', requireAdmin, async (req, res) => {
     try {
         const updated = await Card.findByIdAndUpdate(req.params._id, req.body, { returnDocument: 'after' })
         return res.status(200).json(updated)

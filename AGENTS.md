@@ -21,6 +21,8 @@ daily-tarot-main/
 ├── package.json           # Root package (backend dependencies + scripts)
 ├── .env                   # Not committed — copy from .env.example
 ├── .env.example           # Documents required env vars
+├── middleware/
+│   └── requireAdmin.js    # 403 unless req.user.isAdmin (from JWT)
 ├── models/
 │   ├── Card.js
 │   ├── Reading.js
@@ -200,6 +202,10 @@ Two build scripts exist — **always use the right one**:
 - All `/api/*` endpoints require `Authorization: Bearer <token>` header
 - Passwords hashed with bcryptjs
 - **Minimum password length: 8 characters** (enforced by Joi in `authRouter.js`)
+- **Authorization** (all enforced server-side):
+  - Users can only read/update their own profile; `PUT /api/users/:_id` accepts only `email`, `firstName`, `lastName`, `allowRev` (Joi, unknown keys stripped). Password/isAdmin cannot be changed there. `password` is never returned.
+  - Readings are owned by `req.user._id` (never from the request body); users can only read/edit/delete their own.
+  - Admin-only: `GET /api/users`, `GET /api/readings`, and card create/update/delete. No admin accounts exist by default; set `isAdmin: true` in the DB, then the user must log in again (isAdmin is read from the JWT).
 - Auth errors are cleared before each new login/signup attempt so the error animation always replays
 
 ### Tarot Deck
