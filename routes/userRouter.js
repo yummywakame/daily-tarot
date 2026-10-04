@@ -34,7 +34,7 @@ userRouter.put('/:_id', async (req, res) => {
                 return res.status(409).json({ errMsg: 'That email address is already in use.' })
             }
         }
-        const updated = await User.findByIdAndUpdate(req.params._id, req.body, { new: true })
+        const updated = await User.findByIdAndUpdate(req.params._id, req.body, { returnDocument: 'after' })
         return res.status(200).json(updated)
     } catch (err) {
         console.error(err)
