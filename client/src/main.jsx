@@ -6,8 +6,11 @@ import App from './App.jsx'
 import UserProvider from './context/UserProvider.jsx'
 import CardProvider from './context/CardProvider.jsx'
 import ReadingProvider from './context/ReadingProvider.jsx'
+import { fallBackToDefaultDeck } from './decks.js'
 import './styles/main.css'
 import './styles/burger-menu.css'
+
+fallBackToDefaultDeck()
 
 const container = document.getElementById('root')
 const root = createRoot(container)

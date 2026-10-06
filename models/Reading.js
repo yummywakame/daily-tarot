@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+const User = require('./User.js')
 
 const readingSchema = new Schema({
     user: {
@@ -22,6 +23,12 @@ const readingSchema = new Schema({
         type: String,
         enum: ["daily", "question"],
         default: "daily"
+    },
+    // Deck the reading was drawn with, so history keeps showing that deck's art.
+    // Readings saved before decks existed have none and fall back to Prisma Visions.
+    deck: {
+        type: String,
+        enum: User.schema.path('deck').enumValues
     },
     cards: [{
         cardId: {

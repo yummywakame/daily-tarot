@@ -5,6 +5,8 @@ const adminRouter = express.Router()
 const User = require('../models/User.js')
 const Reading = require('../models/Reading.js')
 const Card = require('../models/Card.js')
+const Deck = require('../models/Deck.js')
+const DeckCard = require('../models/DeckCard.js')
 const requireAdmin = require('../middleware/requireAdmin.js')
 
 // Every route in this file is admin only.
@@ -14,6 +16,14 @@ adminRouter.use(requireAdmin)
 adminRouter.param('_id', (req, res, next, id) => {
     if (!mongoose.isValidObjectId(id)) {
         return res.status(400).json({ errMsg: 'Invalid id.' })
+    }
+    next()
+})
+
+const DECK_IDS = User.schema.path('deck').enumValues
+adminRouter.param('deck', (req, res, next, deck) => {
+    if (!DECK_IDS.includes(deck)) {
+        return res.status(400).json({ errMsg: 'Unknown deck.' })
     }
     next()
 })
@@ -35,6 +45,20 @@ const cardUpdateSchema = Joi.object({
     meaning_rev_long: Joi.string().trim().min(1).max(10000),
     astrology: Joi.string().trim().allow('').max(100),
     element: Joi.string().valid('Air', 'Fire', 'Earth', 'Water')
+})
+
+const deckSettingsSchema = Joi.object({
+    useDefaultContent: Joi.boolean().required()
+})
+
+// A deck's own text for one card. Empty keywords fall back to the default text.
+const deckCardSchema = Joi.object({
+    name: Joi.string().trim().min(1).max(100).required(),
+    meaning_up: Joi.string().trim().allow('').max(500).required(),
+    meaning_rev: Joi.string().trim().allow('').max(500).required(),
+    meaning_up_long: Joi.string().trim().min(1).max(10000).required(),
+    meaning_rev_long: Joi.string().trim().min(1).max(10000).required(),
+    desc: Joi.string().trim().min(1).max(10000).required()
 })
 
 const pageSchema = Joi.object({
@@ -177,6 +201,73 @@ adminRouter.put('/cards/:_id', async (req, res) => {
     } catch (err) {
         console.error(err)
         return res.status(500).json({ errMsg: 'Failed to update card.' })
+    }
+})
+
+// GET a deck's content setting and the card text saved for it
+adminRouter.get('/decks/:deck', async (req, res) => {
+    try {
+        const { deck } = req.params
+        const [settings, cards] = await Promise.all([
+            Deck.findOne({ deck }).lean(),
+            DeckCard.find({ deck }).lean()
+        ])
+        return res.status(200).json({ deck, useDefaultContent: settings ? settings.useDefaultContent : true, cards })
+    } catch (err) {
+        console.error(err)
+        return res.status(500).json({ errMsg: 'Failed to load deck.' })
+    }
+})
+
+// SET whether a deck uses the default (Biddy Tarot) text
+adminRouter.put('/decks/:deck', async (req, res) => {
+    const { error, value } = deckSettingsSchema.validate(req.body, { stripUnknown: true })
+    if (error) {
+        return res.status(400).json({ errMsg: error.details[0].message })
+    }
+    try {
+        const settings = await Deck.findOneAndUpdate(
+            { deck: req.params.deck },
+            { $set: value },
+            { upsert: true, returnDocument: 'after', runValidators: true }
+        ).lean()
+        return res.status(200).json({ deck: settings.deck, useDefaultContent: settings.useDefaultContent })
+    } catch (err) {
+        console.error(err)
+        return res.status(500).json({ errMsg: 'Failed to update deck.' })
+    }
+})
+
+// SAVE a deck's own text for one card
+adminRouter.put('/decks/:deck/cards/:_id', async (req, res) => {
+    const { error, value } = deckCardSchema.validate(req.body, { stripUnknown: true })
+    if (error) {
+        return res.status(400).json({ errMsg: error.details[0].message })
+    }
+    try {
+        if (!await Card.exists({ _id: req.params._id })) {
+            return res.status(404).json({ errMsg: 'Card not found.' })
+        }
+        const saved = await DeckCard.findOneAndUpdate(
+            { deck: req.params.deck, card: req.params._id },
+            { $set: value },
+            { upsert: true, returnDocument: 'after', runValidators: true }
+        )
+        return res.status(200).json(saved)
+    } catch (err) {
+        console.error(err)
+        return res.status(500).json({ errMsg: 'Failed to save card.' })
+    }
+})
+
+// REMOVE a deck's own text for one card (it goes back to the default)
+adminRouter.delete('/decks/:deck/cards/:_id', async (req, res) => {
+    try {
+        await DeckCard.deleteOne({ deck: req.params.deck, card: req.params._id })
+        return res.status(200).json({ message: 'Custom text removed.' })
+    } catch (err) {
+        console.error(err)
+        return res.status(500).json({ errMsg: 'Failed to remove custom text.' })
     }
 })
 

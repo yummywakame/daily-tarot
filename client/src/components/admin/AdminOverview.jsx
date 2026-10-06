@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import adminAxios from '../../authAxios.js'
-import { publicUrl } from '../../publicUrl.js'
+import { cardImage } from '../../decks.js'
+import { useUser } from '../../context/UserProvider.jsx'
 import AdminMessage, { errorText } from './AdminMessage.jsx'
 
 const AdminOverview = () => {
+    const { deck } = useUser().user
     const [stats, setStats] = useState(null)
     const [errMsg, setErrMsg] = useState('')
 
@@ -40,7 +42,7 @@ const AdminOverview = () => {
                 <ol className="top-cards">
                     {stats.topCards.map(c =>
                         <li key={c.name_short}>
-                            <img src={publicUrl(`decks/prisma-visions/${c.name_short}.jpg`)} alt={c.name} />
+                            <img src={cardImage(deck, c.name_short)} alt={c.name} />
                             <span>{c.name}</span>
                             <span className="blue">{c.count} {c.count === 1 ? 'draw' : 'draws'}</span>
                         </li>

@@ -410,3 +410,49 @@ main.admin-page {
         grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
     }
 }
+
+/* Cards tab: deck picker and "Use Biddy Tarot meanings" */
+.admin-deck-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 12px 24px;
+}
+
+.admin-deck-bar > label:first-child {
+    display: grid;
+    gap: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    flex: 1 1 240px;
+}
+
+.admin-deck-bar select {
+    font-weight: 400;
+    background-color: var(--bg-elevated);
+}
+
+.admin-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 14px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.admin-deck-hint {
+    margin: 10px 0 20px !important;
+}
+
+.admin-notice {
+    padding: 10px 14px;
+    border-radius: 10px;
+    background-color: var(--surface);
+    border: 1px solid var(--border-strong);
+}
+
+.admin-card-grid .badge {
+    margin-left: 0;
+}

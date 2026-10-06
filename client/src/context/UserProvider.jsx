@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, useContext } from 'react'
 import axios from 'axios'
 import userAxios from '../authAxios.js'
 
@@ -28,7 +28,7 @@ class UserProvider extends Component {
     updateUser = (_id, updates) => {
         userAxios.put(`api/users/${_id}`, updates).then(response => {
             localStorage.setItem("user", JSON.stringify(response.data))
-            this.setState({ user: response.data, errMsg: "", updateMsg: "Updated successfully!" })
+            this.setState({ user: response.data, errMsg: "", updateMsg: "Changes saved." })
         }).catch(err => this.setState({ updateMsg: "", errMsg: err.response.data.errMsg }))
     }
 
@@ -100,3 +100,5 @@ export const withUser = C => props => (
         {value => <C {...props} {...value} />}
     </UserContext.Consumer>
 )
+
+export const useUser = () => useContext(UserContext)

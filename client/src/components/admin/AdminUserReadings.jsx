@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import adminAxios from '../../authAxios.js'
-import { publicUrl } from '../../publicUrl.js'
+import { cardImage } from '../../decks.js'
 import CardLightbox from '../shared/CardLightbox.jsx'
 import AdminMessage, { errorText } from './AdminMessage.jsx'
 
@@ -60,9 +60,9 @@ const AdminUserReadings = ({ user, onBack }) => {
                                     {card &&
                                         <img
                                             className={`admin-thumb zoomable${card.isReversed ? " rev" : ""}`}
-                                            src={publicUrl(`decks/prisma-visions/${card.name_short}.jpg`)}
+                                            src={cardImage(reading.deck, card.name_short)}
                                             alt={card.name}
-                                            onClick={() => setZoomedCard(card)} />
+                                            onClick={() => setZoomedCard({ ...card, deck: reading.deck })} />
                                     }
                                     <div className="admin-row-main">
                                         <strong>{card ? `${card.name}${card.isReversed ? ' (Reversed)' : ''}` : 'No card'}</strong>
@@ -91,7 +91,7 @@ const AdminUserReadings = ({ user, onBack }) => {
 
             {zoomedCard &&
                 <CardLightbox
-                    src={publicUrl(`decks/prisma-visions/${zoomedCard.name_short}.jpg`)}
+                    src={cardImage(zoomedCard.deck, zoomedCard.name_short)}
                     alt={`${zoomedCard.name}${zoomedCard.isReversed ? " (Reversed)" : ""}`}
                     isReversed={zoomedCard.isReversed}
                     onClose={() => setZoomedCard(null)}

@@ -1,18 +1,27 @@
 import React from 'react'
+import { createPortal } from 'react-dom'
+import { DECKS, cardImage, cardBack } from '../decks.js'
 
 const EditProfileForm = props => {
-    const { handleSubmit, handleChange, email, firstName, lastName, allowRev, updateMsg, errMsg } = props
+    const { handleSubmit, handleChange, handleBlur, email, firstName, lastName, allowRev, deck, updateMsg, errMsg } = props
     return (
         <form onSubmit={handleSubmit} id="profile-form">
 
-            {errMsg && <p key={errMsg} className="error-message">{errMsg}</p>}
-            {updateMsg && <p key={updateMsg} className="response-message">{updateMsg}</p>}
+            {/* Shown as a toast so the form doesn't jump while it autosaves */}
+            {createPortal(
+                <div className="profile-toast" role="status" aria-live="polite">
+                    {errMsg && <p key={errMsg} className="error-message">{errMsg}</p>}
+                    {updateMsg && <p key={updateMsg} className="response-message">{updateMsg}</p>}
+                </div>,
+                document.body
+            )}
 
             <input
                 type="text"
                 name="firstName"
                 value={firstName}
                 onChange={handleChange}
+                onBlur={handleBlur}
                 placeholder="First Name"
                 required />
             <input
@@ -20,6 +29,7 @@ const EditProfileForm = props => {
                 name="lastName"
                 value={lastName}
                 onChange={handleChange}
+                onBlur={handleBlur}
                 placeholder="Last Name"
                 required />
 
@@ -28,6 +38,7 @@ const EditProfileForm = props => {
                 name="email"
                 value={email}
                 onChange={handleChange}
+                onBlur={handleBlur}
                 placeholder="Email Address"
             />
 
@@ -44,7 +55,27 @@ const EditProfileForm = props => {
 
             </div>
 
-            <button>Save</button>
+            <fieldset className="deck-picker">
+                <legend>Tarot Deck</legend>
+                {DECKS.map(d => (
+                    <label key={d.id} className={d.id === deck ? "deck-option selected" : "deck-option"}>
+                        <input
+                            type="radio"
+                            name="deck"
+                            value={d.id}
+                            checked={d.id === deck}
+                            onChange={handleChange} />
+                        <span className="deck-thumbs">
+                            <img src={cardBack(d.id)} alt="" loading="lazy" />
+                            <img src={cardImage(d.id, 'ar17')} alt="" loading="lazy" />
+                        </span>
+                        <span className="deck-name">{d.name}</span>
+                        {d.artist && <span className="deck-artist">{d.artist}</span>}
+                    </label>
+                ))}
+            </fieldset>
+
+            <p className="autosave-note">Changes are saved automatically.</p>
         </form>
     )
 }

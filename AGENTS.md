@@ -25,6 +25,8 @@ daily-tarot-main/
 │   └── requireAdmin.js    # 403 unless req.user.isAdmin (from JWT)
 ├── models/
 │   ├── Card.js
+│   ├── Deck.js            # Per-deck "use Biddy Tarot meanings" setting
+│   ├── DeckCard.js        # A deck's own text for one card
 │   ├── Reading.js
 │   └── User.js
 ├── routes/
@@ -38,12 +40,13 @@ daily-tarot-main/
 │   ├── vite.config.js
 │   ├── .env.production    # Sets VITE_BASE_PATH for prod builds — committed, not secret
 │   ├── public/
-│   │   └── decks/prisma-visions/   # Tarot card images
+│   │   └── decks/                  # Tarot card images, one folder per deck (prisma-visions/, stained-glass/)
 │   └── src/
 │       ├── main.jsx
 │       ├── App.jsx
 │       ├── apiSetup.js            # Sets axios baseURL from Vite BASE_URL
 │       ├── publicUrl.js           # Helper for public asset paths with base prefix
+│       ├── decks.js               # Deck registry + cardImage()/cardBack() URL helpers
 │       ├── context/
 │       │   ├── UserProvider.jsx
 │       │   ├── ReadingProvider.jsx
@@ -212,24 +215,31 @@ Two build scripts exist — **always use the right one**:
 - Passwords hashed with bcryptjs
 - **Minimum password length: 8 characters** (enforced by Joi in `authRouter.js`)
 - **Authorization** (all enforced server-side):
-  - Users can only read/update their own profile; `PUT /api/users/:_id` accepts only `email`, `firstName`, `lastName`, `allowRev` (Joi, unknown keys stripped). Password/isAdmin cannot be changed there. `password` is never returned.
+  - Users can only read/update their own profile; `PUT /api/users/:_id` accepts only `email`, `firstName`, `lastName`, `allowRev`, `deck` (Joi, unknown keys stripped). Password/isAdmin cannot be changed there. `password` is never returned.
   - Readings are owned by `req.user._id` (never from the request body); users can only read/edit/delete their own.
   - Admin-only: everything under `/api/admin/*` (`routes/adminRouter.js`), plus `GET /api/users`, `GET /api/readings`, and card create/update/delete.
   - `requireAuth` (server.js) re-reads `isAdmin` from the DB on every `/api` request, so promotions/demotions apply immediately and tokens of deleted users get 401. The first admin must be set by hand (`isAdmin: true` in the DB); after that, admins manage roles from the Admin page. Admins cannot demote or delete themselves.
 
 ### Admin page (`/admin`)
 - Reached from the top-right shield button (`NavInfo.jsx`), shown only when `user.isAdmin` (it is not in the burger menu); `UserProvider` refreshes the stored user from `GET /api/users/:_id` on load so the button appears without re-login. The client check only hides UI — all enforcement is server-side.
-- Tabs (`client/src/components/admin/`): **Overview** (`GET /api/admin/stats`), **Users** (`GET /api/admin/users`, `PATCH /api/admin/users/:_id/role`, `DELETE /api/admin/users/:_id` — also deletes their readings; sortable by last reading or A–Z by email; clicking a user opens `AdminUserReadings`: `GET /api/admin/users/:_id/readings?page=&limit=`, `DELETE /api/admin/readings/:_id`), **Cards** (`PUT /api/admin/cards/:_id` — text fields only; `name_short`/`value_int` are not editable).
+- Tabs (`client/src/components/admin/`): **Overview** (`GET /api/admin/stats`), **Users** (`GET /api/admin/users`, `PATCH /api/admin/users/:_id/role`, `DELETE /api/admin/users/:_id` — also deletes their readings; sortable by last reading or A–Z by email; clicking a user opens `AdminUserReadings`: `GET /api/admin/users/:_id/readings?page=&limit=`, `DELETE /api/admin/readings/:_id`), **Cards** — a “Content for” picker chooses **Biddy Tarot (default text)**, which edits the shared `Card` documents (`PUT /api/admin/cards/:_id` — text fields only; `name_short`/`value_int` are not editable), or a deck. For a deck: the “Use Biddy Tarot meanings” checkbox (`GET`/`PUT /api/admin/decks/:deck`), and per-card name, keywords, meanings and description (`PUT`/`DELETE /api/admin/decks/:deck/cards/:_id`). Element and astrology are shared by all decks.
 - Card `desc` / `meaning_*_long` are rendered as raw HTML (`dangerouslySetInnerHTML`). The CSP (no `unsafe-inline` scripts) blocks injected scripts, but keep edits to simple markup like `<p>`.
 
 ### Card lightbox
 - `components/shared/CardLightbox.jsx` shows a full-size card image (closes on click or Escape). Used on Today (clicking an already revealed card), Past Dailies, a user's readings in the admin Users tab and the admin card editor. It renders through a portal into `<body>` so transformed ancestors can't clip the fixed overlay.
 - Auth errors are cleared before each new login/signup attempt so the error animation always replays
 
-### Tarot Deck
-- Deck: **Prisma Visions** (card images in `client/public/decks/prisma-visions/`)
-- Filename convention: `ar00.jpg`–`ar21.jpg` (Major Arcana), `cu02.jpg`–`cuqu.jpg` (Cups), `pe02.jpg`–`pequ.jpg` (Pentacles), etc.
-- `cardback.jpg` is the card back image
+### Tarot Decks
+- Users pick a deck on the Profile page; it's stored as `user.deck` (default **Prisma Visions**). All decks share the card meanings in the DB.
+- Each reading stores the deck it was drawn with (`reading.deck`, set server-side from `user.deck` on `POST /api/readings`), so Past Dailies and the admin's per-user readings keep showing that deck after the user switches. Readings from before decks existed have no `deck` and show Prisma Visions.
+- **Per-deck card text:** `models/Deck.js` holds `useDefaultContent` per deck (no document = `true`, which is how every deck starts). `models/DeckCard.js` holds a deck's own text for one card (`name`, `meaning_up`, `meaning_rev`, `meaning_up_long`, `meaning_rev_long`, `desc`). `DeckCard.applyTo(card, deck)` lays that text over the card when the deck's checkbox is off; empty fields and cards without saved text fall back to the default. `routes/cardRouter.js` applies it for the user's deck on the random, by-value and by-id routes; `GET /api/cards` stays default text (the admin editor uses it). Saved text is kept while the checkbox is on, just not shown. Readings store the name and keywords at the time they were saved.
+- **Removed decks fall back to Prisma Visions:** `getDeck()` maps unknown ids to the default, the Profile form preselects the default if the saved deck no longer exists, `POST /api/readings` leaves `deck` unset if the user's saved deck is no longer in the enum, and `fallBackToDefaultDeck()` (installed in `main.jsx`) swaps any `/decks/<id>/` image that fails to load for the same file in `prisma-visions/`.
+- Decks live in `client/public/decks/<id>/`. **Prisma Visions** (`prisma-visions`) is the default; the rest (Stained Glass, Romantic, Sambucus, Tranquil Dog, Papercut, Kashima, Voice and Vision) come from marytcusack.com's galleries. Image URLs there are `Decks/Images/Tarot/<letter>/<Deck>/`: majors `NN Name.jpg`, minors `<suit prefix>01–10.jpg` and `<prefix>C1P/C2K/C3Q/C4K.jpg` (Page/Knight/Queen/King), back `zback.jpg`. The gallery HTML's suit prefixes don't always match the files: Romantic Wands are `R`, Kashima Pentacles are `Co`.
+- Sambucus has two Chariots; `ar07` is `07a`.
+- Card sizes differ per deck, but within a deck every face and the back are the same size, or the flip animation jumps. Off-size cards were resized to match, and Sambucus is landscape (800×450, back rotated). Mark landscape decks with `landscape: true` in `DECKS` so Today widens the card column.
+- Every deck uses the same filenames: `ar00.jpg`–`ar21.jpg` (Major Arcana, RWS order: 08 Strength, 11 Justice), `cu02.jpg`–`cu10.jpg` plus `cuac`/`cupa`/`cukn`/`cuqu`/`cuki.jpg` (Ace/Page/Knight/Queen/King) for Cups, likewise `pe`, `sw`, `wa`. `cardback.jpg` is the back.
+- Always build image URLs with `cardImage(deck, name_short)` / `cardBack(deck)` from `client/src/decks.js` (unknown ids fall back to the default). Readings use `reading.deck`; the admin Overview and Cards tabs show the admin's own deck via `useUser()`.
+- **Adding a deck:** add the image folder, an entry in `DECKS` (`client/src/decks.js`) and its id in the `deck` enum in `models/User.js` (the profile route validates against that enum). The About page lists credits from `DECKS` entries that have a `source`.
 
 ---
 

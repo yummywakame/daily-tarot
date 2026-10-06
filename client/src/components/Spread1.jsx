@@ -1,16 +1,16 @@
 import React from 'react'
 import CardFlip from './CardFlip.jsx'
 import Card from './Card.jsx'
-import { publicUrl } from '../publicUrl.js'
+import { cardImage, cardBack, getDeck } from '../decks.js'
 
 const Spread1 = (props) => {
-  const { isFlipped, isReversed, toggleOnce, name, name_short, element, astrology } = props
+  const { isFlipped, isReversed, toggleOnce, name, name_short, element, astrology, deck } = props
 
   return (
     <>
       <h3>{isFlipped ? `${name} ${isReversed ? "(Reversed)" : ""}` : `Click card to Reveal`}</h3>
 
-      <div className="flex-grid spread">
+      <div className={getDeck(deck).landscape ? "flex-grid spread landscape" : "flex-grid spread"}>
 
         <div className="col">
           <h4>Element</h4>
@@ -20,8 +20,8 @@ const Spread1 = (props) => {
         <div className="col">
 
           <CardFlip isFlipped={isFlipped}>
-            <Card key="front" img={publicUrl('decks/prisma-visions/cardback.jpg')} altText="Tarot Card Back" toggler={toggleOnce} />
-            <Card key="back" img={publicUrl(`decks/prisma-visions/${name_short ? name_short : `cardback`}.jpg`)} altText="Tarot Card Front" toggler={toggleOnce} isReversed={isReversed} zoomable={isFlipped} />
+            <Card key="front" img={cardBack(deck)} altText="Tarot Card Back" toggler={toggleOnce} />
+            <Card key="back" img={name_short ? cardImage(deck, name_short) : cardBack(deck)} altText="Tarot Card Front" toggler={toggleOnce} isReversed={isReversed} zoomable={isFlipped} />
           </CardFlip>
 
         </div>

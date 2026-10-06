@@ -2,6 +2,7 @@ const express = require('express')
 const Joi = require('joi')
 const readingRouter = express.Router()
 const Reading = require('../models/Reading.js')
+const User = require('../models/User.js')
 const requireAdmin = require('../middleware/requireAdmin.js')
 
 // Readings are always owned by the logged-in user (req.user from the JWT).
@@ -77,10 +78,13 @@ readingRouter.get('/:_id', async (req, res) => {
     }
 })
 
-// POST Add One (owned by the logged-in user)
+// POST Add One (owned by the logged-in user, drawn with their current deck)
 readingRouter.post('/', async (req, res) => {
     try {
-        const newReading = new Reading({ ...withoutOwner(req.body), user: req.user._id })
+        const user = await User.findById(req.user._id).select('deck').lean()
+        // Skip a saved deck that has since been removed from the enum, so the save doesn't fail
+        const deck = User.schema.path('deck').enumValues.includes(user?.deck) ? user.deck : undefined
+        const newReading = new Reading({ ...withoutOwner(req.body), user: req.user._id, deck })
         const saved = await newReading.save()
         return res.status(201).json(saved)
     } catch (err) {

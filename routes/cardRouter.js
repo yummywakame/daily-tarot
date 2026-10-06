@@ -2,6 +2,8 @@ const express = require('express')
 const { randomInt } = require('crypto')
 const cardRouter = express.Router()
 const Card = require('../models/Card.js')
+const User = require('../models/User.js')
+const DeckCard = require('../models/DeckCard.js')
 const requireAdmin = require('../middleware/requireAdmin.js')
 
 const MAX_CARD_VALUE = 77
@@ -12,7 +14,13 @@ const cardFields = (body) => Object.fromEntries(
     Object.entries(body).filter(([key]) => key !== '_id' && !key.startsWith('$') && Card.schema.path(key))
 )
 
-// GET ALL
+// The logged-in user's card text: their deck's own text if it has any, else the default
+const forUser = async (req, card) => {
+    const user = await User.findById(req.user._id).select('deck').lean()
+    return DeckCard.applyTo(card, user?.deck)
+}
+
+// GET ALL (default text, as used by the admin card editor)
 cardRouter.get('/', async (req, res) => {
     try {
         const cards = await Card.find()
@@ -40,7 +48,7 @@ cardRouter.get('/random/:spreadcount/:max', async (req, res) => {
         if (spreadcount === 1) {
             const cardNum = randomInt(max + 1)
             const card = await Card.findOne({ value_int: cardNum })
-            return res.status(200).json(card)
+            return res.status(200).json(await forUser(req, card))
         }
 
         const exists = []
@@ -55,7 +63,7 @@ cardRouter.get('/random/:spreadcount/:max', async (req, res) => {
         }
 
         const cards = await Card.find().where('value_int').in(arr)
-        return res.status(200).json(cards)
+        return res.status(200).json(await Promise.all(cards.map(card => forUser(req, card))))
     } catch (err) {
         console.error(err)
         return res.status(500).json({ errMsg: 'Failed to retrieve random cards.' })
@@ -66,7 +74,7 @@ cardRouter.get('/random/:spreadcount/:max', async (req, res) => {
 cardRouter.get('/cardvalue/:cardvalue', async (req, res) => {
     try {
         const card = await Card.findOne({ value_int: req.params.cardvalue })
-        return res.status(200).json(card)
+        return res.status(200).json(await forUser(req, card))
     } catch (err) {
         console.error(err)
         return res.status(500).json({ errMsg: 'Failed to retrieve card.' })
@@ -77,7 +85,7 @@ cardRouter.get('/cardvalue/:cardvalue', async (req, res) => {
 cardRouter.get('/:_id', async (req, res) => {
     try {
         const card = await Card.findById(req.params._id)
-        return res.status(200).json(card)
+        return res.status(200).json(await forUser(req, card))
     } catch (err) {
         console.error(err)
         return res.status(500).json({ errMsg: 'Failed to retrieve card.' })
@@ -100,6 +108,7 @@ cardRouter.post('/', requireAdmin, async (req, res) => {
 cardRouter.delete('/:_id', requireAdmin, async (req, res) => {
     try {
         await Card.findByIdAndDelete(req.params._id)
+        await DeckCard.deleteMany({ card: req.params._id })
         return res.status(200).json({ message: `Successfully deleted card with ID ${req.params._id}` })
     } catch (err) {
         console.error(err)

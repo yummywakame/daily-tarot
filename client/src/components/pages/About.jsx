@@ -1,4 +1,5 @@
 import React from 'react'
+import { DECKS } from '../../decks.js'
 
 const About = () => {
 
@@ -31,6 +32,15 @@ const About = () => {
                 <h2>Credits</h2>
                 <p>All card images from the most beautiful tarot deck in the world ~ <a href="https://amzn.to/2G6kELm">The Universal Fantasy Tarot Deck</a>, illustrated by Paolo Martinello and published by Lo Scarabeo. The images were sourced <a href="http://www.marytcusack.com/Decks/HTML/Tarot/U/UniversalFantasy.html">here</a>.</p>
                 <p>The deck is based on the high fantasy novel genre and the imagined literary setting fathered by J.R.R. Tolkien whose Middle-Earth is a blend of magic and the Middle Ages, and is inhabited by dragons, undead, demons, elves, dwarves, wizards, and heroes. This deck pictures all of these plus more mythical creatures: giant rodents, centaurs, satyrs, giant lammergeiers, water sprites, enormous flying snails, etc.</p>
+                <p>You can also choose one of these decks on your Profile page. Their images were sourced from Mary T. Cusack's tarot galleries:</p>
+                <ul>
+                    {DECKS.filter(d => d.source).map(d => (
+                        <li key={d.id}>
+                            <a href={d.source}>{d.name}</a>
+                            {d.artist && <> by {d.artistUrl ? <a href={d.artistUrl}>{d.artist}</a> : d.artist}</>}
+                        </li>
+                    ))}
+                </ul>
                 <p>All tarot card descriptions are from <a href="https://www.biddytarot.com">Biddy Tarot</a> ~ by far the best and most accurate descriptions I have found on the web.</p>
                 <p>The responsive burger menu was created with the help of <a href="https://github.com/negomi/react-burger-menu">React Burger Menu</a>.</p>
 

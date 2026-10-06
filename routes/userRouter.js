@@ -10,7 +10,8 @@ const updateSchema = Joi.object({
     email: Joi.string().email({ tlds: { allow: false } }),
     firstName: Joi.string().max(50).allow(''),
     lastName: Joi.string().max(50).allow(''),
-    allowRev: Joi.boolean()
+    allowRev: Joi.boolean(),
+    deck: Joi.string().valid(...User.schema.path('deck').enumValues)
 })
 
 const isSelf = (req) => req.params._id === req.user._id

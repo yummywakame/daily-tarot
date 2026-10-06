@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { withUser } from '../../context/UserProvider.jsx'
 import { withReading } from '../../context/ReadingProvider.jsx'
 import withNavigate from '../../shared/withNavigate.jsx'
-import { publicUrl } from '../../publicUrl.js'
+import { cardImage } from '../../decks.js'
 import CardLightbox from '../shared/CardLightbox.jsx'
 
 class PastDailies extends Component {
@@ -43,9 +43,9 @@ class PastDailies extends Component {
                                     <div className="col">
                                         <img
                                             className={`zoomable${item.cards[0].isReversed ? " rev" : ""}`}
-                                            src={publicUrl(`decks/prisma-visions/${item.cards[0].name_short}.jpg`)}
+                                            src={cardImage(item.deck, item.cards[0].name_short)}
                                             alt={`${item.cards[0].name}`}
-                                            onClick={() => this.setState({ zoomedCard: item.cards[0] })} />
+                                            onClick={() => this.setState({ zoomedCard: { ...item.cards[0], deck: item.deck } })} />
                                     </div>
                                     <div className="col align-top">
                                         <p className="reading-date">{new Date(item.timeStamp).toDateString()} · {new Date(item.timeStamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
@@ -68,7 +68,7 @@ class PastDailies extends Component {
 
                 {this.state.zoomedCard &&
                     <CardLightbox
-                        src={publicUrl(`decks/prisma-visions/${this.state.zoomedCard.name_short}.jpg`)}
+                        src={cardImage(this.state.zoomedCard.deck, this.state.zoomedCard.name_short)}
                         alt={`${this.state.zoomedCard.name}${this.state.zoomedCard.isReversed ? " (Reversed)" : ""}`}
                         isReversed={this.state.zoomedCard.isReversed}
                         onClose={this.closeZoom}

@@ -5,7 +5,7 @@ import { withReading } from '../../context/ReadingProvider.jsx'
 import Spread1 from '../Spread1.jsx'
 import Spread1Desc from '../Spread1Desc.jsx'
 import CardLightbox from '../shared/CardLightbox.jsx'
-import { publicUrl } from '../../publicUrl.js'
+import { cardImage } from '../../decks.js'
 
 class Today extends React.Component {
     constructor(props) {
@@ -177,6 +177,7 @@ class Today extends React.Component {
                         isReversed={isReversed}
                         name={name}
                         name_short={name_short}
+                        deck={this.props.user.deck}
                         element={element}
                         astrology={astrology}
                         toggleOnce={this.handleCardClick}
@@ -184,7 +185,7 @@ class Today extends React.Component {
 
                     {isFlipped && this.state.isZoomed &&
                         <CardLightbox
-                            src={publicUrl(`decks/prisma-visions/${name_short}.jpg`)}
+                            src={cardImage(this.props.user.deck, name_short)}
                             alt={`${name}${isReversed ? " (Reversed)" : ""}`}
                             isReversed={isReversed}
                             onClose={this.closeZoom}

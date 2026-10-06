@@ -1,6 +1,7 @@
 import React from 'react'
 import { withUser } from '../../context/UserProvider.jsx'
 import EditProfileForm from '../EditProfileForm.jsx'
+import { getDeck } from '../../decks.js'
 
 class Profile extends React.Component {
     constructor(props) {
@@ -11,7 +12,8 @@ class Profile extends React.Component {
             password: this.props.user.password,
             firstName: this.props.user.firstName || "",
             lastName: this.props.user.lastName || "",
-            allowRev: this.props.user.allowRev
+            allowRev: this.props.user.allowRev,
+            deck: getDeck(this.props.user.deck).id
         }
     }
 
@@ -31,17 +33,48 @@ class Profile extends React.Component {
 
     componentWillUnmount() {
         clearTimeout(this._msgTimer)
+        // Don't lose an edit that's still waiting on the typing delay
+        if (this._saveTimer) this.save()
     }
 
+    // Changes save automatically: checkboxes and the deck picker straight away,
+    // text fields once typing pauses or the field loses focus.
     handleChange = (e) => {
-        const value = e.target.type === "checkbox" ? e.target.checked : e.target.value
-        this.setState({
-            [e.target.name]: value
+        const { name, type, checked, value } = e.target
+        const instant = type === "checkbox" || type === "radio"
+        this.setState({ [name]: type === "checkbox" ? checked : value }, () => {
+            clearTimeout(this._saveTimer)
+            if (instant) this.save()
+            else this._saveTimer = setTimeout(this.save, 1000)
         })
+    }
+
+    handleBlur = () => {
+        if (this._saveTimer) this.save({ report: true })
     }
 
     handleSubmit = (e) => {
         e.preventDefault()
+        this.save({ report: true })
+    }
+
+    save = ({ report = false } = {}) => {
+        clearTimeout(this._saveTimer)
+        this._saveTimer = null
+
+        // Skip invalid input (e.g. an empty name or a half-typed email); show why only
+        // when the user has left the field, not mid-typing.
+        const form = document.getElementById("profile-form")
+        if (form && !form.checkValidity()) {
+            if (report) form.reportValidity()
+            return
+        }
+
+        const { user } = this.props
+        const unchanged = ["email", "firstName", "lastName", "allowRev", "deck"]
+            .every(key => this.state[key] === (key === "deck" ? getDeck(user.deck).id : user[key] ?? ""))
+        if (unchanged) return
+
         const UserUpdate = {
             username: this.state.username,
             email: this.state.email,
@@ -49,7 +82,10 @@ class Profile extends React.Component {
             lastName: this.state.lastName,
             password: this.state.password,
             allowRev: this.state.allowRev.toString(),
+            deck: this.state.deck,
         }
+        // Clear first so the message shows again (and its timer restarts) on every save
+        this.props.clearUserMessages()
         this.props.updateUser(this.props.user._id, UserUpdate)
     }
 
@@ -62,6 +98,7 @@ class Profile extends React.Component {
                     <EditProfileForm
                         handleChange={this.handleChange}
                         handleSubmit={this.handleSubmit}
+                        handleBlur={this.handleBlur}
                         updateMsg={this.props.updateMsg}
                         errMsg={this.props.errMsg}
                         {...this.state}
