@@ -25,7 +25,7 @@ const readingSchema = new Schema({
         default: "daily"
     },
     // Deck the reading was drawn with, so history keeps showing that deck's art.
-    // Readings saved before decks existed have none and fall back to Prisma Visions.
+    // Readings saved before decks existed have none and fall back to the default deck (Universal Fantasy).
     deck: {
         type: String,
         enum: User.schema.path('deck').enumValues

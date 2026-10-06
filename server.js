@@ -91,9 +91,22 @@ if (APP_BASE) {
     app.use(staticMw)
 }
 
+// One-off migration (2026-10-06): the default deck's id changed from prisma-visions to
+// universal-fantasy. Runs on start so each environment updates its own database once the
+// new code is live; it does nothing when there's nothing left to rename. Remove once done.
+const renameDefaultDeck = async () => {
+    const db = mongoose.connection.db
+    for (const name of ['users', 'readings', 'decks', 'deckcards']) {
+        const { modifiedCount } = await db.collection(name)
+            .updateMany({ deck: 'prisma-visions' }, { $set: { deck: 'universal-fantasy' } })
+        if (modifiedCount) console.log(`[o] Renamed deck prisma-visions -> universal-fantasy on ${modifiedCount} ${name}`)
+    }
+}
+
 // DB Connect
 mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log('[o] Connected to the DB'))
+    .then(() => renameDefaultDeck().catch(err => console.error('[!] Deck rename failed:', err.message)))
     .catch(err => {
         console.error('[!] DB connection failed:', err.message)
         process.exit(1)

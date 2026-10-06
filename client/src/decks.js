@@ -9,7 +9,7 @@ import { publicUrl } from './publicUrl.js'
 const GALLERY = 'http://www.marytcusack.com/Decks/HTML/Tarot/'
 
 export const DECKS = [
-    { id: 'prisma-visions', name: 'Prisma Visions', artist: 'James R. Eads' },
+    { id: 'universal-fantasy', name: 'Universal Fantasy', artist: 'Paolo Martinello' },
     { id: 'stained-glass', name: 'Stained Glass', artist: 'James Edward', source: `${GALLERY}S/StainedGlass.html` },
     { id: 'romantic', name: 'Romantic', artist: 'Giulia F. Massaglia', source: `${GALLERY}R/Romantic.html` },
     { id: 'sambucus', name: 'Sambucus', artist: 'VermilionCollection', landscape: true, source: `${GALLERY}S/Sambucus.html` },

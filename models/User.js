@@ -32,8 +32,8 @@ const userSchema = new Schema({
     // Card image deck; ids must match folders in client/public/decks/ and client/src/decks.js
     deck: {
         type: String,
-        enum: ['prisma-visions', 'stained-glass', 'romantic', 'sambucus', 'tranquil-dog', 'papercut', 'kashima', 'voice-and-vision'],
-        default: 'prisma-visions'
+        enum: ['universal-fantasy', 'stained-glass', 'romantic', 'sambucus', 'tranquil-dog', 'papercut', 'kashima', 'voice-and-vision'],
+        default: 'universal-fantasy'
     }
 })
 

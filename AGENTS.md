@@ -41,7 +41,7 @@ daily-tarot-main/
 │   ├── .env.development   # VITE_SITE_URL for local builds — committed, not secret
 │   ├── .env.production    # Sets VITE_BASE_PATH and VITE_SITE_URL for prod builds — committed, not secret
 │   ├── public/
-│   │   └── decks/                  # Tarot card images, one folder per deck (prisma-visions/, stained-glass/)
+│   │   └── decks/                  # Tarot card images, one folder per deck (universal-fantasy/, stained-glass/)
 │   └── src/
 │       ├── main.jsx
 │       ├── App.jsx
@@ -235,11 +235,11 @@ Two build scripts exist — **always use the right one**:
 - Auth errors are cleared before each new login/signup attempt so the error animation always replays
 
 ### Tarot Decks
-- Users pick a deck on the Profile page; it's stored as `user.deck` (default **Prisma Visions**). All decks share the card meanings in the DB.
-- Each reading stores the deck it was drawn with (`reading.deck`, set server-side from `user.deck` on `POST /api/readings`), so Past Dailies and the admin's per-user readings keep showing that deck after the user switches. Readings from before decks existed have no `deck` and show Prisma Visions.
+- Users pick a deck on the Profile page; it's stored as `user.deck` (default **Universal Fantasy** by Paolo Martinello / Lo Scarabeo, id `universal-fantasy`). All decks share the card meanings in the DB.
+- Each reading stores the deck it was drawn with (`reading.deck`, set server-side from `user.deck` on `POST /api/readings`), so Past Dailies and the admin's per-user readings keep showing that deck after the user switches. Readings from before decks existed have no `deck` and show the default deck.
 - **Per-deck card text:** `models/Deck.js` holds `useDefaultContent` per deck (no document = `true`, which is how every deck starts). `models/DeckCard.js` holds a deck's own text for one card (`name`, `meaning_up`, `meaning_rev`, `meaning_up_long`, `meaning_rev_long`, `desc`). `DeckCard.applyTo(card, deck)` lays that text over the card when the deck's checkbox is off; empty fields and cards without saved text fall back to the default. `routes/cardRouter.js` applies it for the user's deck on the random, by-value and by-id routes; `GET /api/cards` stays default text (the admin editor uses it). Saved text is kept while the checkbox is on, just not shown. Readings store the name and keywords at the time they were saved.
-- **Removed decks fall back to Prisma Visions:** `getDeck()` maps unknown ids to the default, the Profile form preselects the default if the saved deck no longer exists, `POST /api/readings` leaves `deck` unset if the user's saved deck is no longer in the enum, and `fallBackToDefaultDeck()` (installed in `main.jsx`) swaps any `/decks/<id>/` image that fails to load for the same file in `prisma-visions/`.
-- Decks live in `client/public/decks/<id>/`. **Prisma Visions** (`prisma-visions`) is the default; the rest (Stained Glass, Romantic, Sambucus, Tranquil Dog, Papercut, Kashima, Voice and Vision) come from marytcusack.com's galleries. Image URLs there are `Decks/Images/Tarot/<letter>/<Deck>/`: majors `NN Name.jpg`, minors `<suit prefix>01–10.jpg` and `<prefix>C1P/C2K/C3Q/C4K.jpg` (Page/Knight/Queen/King), back `zback.jpg`. The gallery HTML's suit prefixes don't always match the files: Romantic Wands are `R`, Kashima Pentacles are `Co`.
+- **Removed decks fall back to the default deck (Universal Fantasy):** `getDeck()` maps unknown ids to the default, the Profile form preselects the default if the saved deck no longer exists, `POST /api/readings` leaves `deck` unset if the user's saved deck is no longer in the enum, and `fallBackToDefaultDeck()` (installed in `main.jsx`) swaps any `/decks/<id>/` image that fails to load for the same file in `universal-fantasy/`.
+- Decks live in `client/public/decks/<id>/`. **Universal Fantasy** (`universal-fantasy`) is the default; the rest (Stained Glass, Romantic, Sambucus, Tranquil Dog, Papercut, Kashima, Voice and Vision) come from marytcusack.com's galleries. Image URLs there are `Decks/Images/Tarot/<letter>/<Deck>/`: majors `NN Name.jpg`, minors `<suit prefix>01–10.jpg` and `<prefix>C1P/C2K/C3Q/C4K.jpg` (Page/Knight/Queen/King), back `zback.jpg`. The gallery HTML's suit prefixes don't always match the files: Romantic Wands are `R`, Kashima Pentacles are `Co`.
 - Sambucus has two Chariots; `ar07` is `07a`.
 - Card sizes differ per deck, but within a deck every face and the back are the same size, or the flip animation jumps. Off-size cards were resized to match, and Sambucus is landscape (800×450, back rotated). Mark landscape decks with `landscape: true` in `DECKS` so Today widens the card column.
 - Every deck uses the same filenames: `ar00.jpg`–`ar21.jpg` (Major Arcana, RWS order: 08 Strength, 11 Justice), `cu02.jpg`–`cu10.jpg` plus `cuac`/`cupa`/`cukn`/`cuqu`/`cuki.jpg` (Ace/Page/Knight/Queen/King) for Cups, likewise `pe`, `sw`, `wa`. `cardback.jpg` is the back.
