@@ -38,7 +38,8 @@ daily-tarot-main/
 ├── client/                # React/Vite frontend (its own package.json)
 │   ├── package.json
 │   ├── vite.config.js
-│   ├── .env.production    # Sets VITE_BASE_PATH for prod builds — committed, not secret
+│   ├── .env.development   # VITE_SITE_URL for local builds — committed, not secret
+│   ├── .env.production    # Sets VITE_BASE_PATH and VITE_SITE_URL for prod builds — committed, not secret
 │   ├── public/
 │   │   └── decks/                  # Tarot card images, one folder per deck (prisma-visions/, stained-glass/)
 │   └── src/
@@ -150,6 +151,8 @@ The client must be built with `build:local` so assets use `/` as the base path (
 ```bash
 cd client && npm run build:local
 # Uses `vite build --mode development` → skips .env.production → base = /
+# Social preview: index.html's Open Graph/Twitter tags need absolute URLs, built from %VITE_SITE_URL%
+# (.env.development locally, .env.production on prod). Image: client/public/social-preview.jpg (1200×630).
 ```
 
 Rebuild whenever you change frontend code and want to see it at `daily-tarot.test`.
