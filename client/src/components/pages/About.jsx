@@ -9,7 +9,7 @@ const About = () => {
 
             <div className="card purple-bg" id="about">
                 <h2>Why this app?</h2>
-                <p><i>This was my final project as a student for the Full-Stack MERN course (Feb 2019 Cohort) at <a href="https://vschool.io">V School</a>, taught by <a href="https://coursework.vschool.io/author/nate-jensen/">Nate Jensen</a>.</i></p>
+                <p><i>This was my final project as a student for the Full-Stack MERN course (Feb 2019 Cohort) at <a href="https://vschool.io">V School</a>, taught by <a href="https://www.linkedin.com/in/natej58/">Nate Jensen</a>.</i></p>
                 <p>We were required to create a JavaScript app in React in one week that includes: </p>
                 <ul>
                     <li>Full back-end and front-end servers</li>
