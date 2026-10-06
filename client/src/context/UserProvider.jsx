@@ -32,6 +32,16 @@ class UserProvider extends Component {
         }).catch(err => this.setState({ updateMsg: "", errMsg: err.response.data.errMsg }))
     }
 
+    // Resolves true on success so the form can clear itself
+    changePassword = (newPassword) =>
+        userAxios.put(`api/users/${this.state.user._id}/password`, { newPassword }).then(() => {
+            this.setState({ errMsg: "", updateMsg: "Password changed." })
+            return true
+        }).catch(err => {
+            this.setState({ updateMsg: "", errMsg: err.response?.data?.errMsg || "Failed to change password." })
+            return false
+        })
+
     signup = (credentials) => {
         this.setState({ errMsg: "" }, () => {
             axios.post("auth/signup", credentials).then(response => {
@@ -85,6 +95,7 @@ class UserProvider extends Component {
                     login: this.login,
                     logout: this.logout,
                     updateUser: this.updateUser,
+                    changePassword: this.changePassword,
                     clearUserMessages: this.clearUserMessages
                 }}>
                 {this.props.children}

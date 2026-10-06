@@ -23,8 +23,9 @@ const App = (props) => {
     : location.pathname.slice(1)[0].toUpperCase() + location.pathname.slice(2)
   document.title = `Daily Tarot ~ ${pageName}`
 
-  // React Router keeps the scroll position between routes; start each page at the top
-  useEffect(() => { window.scrollTo(0, 0) }, [location.pathname])
+  // React Router keeps the scroll position between routes; start each page at the top,
+  // unless the link targets a section (e.g. /profile#deck), which the page scrolls to itself
+  useEffect(() => { if (!location.hash) window.scrollTo(0, 0) }, [location.pathname])
 
   return (
     <div id="outer-container">

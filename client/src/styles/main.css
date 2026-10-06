@@ -474,13 +474,26 @@ h2 + #tabs {
     gap: 14px;
 }
 
+#profile-form h3 {
+    margin: 0 0 4px;
+}
+
 #profile-form .selections > div {
     display: flex;
     align-items: center;
-    padding: 14px 16px;
-    border-radius: var(--radius);
-    background-color: var(--surface);
-    border: 1px solid var(--border);
+    padding: 4px 0;
+}
+
+/* Two fields side by side, stacking when there isn't room (e.g. first/last name on mobile) */
+#profile-form .field-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+#profile-form .field-row > input {
+    flex: 1 1 200px;
+    min-width: 0;
 }
 
 #profile-form button {
@@ -488,15 +501,22 @@ h2 + #tabs {
 }
 
 .deck-picker {
+    /* Clear the fixed top-right buttons when jumped to from the deck button */
+    scroll-margin-top: 72px;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: 14px;
     border: 0;
+    /* Space between the profile fields and the deck section */
+    margin-top: 32px;
 }
 
 .deck-picker legend {
     margin-bottom: 10px;
-    color: var(--text-muted);
+}
+
+.deck-picker legend h3 {
+    margin: 0;
 }
 
 .deck-option {
@@ -785,6 +805,8 @@ h2 + #tabs {
     .spread {
         flex-wrap: wrap;
         gap: 20px 12px;
+        /* Element and astrology boxes share a row, so stretch them to the same height */
+        align-items: stretch;
     }
     .spread .col:nth-child(2) {
         order: -1;

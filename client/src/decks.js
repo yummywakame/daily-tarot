@@ -12,7 +12,7 @@ export const DECKS = [
     { id: 'prisma-visions', name: 'Prisma Visions', artist: 'James R. Eads' },
     { id: 'stained-glass', name: 'Stained Glass', artist: 'James Edward', source: `${GALLERY}S/StainedGlass.html` },
     { id: 'romantic', name: 'Romantic', artist: 'Giulia F. Massaglia', source: `${GALLERY}R/Romantic.html` },
-    { id: 'sambucus', name: 'Sambucus', landscape: true, source: `${GALLERY}S/Sambucus.html` },
+    { id: 'sambucus', name: 'Sambucus', artist: 'VermilionCollection', landscape: true, source: `${GALLERY}S/Sambucus.html` },
     { id: 'tranquil-dog', name: 'Tranquil Dog', artist: 'Wheel of Fortune Tarot Shop', artistUrl: 'https://www.kickstarter.com/projects/wheeloffortunetarot/the-tranquil-dog-tarot', source: `${GALLERY}T/TranquilDog.html` },
     { id: 'papercut', name: 'Papercut', artist: 'Shimilti', source: `${GALLERY}P/Papercut2.html` },
     { id: 'kashima', name: 'Kashima', artist: 'Jemima', source: `${GALLERY}K/Kashima.html` },

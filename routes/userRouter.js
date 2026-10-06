@@ -1,6 +1,7 @@
 const express = require('express')
 const userRouter = express.Router()
 const Joi = require('joi')
+const rateLimit = require('express-rate-limit')
 const User = require('../models/User.js')
 const requireAdmin = require('../middleware/requireAdmin.js')
 
@@ -12,6 +13,19 @@ const updateSchema = Joi.object({
     lastName: Joi.string().max(50).allow(''),
     allowRev: Joi.boolean(),
     deck: Joi.string().valid(...User.schema.path('deck').enumValues)
+})
+
+// Limit password changes like the login route
+const passwordLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 10,
+    message: { errMsg: 'Too many attempts. Please try again later.' },
+    standardHeaders: true,
+    legacyHeaders: false
+})
+
+const passwordSchema = Joi.object({
+    newPassword: Joi.string().min(8).max(128).required()
 })
 
 const isSelf = (req) => req.params._id === req.user._id
@@ -67,6 +81,30 @@ userRouter.put('/:_id', async (req, res) => {
     } catch (err) {
         console.error(err)
         return res.status(500).json({ errMsg: 'Failed to update user.' })
+    }
+})
+
+// Change Password (self only; being logged in is enough)
+userRouter.put('/:_id/password', passwordLimiter, async (req, res) => {
+    if (!isSelf(req)) {
+        return res.status(403).json({ errMsg: 'Forbidden' })
+    }
+
+    const { error, value } = passwordSchema.validate(req.body, { stripUnknown: true })
+    if (error) {
+        return res.status(400).json({ errMsg: error.details[0].message })
+    }
+
+    try {
+        const user = await User.findById(req.params._id)
+        if (!user) return res.status(404).json({ errMsg: 'User not found.' })
+        // The pre-save hook hashes it
+        user.password = value.newPassword
+        await user.save()
+        return res.status(200).json({ message: 'Password changed.' })
+    } catch (err) {
+        console.error(err)
+        return res.status(500).json({ errMsg: 'Failed to change password.' })
     }
 })
 

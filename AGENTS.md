@@ -54,10 +54,11 @@ daily-tarot-main/
 │       ├── components/
 │       │   ├── Card.jsx
 │       │   ├── Nav.jsx
-│       │   ├── NavInfo.jsx    # top-right admin shortcut (admins) / login button (logged out)
+│       │   ├── NavInfo.jsx    # top-right deck picker shortcut (to /profile#deck) + admin shortcut (admins) / login button (logged out)
 │       │   ├── Footer.jsx     # site-wide credits footer linking to /about
 │       │   ├── Spread1.jsx
 │       │   ├── Spread1Desc.jsx
+│       │   ├── PasswordFields.jsx
 │       │   ├── EditProfileForm.jsx
 │       │   ├── NotesForm.jsx
 │       │   ├── auth/
@@ -216,6 +217,7 @@ Two build scripts exist — **always use the right one**:
 - **Minimum password length: 8 characters** (enforced by Joi in `authRouter.js`)
 - **Authorization** (all enforced server-side):
   - Users can only read/update their own profile; `PUT /api/users/:_id` accepts only `email`, `firstName`, `lastName`, `allowRev`, `deck` (Joi, unknown keys stripped). Password/isAdmin cannot be changed there. `password` is never returned.
+  - Password changes go through `PUT /api/users/:_id/password` (self only, rate limited) with `{ newPassword }` (8–128 chars); no current password is asked for, being logged in is enough. The pre-save hook hashes it. On the Profile page, `PasswordFields.jsx` sits among the autosaving profile fields but belongs to its own `#password-form` (via the inputs' `form` attribute), so it only saves on its button and doesn't block the profile autosave's validity check.
   - Readings are owned by `req.user._id` (never from the request body); users can only read/edit/delete their own.
   - Admin-only: everything under `/api/admin/*` (`routes/adminRouter.js`), plus `GET /api/users`, `GET /api/readings`, and card create/update/delete.
   - `requireAuth` (server.js) re-reads `isAdmin` from the DB on every `/api` request, so promotions/demotions apply immediately and tokens of deleted users get 401. The first admin must be set by hand (`isAdmin: true` in the DB); after that, admins manage roles from the Admin page. Admins cannot demote or delete themselves.

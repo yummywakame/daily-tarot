@@ -24,7 +24,9 @@ class Spread1Desc extends React.Component {
 
                         <div id="tabs">
                             <button onClick={() => this.showHideTabContents("meaning")} className={(this.state.currentTab === "meaning" || !this.state.currentTab) ? "selected" : ""}>Meaning</button>
+                            {/* Description tab hidden until each deck has its own descriptions (they're per deck; the default text describes Rider-Waite)
                             <button onClick={() => this.showHideTabContents("description")} className={this.state.currentTab === "description" ? "selected" : ""}>Description</button>
+                            */}
                             <button onClick={() => this.showHideTabContents("notes")} className={this.state.currentTab === "notes" ? "selected" : ""}>Notes</button>
                         </div>
 
@@ -39,6 +41,7 @@ class Spread1Desc extends React.Component {
                             </div>
                         }
 
+                        {/* Hidden with the Description tab above
                         {this.state.currentTab === "description" &&
                             <div className="card purple-bg">
                                 <h2>{name} Card Description</h2>
@@ -46,6 +49,7 @@ class Spread1Desc extends React.Component {
                                 <div dangerouslySetInnerHTML={{ __html: desc }}></div>
                             </div>
                         }
+                        */}
 
                         {this.state.currentTab === "notes" &&
                             <div className="card purple-bg" id="add-form">

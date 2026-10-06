@@ -140,16 +140,27 @@
     outline: none;
 }
 
-/* ── Admin / login floating buttons ───────────────────────────── */
-#admin-button, #login-button {
-    text-decoration: none;
-}
-
-#admin-button div, #login-button div {
+/* ── Deck / admin / login floating buttons ────────────────────── */
+#top-actions {
     position: fixed;
     top: 12px;
     right: 16px;
     z-index: 4000;
+    display: flex;
+    gap: 10px;
+}
+
+#deck-button, #admin-button, #login-button {
+    text-decoration: none;
+}
+
+#login-button div {
+    position: fixed;
+    top: 12px;
+    z-index: 4000;
+}
+
+#deck-button div, #admin-button div, #login-button div {
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -172,13 +183,12 @@
 }
 
 #login-button div {
-    right: auto;
     left: 16px;
     font-size: 16px;
 }
 
-#admin-button div:hover, #login-button div:hover,
-#admin-button.active div {
+#deck-button div:hover, #admin-button div:hover, #login-button div:hover,
+#deck-button.active div, #admin-button.active div {
     color: var(--gold-light);
     border-color: rgba(230, 190, 106, 0.45);
     background-color: var(--gold-soft);

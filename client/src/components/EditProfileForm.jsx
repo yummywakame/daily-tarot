@@ -1,9 +1,10 @@
 import React from 'react'
 import { createPortal } from 'react-dom'
 import { DECKS, cardImage, cardBack } from '../decks.js'
+import PasswordFields from './PasswordFields.jsx'
 
 const EditProfileForm = props => {
-    const { handleSubmit, handleChange, handleBlur, email, firstName, lastName, allowRev, deck, updateMsg, errMsg } = props
+    const { handleSubmit, handleChange, handleBlur, email, firstName, lastName, allowRev, deck, updateMsg, errMsg, changePassword, clearUserMessages } = props
     return (
         <form onSubmit={handleSubmit} id="profile-form">
 
@@ -16,22 +17,7 @@ const EditProfileForm = props => {
                 document.body
             )}
 
-            <input
-                type="text"
-                name="firstName"
-                value={firstName}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="First Name"
-                required />
-            <input
-                type="text"
-                name="lastName"
-                value={lastName}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Last Name"
-                required />
+            <h3>Profile</h3>
 
             <input
                 type="email"
@@ -41,6 +27,27 @@ const EditProfileForm = props => {
                 onBlur={handleBlur}
                 placeholder="Email Address"
             />
+
+            <div className="field-row">
+                <input
+                    type="text"
+                    name="firstName"
+                    value={firstName}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    placeholder="First Name"
+                    required />
+                <input
+                    type="text"
+                    name="lastName"
+                    value={lastName}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    placeholder="Last Name"
+                    required />
+            </div>
+
+            <PasswordFields email={email} changePassword={changePassword} clearUserMessages={clearUserMessages} />
 
             <div className="selections">
 
@@ -55,8 +62,8 @@ const EditProfileForm = props => {
 
             </div>
 
-            <fieldset className="deck-picker">
-                <legend>Tarot Deck</legend>
+            <fieldset className="deck-picker" id="deck">
+                <legend><h3>Tarot Deck</h3></legend>
                 {DECKS.map(d => (
                     <label key={d.id} className={d.id === deck ? "deck-option selected" : "deck-option"}>
                         <input

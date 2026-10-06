@@ -9,7 +9,6 @@ class Profile extends React.Component {
         this.state = {
             username: this.props.user.username,
             email: this.props.user.email || "",
-            password: this.props.user.password,
             firstName: this.props.user.firstName || "",
             lastName: this.props.user.lastName || "",
             allowRev: this.props.user.allowRev,
@@ -18,7 +17,10 @@ class Profile extends React.Component {
     }
 
     componentDidMount() {
-        window.scrollTo(0, 0)
+        // The top-right deck button links to /profile#deck
+        const section = window.location.hash && document.getElementById(window.location.hash.slice(1))
+        if (section) section.scrollIntoView({ block: 'start' })
+        else window.scrollTo(0, 0)
         this.props.clearUserMessages()
     }
 
@@ -80,7 +82,6 @@ class Profile extends React.Component {
             email: this.state.email,
             firstName: this.state.firstName,
             lastName: this.state.lastName,
-            password: this.state.password,
             allowRev: this.state.allowRev.toString(),
             deck: this.state.deck,
         }
@@ -101,6 +102,8 @@ class Profile extends React.Component {
                         handleBlur={this.handleBlur}
                         updateMsg={this.props.updateMsg}
                         errMsg={this.props.errMsg}
+                        changePassword={this.props.changePassword}
+                        clearUserMessages={this.props.clearUserMessages}
                         {...this.state}
                     />
                 </div>
