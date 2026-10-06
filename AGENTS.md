@@ -136,7 +136,7 @@ The app runs locally at **http://daily-tarot.test** via Laragon on Windows.
 
 > **Procfile gotcha — no spaces in `pwd`:** Laragon's parser doesn't reliably handle quoted paths. The Procfile uses the junction path (`C:/laragon/www/daily-tarot`) rather than the OneDrive path (`C:/Users/olivi/OneDrive/www/vschool/Daily Tarot App/daily-tarot-main`) because the latter has a space and caused silent startup failures. Both point to the same files.
 
-> **"Service Unavailable" (503) at `daily-tarot.test`:** Apache is up but nothing is listening on port 7000. The Procfile `autorun` only fires when the Laragon *program* launches — **Start All** does not re-run it. Start Node via Laragon menu → **Procfile → Daily Tarot**, or fully exit and reopen Laragon. Node does not hot-reload: after backend changes (routes, models, `npm install`), stop the Node process and start it again.
+> **"Service Unavailable" (503) at `daily-tarot.test`:** Apache is up but nothing is listening on port 7000. The Procfile `autorun` only fires when the Laragon *program* launches — **Start All** does not re-run it. Start Node via Laragon menu → **Procfile → Daily Tarot**, or fully exit and reopen Laragon. Node does not hot-reload: after backend changes (routes, models, `npm install`), restart it — while it runs it appears as **Daily Tarot - Autorun** at the top of the Laragon menu and is *not* listed under Procfile, so use **Procfile → Close all** to stop it, then **Procfile → Daily Tarot** to start it again.
 
 ### Local build
 
@@ -176,7 +176,7 @@ Two build scripts exist — **always use the right one**:
 | `cd client && npm run build:local` | development | not set | `/` | Local testing at `daily-tarot.test` |
 | `cd client && npm run build` | production | `/demos/daily-tarot/` (from `client/.env.production`) | `/demos/daily-tarot/` | Mochahost deploy |
 
-`client/build/` is committed to git. Always run `build` (production) before committing if deploying, or `build:local` if you only need local testing and don't want to dirty the tracked build.
+`client/build/` is gitignored (`client/.gitignore`) — it is never committed. Whichever build you ran last is what's on disk: run `build:local` for `daily-tarot.test`, and `build` right before deploying.
 
 ---
 
@@ -213,11 +213,11 @@ Two build scripts exist — **always use the right one**:
 
 ### Admin page (`/admin`)
 - Shown in the menu only when `user.isAdmin`; `UserProvider` refreshes the stored user from `GET /api/users/:_id` on load so the link appears without re-login. The client check only hides UI — all enforcement is server-side.
-- Tabs (`client/src/components/admin/`): **Overview** (`GET /api/admin/stats`), **Users** (`GET /api/admin/users`, `PATCH /api/admin/users/:_id/role`, `DELETE /api/admin/users/:_id` — also deletes their readings), **Readings** (`GET /api/admin/readings?page=&limit=`, `DELETE /api/admin/readings/:_id`), **Cards** (`PUT /api/admin/cards/:_id` — text fields only; `name_short`/`value_int` are not editable).
+- Tabs (`client/src/components/admin/`): **Overview** (`GET /api/admin/stats`), **Users** (`GET /api/admin/users`, `PATCH /api/admin/users/:_id/role`, `DELETE /api/admin/users/:_id` — also deletes their readings; sortable by last reading or A–Z by email; clicking a user opens `AdminUserReadings`: `GET /api/admin/users/:_id/readings?page=&limit=`, `DELETE /api/admin/readings/:_id`), **Cards** (`PUT /api/admin/cards/:_id` — text fields only; `name_short`/`value_int` are not editable).
 - Card `desc` / `meaning_*_long` are rendered as raw HTML (`dangerouslySetInnerHTML`). The CSP (no `unsafe-inline` scripts) blocks injected scripts, but keep edits to simple markup like `<p>`.
 
 ### Card lightbox
-- `components/shared/CardLightbox.jsx` shows a full-size card image (closes on click or Escape). Used on Today (clicking an already revealed card), Past Dailies and the admin Readings tab.
+- `components/shared/CardLightbox.jsx` shows a full-size card image (closes on click or Escape). Used on Today (clicking an already revealed card), Past Dailies and a user's readings in the admin Users tab.
 - Auth errors are cleared before each new login/signup attempt so the error animation always replays
 
 ### Tarot Deck
@@ -234,7 +234,7 @@ Two build scripts exist — **always use the right one**:
    cd client && npm run build
    # client/.env.production auto-sets VITE_BASE_PATH=/demos/daily-tarot/
    ```
-2. Upload all files to the server (or push to git and pull on server)
+2. Upload the files to the server. `client/build/` is not in git, so if you pull on the server, upload `client/build/` separately (or build there)
 3. Ensure the server `.env` has `NODE_ENV=production` — this auto-sets `APP_BASE=/demos/daily-tarot` and re-enables HSTS + `upgrade-insecure-requests`
 4. If `package.json` dependencies changed, run `npm install` on the server (cPanel → **Setup Node.js App** → **Run NPM Install**). The app's Node version is set on that page too — it must be ≥ 20.19 (prod runs 22.x)
 5. Restart the Node process
@@ -261,7 +261,7 @@ git config user.email  # should be: yummywakame@users.noreply.github.com
 ## Notes & Conventions
 
 - No test suite currently configured (both root and client `npm test` exit 0 with a notice)
-- `client/build/` is committed — keep it in sync; run the appropriate build before committing
+- `client/build/` is gitignored — build output is never committed; run the appropriate build before testing or deploying
 - `.claude/` and `.env` are gitignored
 - Prefer `npm` over `yarn` or `pnpm`
 - Auth error messages use a CSS fade-out animation (`fadeMessage`, 5s) — they disappear after 5s by design

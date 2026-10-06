@@ -26,6 +26,10 @@ main.admin-page {
     color: #ff3366;
 }
 
+.admin-msg.persist {
+    animation: none;
+}
+
 .admin-msg.success {
     color: #7f7cc3;
 }
@@ -61,6 +65,43 @@ main.admin-page {
 .admin-panel button:disabled {
     opacity: 0.45;
     cursor: not-allowed;
+}
+
+/* Users toolbar and per-user readings */
+
+.admin-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px 20px;
+    margin-bottom: 15px;
+}
+
+.admin-toolbar .admin-count {
+    margin: 0 !important;
+}
+
+.admin-sort {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.admin-sort button {
+    padding: 6px 12px;
+    font-size: 14px;
+}
+
+.admin-panel .back-link {
+    margin-bottom: 15px;
+}
+
+.admin-user-heading {
+    margin: 0 0 10px;
+    overflow-wrap: anywhere;
 }
 
 /* Stat tiles */
@@ -131,6 +172,36 @@ main.admin-page {
     flex: 1;
     min-width: 0;
     overflow-wrap: anywhere;
+}
+
+.admin-panel button.admin-row-link {
+    display: block;
+    align-self: stretch;
+    padding: 0;
+    border-radius: 4px;
+    text-align: left;
+    font-size: inherit;
+    font-weight: 400;
+    color: whitesmoke;
+    background-color: transparent;
+}
+
+.admin-panel button.admin-row-link:hover {
+    color: #e4ab37;
+    background-color: transparent;
+}
+
+.admin-panel button.admin-row-link:active {
+    transform: none;
+}
+
+.admin-panel button.admin-row-link:focus-visible {
+    outline: 2px solid #e4ab37;
+    outline-offset: 4px;
+}
+
+.admin-row-link strong {
+    font-weight: 700;
 }
 
 .admin-meta {
@@ -234,6 +305,7 @@ main.admin-page {
 
 .admin-card-form .back-link {
     justify-self: start;
+    margin-bottom: 0;
 }
 
 .admin-card-head {

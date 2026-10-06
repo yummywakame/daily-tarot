@@ -128,22 +128,22 @@ adminRouter.delete('/users/:_id', async (req, res) => {
     }
 })
 
-// ALL READINGS — newest first, paginated, with the owner's email
-adminRouter.get('/readings', async (req, res) => {
+// ONE USER'S READINGS — newest first, paginated
+adminRouter.get('/users/:_id/readings', async (req, res) => {
     const { error, value } = pageSchema.validate(req.query, { stripUnknown: true })
     if (error) {
         return res.status(400).json({ errMsg: error.details[0].message })
     }
     const { page, limit } = value
+    const filter = { user: req.params._id }
     try {
         const [readings, total] = await Promise.all([
-            Reading.find()
+            Reading.find(filter)
                 .sort({ timeStamp: -1 })
                 .skip((page - 1) * limit)
                 .limit(limit)
-                .populate('user', 'email firstName lastName')
                 .lean(),
-            Reading.countDocuments()
+            Reading.countDocuments(filter)
         ])
         return res.status(200).json({ readings, total, page, pages: Math.max(1, Math.ceil(total / limit)) })
     } catch (err) {

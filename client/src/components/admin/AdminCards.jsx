@@ -56,7 +56,7 @@ const AdminCards = () => {
             .finally(() => setSaving(false))
     }
 
-    if (!cards) return errMsg ? <AdminMessage errMsg={errMsg} /> : <p>Loading…</p>
+    if (!cards) return errMsg ? <AdminMessage errMsg={errMsg} persist /> : <p>Loading…</p>
 
     if (selected) {
         return (

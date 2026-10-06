@@ -1,5 +1,5 @@
 import React from 'react'
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import { Routes, Route, Navigate, Link, useLocation } from 'react-router-dom'
 import { withUser } from './context/UserProvider.jsx'
 import AuthContainer from './components/auth/AuthContainer.jsx'
 import ProtectedRoute from './shared/ProtectedRoute.jsx'
@@ -28,7 +28,7 @@ const App = (props) => {
       <NavInfo token={token} routeLink={location.pathname} />
 
       {token && <Nav logout={logout} isAdmin={user.isAdmin === true} />}
-      <header><h1>Daily Tarot</h1></header>
+      <header><h1><Link to="/today">Daily Tarot</Link></h1></header>
 
       <Routes>
 

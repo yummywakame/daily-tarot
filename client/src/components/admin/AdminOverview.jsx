@@ -13,7 +13,7 @@ const AdminOverview = () => {
             .catch(err => setErrMsg(errorText(err, 'Failed to load stats.')))
     }, [])
 
-    if (errMsg) return <AdminMessage errMsg={errMsg} />
+    if (errMsg) return <AdminMessage errMsg={errMsg} persist />
     if (!stats) return <p>Loading…</p>
 
     const tiles = [
