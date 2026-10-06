@@ -15,6 +15,16 @@ class UserProvider extends Component {
         }
     }
 
+    componentDidMount() {
+        // The stored user can be stale (e.g. promoted to admin since last login), so refresh it.
+        if (this.state.token && this.state.user._id) {
+            userAxios.get(`api/users/${this.state.user._id}`).then(response => {
+                localStorage.setItem("user", JSON.stringify(response.data))
+                this.setState({ user: response.data })
+            }).catch(err => console.log(err))
+        }
+    }
+
     updateUser = (_id, updates) => {
         userAxios.put(`api/users/${_id}`, updates).then(response => {
             localStorage.setItem("user", JSON.stringify(response.data))

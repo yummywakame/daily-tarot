@@ -1,7 +1,16 @@
 const express = require('express')
+const { randomInt } = require('crypto')
 const cardRouter = express.Router()
 const Card = require('../models/Card.js')
 const requireAdmin = require('../middleware/requireAdmin.js')
+
+const MAX_CARD_VALUE = 77
+
+// Keep only top-level fields defined on the Card schema, so update operators
+// (e.g. $unset, $rename) or unknown keys in the request body are ignored.
+const cardFields = (body) => Object.fromEntries(
+    Object.entries(body).filter(([key]) => key !== '_id' && !key.startsWith('$') && Card.schema.path(key))
+)
 
 // GET ALL
 cardRouter.get('/', async (req, res) => {
@@ -21,8 +30,15 @@ cardRouter.get('/random/:spreadcount/:max', async (req, res) => {
         const spreadcount = Number(req.params.spreadcount)
         const max = Number(req.params.max)
 
+        // The deck has 78 cards (value_int 0-77). spreadcount must fit within the range,
+        // otherwise the unique-number loop below would never finish.
+        if (!Number.isInteger(max) || max < 0 || max > MAX_CARD_VALUE ||
+            !Number.isInteger(spreadcount) || spreadcount < 1 || spreadcount > max + 1) {
+            return res.status(400).json({ errMsg: 'Invalid spread count or card range.' })
+        }
+
         if (spreadcount === 1) {
-            const cardNum = Math.floor(Math.random() * (max + 1))
+            const cardNum = randomInt(max + 1)
             const card = await Card.findOne({ value_int: cardNum })
             return res.status(200).json(card)
         }
@@ -32,7 +48,7 @@ cardRouter.get('/random/:spreadcount/:max', async (req, res) => {
         let randNum
         for (let i = 0; i < spreadcount; i++) {
             do {
-                randNum = Math.floor(Math.random() * (max + 1))
+                randNum = randomInt(max + 1)
             } while (exists[randNum])
             exists[randNum] = true
             arr.push(randNum)
@@ -94,7 +110,7 @@ cardRouter.delete('/:_id', requireAdmin, async (req, res) => {
 // PUT (admin only)
 cardRouter.put('/:_id', requireAdmin, async (req, res) => {
     try {
-        const updated = await Card.findByIdAndUpdate(req.params._id, req.body, { returnDocument: 'after' })
+        const updated = await Card.findByIdAndUpdate(req.params._id, { $set: cardFields(req.body) }, { returnDocument: 'after', runValidators: true })
         return res.status(200).json(updated)
     } catch (err) {
         console.error(err)

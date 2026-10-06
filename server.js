@@ -16,7 +16,9 @@ const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const helmet = require('helmet')
 const cors = require('cors')
+const rateLimit = require('express-rate-limit')
 const path = require('path')
+const User = require('./models/User.js')
 
 const PORT = process.env.PORT || 7000
 // APP_BASE auto-detection: use explicit env var if set; otherwise derive from NODE_ENV.
@@ -28,6 +30,16 @@ const APP_BASE = (
 
 // Trust proxy (needed for rate limiter when behind a proxy/dev server)
 app.set('trust proxy', 1)
+
+// Global rate limit per IP — generous enough for normal use (a page load is ~20 requests).
+// /auth routes also have a stricter limiter of their own in authRouter.js.
+app.use(rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 1000,
+    message: { errMsg: 'Too many requests. Please try again later.' },
+    standardHeaders: true,
+    legacyHeaders: false
+}))
 
 // Security headers — CSP must allow: Font Awesome (index.html), Google Fonts (@import in main.css)
 // upgrade-insecure-requests and HSTS are disabled locally — they break HTTP dev domains like *.test
@@ -75,15 +87,20 @@ mongoose.connect(process.env.MONGODB_URI)
         process.exit(1)
     })
 
-// JWT Authentication middleware for /api routes
-const requireAuth = (req, res, next) => {
+// JWT Authentication middleware for /api routes.
+// isAdmin is re-read from the DB on each request so promotions/demotions take effect
+// immediately, and tokens belonging to deleted users stop working.
+const requireAuth = async (req, res, next) => {
     const authHeader = req.headers.authorization
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
         return res.status(401).json({ errMsg: 'Unauthorized' })
     }
     const token = authHeader.split(' ')[1]
     try {
-        req.user = jwt.verify(token, process.env.SECRET)
+        const payload = jwt.verify(token, process.env.SECRET)
+        const user = await User.findById(payload._id).select('isAdmin').lean()
+        if (!user) return res.status(401).json({ errMsg: 'Unauthorized' })
+        req.user = { ...payload, isAdmin: user.isAdmin === true }
         next()
     } catch {
         return res.status(401).json({ errMsg: 'Unauthorized' })
@@ -94,6 +111,7 @@ const authRouter = require('./routes/authRouter.js')
 const cardRouter = require('./routes/cardRouter.js')
 const readingRouter = require('./routes/readingRouter.js')
 const userRouter = require('./routes/userRouter.js')
+const adminRouter = require('./routes/adminRouter.js')
 
 // ROUTES
 const authMount = APP_BASE ? APP_BASE + '/auth' : '/auth'
@@ -104,6 +122,12 @@ app.use(apiMount, requireAuth)
 app.use(apiMount + '/cards', cardRouter)
 app.use(apiMount + '/readings', readingRouter)
 app.use(apiMount + '/users', userRouter)
+app.use(apiMount + '/admin', adminRouter)
+
+// Unknown API paths get a JSON 404 rather than falling through to the SPA's index.html
+const apiNotFound = (req, res) => res.status(404).json({ errMsg: 'Not found.' })
+app.use(authMount, apiNotFound)
+app.use(apiMount, apiNotFound)
 
 const sendSpa = (req, res) => {
     res.sendFile(indexHtml)

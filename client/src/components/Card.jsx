@@ -1,17 +1,10 @@
 import React from 'react'
 
 const Card = (props) => {
-
+    const className = ["tarot-card", props.isReversed && "rev", props.zoomable && "zoomable"].filter(Boolean).join(" ")
 
     return (
-        <>
-            {props.isReversed
-                ?
-                <img className="tarot-card rev" src={props.img} alt={props.altText} onClick={props.toggler} />
-                :
-                <img className="tarot-card" src={props.img} alt={props.altText} onClick={props.toggler} />
-            }
-        </>
+        <img className={className} src={props.img} alt={props.altText} onClick={props.toggler} />
     )
 }
 

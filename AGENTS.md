@@ -28,6 +28,7 @@ daily-tarot-main/
 │   ├── Reading.js
 │   └── User.js
 ├── routes/
+│   ├── adminRouter.js     # /api/admin/* — stats, user roles/deletion, all readings, card edits
 │   ├── authRouter.js
 │   ├── cardRouter.js
 │   ├── readingRouter.js
@@ -207,7 +208,16 @@ Two build scripts exist — **always use the right one**:
 - **Authorization** (all enforced server-side):
   - Users can only read/update their own profile; `PUT /api/users/:_id` accepts only `email`, `firstName`, `lastName`, `allowRev` (Joi, unknown keys stripped). Password/isAdmin cannot be changed there. `password` is never returned.
   - Readings are owned by `req.user._id` (never from the request body); users can only read/edit/delete their own.
-  - Admin-only: `GET /api/users`, `GET /api/readings`, and card create/update/delete. No admin accounts exist by default; set `isAdmin: true` in the DB, then the user must log in again (isAdmin is read from the JWT).
+  - Admin-only: everything under `/api/admin/*` (`routes/adminRouter.js`), plus `GET /api/users`, `GET /api/readings`, and card create/update/delete.
+  - `requireAuth` (server.js) re-reads `isAdmin` from the DB on every `/api` request, so promotions/demotions apply immediately and tokens of deleted users get 401. The first admin must be set by hand (`isAdmin: true` in the DB); after that, admins manage roles from the Admin page. Admins cannot demote or delete themselves.
+
+### Admin page (`/admin`)
+- Shown in the menu only when `user.isAdmin`; `UserProvider` refreshes the stored user from `GET /api/users/:_id` on load so the link appears without re-login. The client check only hides UI — all enforcement is server-side.
+- Tabs (`client/src/components/admin/`): **Overview** (`GET /api/admin/stats`), **Users** (`GET /api/admin/users`, `PATCH /api/admin/users/:_id/role`, `DELETE /api/admin/users/:_id` — also deletes their readings), **Readings** (`GET /api/admin/readings?page=&limit=`, `DELETE /api/admin/readings/:_id`), **Cards** (`PUT /api/admin/cards/:_id` — text fields only; `name_short`/`value_int` are not editable).
+- Card `desc` / `meaning_*_long` are rendered as raw HTML (`dangerouslySetInnerHTML`). The CSP (no `unsafe-inline` scripts) blocks injected scripts, but keep edits to simple markup like `<p>`.
+
+### Card lightbox
+- `components/shared/CardLightbox.jsx` shows a full-size card image (closes on click or Escape). Used on Today (clicking an already revealed card), Past Dailies and the admin Readings tab.
 - Auth errors are cleared before each new login/signup attempt so the error animation always replays
 
 ### Tarot Deck

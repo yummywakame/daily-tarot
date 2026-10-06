@@ -13,7 +13,14 @@ authAxios.interceptors.request.use((config) => {
 // Clear it and send the user back to login instead of leaving the app
 // rendering blank/undefined data from empty provider state.
 authAxios.interceptors.response.use(
-    (response) => response,
+    (response) => {
+        // An HTML page instead of JSON means the request hit the SPA fallback,
+        // e.g. a backend that hasn't been restarted since new routes were added.
+        if (String(response.headers['content-type']).includes('text/html')) {
+            return Promise.reject({ response: { status: response.status, data: { errMsg: 'Unexpected response from the server. It may need restarting.' } } })
+        }
+        return response
+    },
     (error) => {
         if (error.response?.status === 401) {
             localStorage.removeItem('token')

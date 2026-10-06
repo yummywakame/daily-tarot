@@ -4,6 +4,8 @@ import { withCard } from '../../context/CardProvider.jsx'
 import { withReading } from '../../context/ReadingProvider.jsx'
 import Spread1 from '../Spread1.jsx'
 import Spread1Desc from '../Spread1Desc.jsx'
+import CardLightbox from '../shared/CardLightbox.jsx'
+import { publicUrl } from '../../publicUrl.js'
 
 class Today extends React.Component {
     constructor(props) {
@@ -11,6 +13,7 @@ class Today extends React.Component {
         this.state = {
             isAlreadyRead: false,
             isFlipped: false,
+            isZoomed: false,
             isReversed: (this.props.readings.cards && this.props.readings.cards.map(this.getPosition)[0][0]) || false,
             notes: (this.props.readings.notes && this.props.readings.notes) || ""
         }
@@ -63,6 +66,17 @@ class Today extends React.Component {
             :
             this.saveReading("save", 1, "daily", this.state.isReversed)
     }
+
+    // First click reveals the card; once revealed, clicks open the full-size image
+    handleCardClick = (event) => {
+        if (this.state.isFlipped) {
+            this.setState({ isZoomed: true })
+        } else {
+            this.toggleOnce(event)
+        }
+    }
+
+    closeZoom = () => this.setState({ isZoomed: false })
 
     toggleOnce = (event) => {
         event.preventDefault()
@@ -165,8 +179,17 @@ class Today extends React.Component {
                         name_short={name_short}
                         element={element}
                         astrology={astrology}
-                        toggleOnce={this.toggleOnce}
+                        toggleOnce={this.handleCardClick}
                     />
+
+                    {isFlipped && this.state.isZoomed &&
+                        <CardLightbox
+                            src={publicUrl(`decks/prisma-visions/${name_short}.jpg`)}
+                            alt={`${name}${isReversed ? " (Reversed)" : ""}`}
+                            isReversed={isReversed}
+                            onClose={this.closeZoom}
+                        />
+                    }
 
                     {isFlipped && <h4 className="padding">{isReversed ? meaning_rev : meaning_up}</h4>}
 

@@ -298,6 +298,50 @@ main {
     white-space: pre-line;
 }
 
+.zoomable {
+    cursor: zoom-in;
+}
+
+/* Full-size card viewer */
+
+.card-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    background-color: rgba(5, 4, 8, 0.92);
+    cursor: zoom-out;
+    animation: lightboxFade 0.2s ease-out;
+}
+
+.card-lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+}
+
+.card-lightbox-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border-radius: 50%;
+    font-size: 20px;
+}
+
+@keyframes lightboxFade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
 /* TINY PHONES */
 @media (max-width: 767px) {
     .card {

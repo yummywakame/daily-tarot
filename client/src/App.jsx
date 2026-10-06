@@ -7,6 +7,7 @@ import Today from './components/pages/Today.jsx'
 import PastDailies from './components/pages/PastDailies.jsx'
 import Profile from './components/pages/Profile.jsx'
 import About from './components/pages/About.jsx'
+import Admin from './components/pages/Admin.jsx'
 import NotFound from './components/pages/NotFound.jsx'
 import Nav from './components/Nav.jsx'
 import NavInfo from './components/NavInfo.jsx'
@@ -26,7 +27,7 @@ const App = (props) => {
 
       <NavInfo token={token} routeLink={location.pathname} />
 
-      {token && <Nav logout={logout} />}
+      {token && <Nav logout={logout} isAdmin={user.isAdmin === true} />}
       <header><h1>Daily Tarot</h1></header>
 
       <Routes>
@@ -50,6 +51,13 @@ const App = (props) => {
         <Route path="/profile" element={
           <ProtectedRoute token={token} redirectTo="/login">
             <ErrorBoundary><Profile user={user} /></ErrorBoundary>
+          </ProtectedRoute>
+        } />
+
+        {/* The client-side check only hides the page; every admin API call is enforced server-side */}
+        <Route path="/admin" element={
+          <ProtectedRoute token={token && user.isAdmin === true} redirectTo={token ? "/today" : "/login"}>
+            <ErrorBoundary><Admin user={user} /></ErrorBoundary>
           </ProtectedRoute>
         } />
 

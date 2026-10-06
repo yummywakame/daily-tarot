@@ -1,4 +1,5 @@
 const express = require('express')
+const Joi = require('joi')
 const readingRouter = express.Router()
 const Reading = require('../models/Reading.js')
 const requireAdmin = require('../middleware/requireAdmin.js')
@@ -6,6 +7,22 @@ const requireAdmin = require('../middleware/requireAdmin.js')
 // Readings are always owned by the logged-in user (req.user from the JWT).
 // The `user` field is never taken from the request body.
 const withoutOwner = ({ user, _id, ...rest }) => rest
+
+// Fields a reading update may change. Unknown keys (including update operators
+// like $unset) are stripped, and each value must be a plain value of the right type.
+const readingUpdateSchema = Joi.object({
+    notes: Joi.string().allow(''),
+    choice: Joi.string().valid('daily', 'question'),
+    spread: Joi.number().integer().min(1),
+    timeStamp: Joi.date(),
+    cards: Joi.array().items(Joi.object({
+        cardId: Joi.string().hex().length(24).required(),
+        isReversed: Joi.boolean().required(),
+        name: Joi.string().required(),
+        name_short: Joi.string().required(),
+        meaning: Joi.string().required()
+    }).unknown(false))
+})
 
 // GET ALL (admin only)
 readingRouter.get('/', requireAdmin, async (req, res) => {
@@ -86,10 +103,14 @@ readingRouter.delete('/:_id', async (req, res) => {
 
 // PUT (owner only)
 readingRouter.put('/:_id', async (req, res) => {
+    const { error, value: updates } = readingUpdateSchema.validate(req.body, { stripUnknown: true })
+    if (error) {
+        return res.status(400).json({ errMsg: error.details[0].message })
+    }
     try {
         const updated = await Reading.findOneAndUpdate(
             { _id: req.params._id, user: req.user._id },
-            withoutOwner(req.body),
+            { $set: updates },
             { returnDocument: 'after', runValidators: true }
         )
         if (!updated) return res.status(404).json({ errMsg: 'Reading not found.' })

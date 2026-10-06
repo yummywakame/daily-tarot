@@ -37,6 +37,7 @@ class Nav extends React.Component {
         <NavLink to="/today" onClick={() => this.closeMenu()} className={this.navClass} tabIndex="0"><i className="fas fa-sun"></i><span>Today's Tarot</span></NavLink>
         <NavLink to="/pastdailies" onClick={() => this.closeMenu()} className={this.navClass} tabIndex="2"><i className="far fa-calendar-alt"></i><span>Past Dailies</span></NavLink>
         <NavLink to="/profile" onClick={() => this.closeMenu()} className={this.navClass} tabIndex="4"><i className="fas fa-user-circle"></i><span>Profile</span></NavLink>
+        {this.props.isAdmin && <NavLink to="/admin" onClick={() => this.closeMenu()} className={this.navClass} tabIndex="4"><i className="fas fa-user-shield"></i><span>Admin</span></NavLink>}
         <NavLink to="#!" onClick={this.props.logout} className={this.navClass} tabIndex="5"><i className="fas fa-sign-out-alt"></i><span>Log out</span></NavLink>
       </Menu>
     )

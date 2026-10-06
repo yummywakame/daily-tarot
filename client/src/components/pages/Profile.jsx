@@ -11,7 +11,6 @@ class Profile extends React.Component {
             password: this.props.user.password,
             firstName: this.props.user.firstName || "",
             lastName: this.props.user.lastName || "",
-            isAdmin: this.props.user.isAdmin,
             allowRev: this.props.user.allowRev
         }
     }
@@ -49,7 +48,6 @@ class Profile extends React.Component {
             firstName: this.state.firstName,
             lastName: this.state.lastName,
             password: this.state.password,
-            isAdmin: this.state.isAdmin.toString(),
             allowRev: this.state.allowRev.toString(),
         }
         this.props.updateUser(this.props.user._id, UserUpdate)

@@ -21,7 +21,7 @@ const Spread1 = (props) => {
 
           <CardFlip isFlipped={isFlipped}>
             <Card key="front" img={publicUrl('decks/prisma-visions/cardback.jpg')} altText="Tarot Card Back" toggler={toggleOnce} />
-            <Card key="back" img={publicUrl(`decks/prisma-visions/${name_short ? name_short : `cardback`}.jpg`)} altText="Tarot Card Front" toggler={toggleOnce} isReversed={isReversed} />
+            <Card key="back" img={publicUrl(`decks/prisma-visions/${name_short ? name_short : `cardback`}.jpg`)} altText="Tarot Card Front" toggler={toggleOnce} isReversed={isReversed} zoomable={isFlipped} />
           </CardFlip>
 
         </div>
