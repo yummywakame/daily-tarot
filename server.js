@@ -71,7 +71,19 @@ app.use(express.json())
 
 const STATIC_DIR = path.join(__dirname, 'client', 'build')
 const indexHtml = path.join(STATIC_DIR, 'index.html')
-const staticMw = express.static(STATIC_DIR)
+// Images other sites need to show (link previews, app icons). Helmet's default
+// Cross-Origin-Resource-Policy: same-origin would stop them loading there.
+const SHAREABLE_FILES = new Set([
+    'social-preview.jpg', 'favicon.ico', 'favicon.svg', 'apple-touch-icon.png',
+    'icon-192.png', 'icon-512.png', 'icon-maskable-512.png'
+])
+const staticMw = express.static(STATIC_DIR, {
+    setHeaders: (res, filePath) => {
+        if (SHAREABLE_FILES.has(path.basename(filePath))) {
+            res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin')
+        }
+    }
+})
 
 if (APP_BASE) {
     app.use(APP_BASE + '/', staticMw)
