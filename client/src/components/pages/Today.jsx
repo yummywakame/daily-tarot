@@ -191,7 +191,7 @@ class Today extends React.Component {
                         />
                     }
 
-                    {isFlipped && <h4 className="padding">{isReversed ? meaning_rev : meaning_up}</h4>}
+                    {isFlipped && <h4 className="keywords">{isReversed ? meaning_rev : meaning_up}</h4>}
 
                     {isFlipped && <button onClick={this.getNewReading}>Get Another Card</button>}
 

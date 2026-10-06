@@ -48,21 +48,21 @@ class PastDailies extends Component {
                                             onClick={() => this.setState({ zoomedCard: item.cards[0] })} />
                                     </div>
                                     <div className="col align-top">
-                                        <p>{new Date(item.timeStamp).toDateString()}<br />{new Date(item.timeStamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                                        <p className="reading-date">{new Date(item.timeStamp).toDateString()} · {new Date(item.timeStamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                                         <h2 className="">{item.cards[0].name} {item.cards[0].isReversed && " (Reversed)"}</h2>
                                         <h4 className="blue">{item.cards[0].meaning}</h4>
-                                        <p className="left-align history_notes"><strong className="gold">{item.notes && `Notes:`} </strong>{item.notes}</p>
+                                        {item.notes && <p className="left-align history_notes"><strong className="gold">Notes</strong>{item.notes}</p>}
                                     </div>
                                 </div>
                             )}
                         </div>
 
-                        <button onClick={() => this.onDeleteHandle()}>Clear History</button>
+                        <button className="danger" onClick={() => this.onDeleteHandle()}>Clear History</button>
                     </>
                     :
                     <>
                         <p>You have no available history yet.</p>
-                        <p>Would you like to see your <span className="blue" onClick={() => this.props.navigate('/today')}>tarot card for today</span>?</p>
+                        <p>Would you like to see your <span className="blue text-link" onClick={() => this.props.navigate('/today')}>tarot card for today</span>?</p>
                     </>
                 }
 

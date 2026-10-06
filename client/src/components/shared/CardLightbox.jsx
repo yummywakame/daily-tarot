@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react'
+import { createPortal } from 'react-dom'
 
 // Full-screen view of a single card image. Closes on click anywhere or Escape.
+// Portalled to <body> so a transformed/filtered ancestor (e.g. the page-in animation
+// on <main>) can't become the containing block for its position: fixed overlay.
 const CardLightbox = ({ src, alt, isReversed, onClose }) => {
     useEffect(() => {
         const onKey = (e) => { if (e.key === 'Escape') onClose() }
@@ -13,13 +16,14 @@ const CardLightbox = ({ src, alt, isReversed, onClose }) => {
         }
     }, [onClose])
 
-    return (
+    return createPortal(
         <div className="card-lightbox" role="dialog" aria-modal="true" aria-label={alt} onClick={onClose}>
             <button className="card-lightbox-close" aria-label="Close" autoFocus onClick={onClose}>
                 <i className="fas fa-times"></i>
             </button>
             <img className={isReversed ? "rev" : ""} src={src} alt={alt} />
-        </div>
+        </div>,
+        document.body
     )
 }
 

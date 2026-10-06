@@ -1,57 +1,98 @@
 /* ── Sidebar nav link styles ─────────────────────────────────── */
 #sidebar a {
-    width: 200px;
-    padding-left: 20px;
-    text-decoration: none;
-    display: block;
-    padding: 1em 1em 1em 1.2em;
+    display: flex !important;
+    align-items: center;
+    gap: 14px;
+    margin: 2px 12px;
+    padding: 12px 16px;
+    border-radius: 12px;
     outline: 0;
-    border-bottom: 1px solid #00000033;
-    color: whitesmoke;
-    text-shadow: 0 0 1px #ffffff1a;
-    letter-spacing: 1px;
-    transition: all .4s ease-in;
+    color: var(--text-muted);
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-#sidebar a:hover, #sidebar a:focus {
-    background: #451e3e;
-    color: #e4ab37;
+#sidebar a svg {
+    width: 18px;
+    flex-shrink: 0;
+    color: var(--text-subtle);
+    transition: color 0.2s ease;
+}
+
+#sidebar a:hover, #sidebar a:focus-visible {
+    background: var(--surface-strong);
+    color: var(--text);
 }
 
 #sidebar a.active {
-    background: #651e3e;
-    color: #e4ab37;
-    border-left: 3px solid #e4ab37;
-    font-weight: 700;
+    background: var(--gold-soft);
+    color: var(--gold-light);
+    box-shadow: inset 0 0 0 1px rgba(230, 190, 106, 0.22);
+}
+
+#sidebar a.active svg, #sidebar a:hover svg {
+    color: var(--gold);
+}
+
+/* Log out sits apart from the main links */
+#sidebar a:last-child {
+    margin-top: 16px;
+    position: relative;
+}
+
+#sidebar a:last-child::before {
+    content: "";
+    position: absolute;
+    top: -9px;
+    left: 4px;
+    right: 4px;
+    height: 1px;
+    background: var(--border);
 }
 
 /* ── Burger button ───────────────────────────────────────────── */
 .bm-burger-button {
     position: fixed;
-    width: 30px;
-    height: 25px;
-    left: 20px;
-    top: 20px;
+    width: 22px;
+    height: 15px;
+    left: 24px;
+    top: 25px;
     z-index: 2000 !important;
 }
 
-.right .bm-burger-button {
-    left: initial;
-    right: 36px;
+/* The library's own transparent hit-area buttons shouldn't get the global button look */
+.bm-burger-button button,
+.bm-cross-button button {
+    box-shadow: none !important;
+    transform: none !important;
+    filter: none !important;
 }
 
 .bm-burger-bars {
-    background: whitesmoke;
+    background: var(--text);
+    border-radius: 2px;
+    height: 2px !important;
+    transition: background-color 0.2s ease;
+}
+
+.bm-burger-button:hover .bm-burger-bars {
+    background: var(--gold);
 }
 
 /* ── Cross / close button ────────────────────────────────────── */
-.bm-cross {
-    background: #bdc3c7;
+.bm-cross-button {
+    top: 22px !important;
+    right: 20px !important;
+    height: 20px !important;
+    width: 20px !important;
 }
 
-.bm-cross-button {
-    height: 24px;
-    width: 24px;
+.bm-cross {
+    background: var(--text-muted);
+    height: 18px !important;
+    width: 2px !important;
 }
 
 /* ── Menu wrap & overlay ─────────────────────────────────────── */
@@ -64,30 +105,35 @@
 }
 
 .bm-overlay {
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(5, 4, 10, 0.55) !important;
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
     z-index: 2999 !important;
 }
 
 /* ── Menu panel ──────────────────────────────────────────────── */
 .bm-menu {
-    background: #251e3e;
-    padding: 2.5em 0 0;
-    font-size: 1.15em;
+    background: rgba(20, 18, 31, 0.96);
+    border-right: 1px solid var(--border);
+    box-shadow: 20px 0 60px -20px rgba(0, 0, 0, 0.8);
+    padding: 0;
     overflow-x: hidden;
 }
 
 .bm-item-list {
-    padding-top: 65px;
-    color: whitesmoke;
+    padding-top: 84px;
+    color: var(--text);
 }
 
-.bm-item-list a {
-    padding: 0.8em;
-}
-
-.bm-item-list a span {
-    margin-left: 10px;
-    font-weight: 700;
+.bm-item-list::before {
+    content: "✦  Daily Tarot";
+    position: absolute;
+    top: 18px;
+    left: 28px;
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--gold);
 }
 
 .bm-item:focus {
@@ -95,32 +141,41 @@
 }
 
 /* ── Info / login floating buttons ───────────────────────────── */
+#info-button, #login-button {
+    text-decoration: none;
+}
+
 #info-button div, #login-button div {
     position: fixed;
     top: 12px;
-    right: 12px;
+    right: 16px;
     z-index: 4000;
     width: 40px;
     height: 40px;
-    border-radius: 25px;
-    background-color: whitesmoke;
-    color: #ff3366;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Libre Baskerville', serif;
-    font-size: 24px;
-    font-weight: bolder;
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-style: italic;
+    font-weight: 600;
+    color: var(--text-muted);
+    background-color: var(--surface);
+    border: 1px solid var(--border-strong);
     cursor: pointer;
-    transition: all 0.3s ease-in;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
 #login-button div {
     right: auto;
-    left: 12px;
+    left: 16px;
+    font-size: 16px;
 }
 
-#info-button div:hover, #login-button div:hover {
-    background-color: #ff3366;
-    color: white;
+#info-button div:hover, #login-button div:hover,
+#info-button.active div {
+    color: var(--gold-light);
+    border-color: rgba(230, 190, 106, 0.45);
+    background-color: var(--gold-soft);
 }

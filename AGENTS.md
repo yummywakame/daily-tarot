@@ -200,6 +200,11 @@ Two build scripts exist — **always use the right one**:
 - `apiSetup.js` sets `axios.defaults.baseURL` from Vite's `import.meta.env.BASE_URL` — this is how API calls find the right subpath in production
 - `publicUrl.js` helper prefixes `BASE_URL` onto public asset paths (card images, etc.)
 
+### Styling
+- Plain CSS in `client/src/styles/`. Design tokens (colours, fonts, radii, shadows) are CSS custom properties on `:root` in `main.css`; use them instead of hard-coded values. `formstyles.css` holds inputs, buttons (`.secondary`, `.danger`, `.link-button` variants) and the auth screen; `admin.css` is admin-only.
+- Fonts: Cormorant Garamond (display) + Inter (body) from Google Fonts (allowed by the CSP in `server.js`).
+- `react-burger-menu` clones menu children and string-concatenates `className`, so **don't pass a function `className` to `NavLink`s inside `<Menu>`** — it gets stringified. React Router adds the `active` class itself.
+
 ### Authentication
 - JWT stored in `localStorage`, managed by `UserProvider`
 - All `/api/*` endpoints require `Authorization: Bearer <token>` header

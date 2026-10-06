@@ -10,7 +10,7 @@ const Spread1 = (props) => {
     <>
       <h3>{isFlipped ? `${name} ${isReversed ? "(Reversed)" : ""}` : `Click card to Reveal`}</h3>
 
-      <div className="flex-grid">
+      <div className="flex-grid spread">
 
         <div className="col">
           <h4>Element</h4>

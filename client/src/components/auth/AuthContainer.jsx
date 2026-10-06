@@ -52,7 +52,8 @@ class AuthContainer extends Component {
                         ?
                         <div>
                             <h2>Sign up</h2>
-                            
+                            <p className="auth-sub">Create an account to start your daily practice</p>
+
                             { this.props.errMsg && <p className="error-message">{this.props.errMsg}</p>}
                             
                             <AuthForm
@@ -63,12 +64,13 @@ class AuthContainer extends Component {
                                 btnText="Sign up"
                             />
                         
-                            <p onClick={this.handleToggle}>Are you already a member?</p>
+                            <p className="auth-switch">Already a member? <button type="button" className="link-button" onClick={this.handleToggle}>Sign in</button></p>
                         </div>
                         :
                         <div>
                             <h2>Sign in</h2>
-                            
+                            <p className="auth-sub">Welcome back — your card is waiting</p>
+
                             { this.props.errMsg && <p className="error-message">{this.props.errMsg}</p>}
 
                             <AuthForm
@@ -79,7 +81,7 @@ class AuthContainer extends Component {
                                 btnText="Login"
                             />
                             
-                            <p onClick={this.handleToggle}>Create an account</p>
+                            <p className="auth-switch">New here? <button type="button" className="link-button" onClick={this.handleToggle}>Create an account</button></p>
                         </div>
                     }
                 </div>
