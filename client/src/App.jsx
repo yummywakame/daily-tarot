@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Routes, Route, Navigate, Link, useLocation } from 'react-router-dom'
 import { withUser } from './context/UserProvider.jsx'
 import AuthContainer from './components/auth/AuthContainer.jsx'
@@ -11,6 +11,7 @@ import Admin from './components/pages/Admin.jsx'
 import NotFound from './components/pages/NotFound.jsx'
 import Nav from './components/Nav.jsx'
 import NavInfo from './components/NavInfo.jsx'
+import Footer from './components/Footer.jsx'
 import ErrorBoundary from './shared/ErrorBoundary.jsx'
 
 const App = (props) => {
@@ -22,12 +23,15 @@ const App = (props) => {
     : location.pathname.slice(1)[0].toUpperCase() + location.pathname.slice(2)
   document.title = `Daily Tarot ~ ${pageName}`
 
+  // React Router keeps the scroll position between routes; start each page at the top
+  useEffect(() => { window.scrollTo(0, 0) }, [location.pathname])
+
   return (
     <div id="outer-container">
 
-      <NavInfo token={token} routeLink={location.pathname} />
+      <NavInfo token={token} isAdmin={user.isAdmin === true} routeLink={location.pathname} />
 
-      {token && <Nav logout={logout} isAdmin={user.isAdmin === true} />}
+      {token && <Nav logout={logout} />}
       <header><h1><Link to="/today">Daily Tarot</Link></h1></header>
 
       <Routes>
@@ -66,6 +70,8 @@ const App = (props) => {
         <Route path="*" element={<NotFound />} />
 
       </Routes>
+
+      <Footer />
 
     </div>
   )

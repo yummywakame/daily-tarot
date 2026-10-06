@@ -51,7 +51,8 @@ daily-tarot-main/
 │       ├── components/
 │       │   ├── Card.jsx
 │       │   ├── Nav.jsx
-│       │   ├── NavInfo.jsx
+│       │   ├── NavInfo.jsx    # top-right admin shortcut (admins) / login button (logged out)
+│       │   ├── Footer.jsx     # site-wide credits footer linking to /about
 │       │   ├── Spread1.jsx
 │       │   ├── Spread1Desc.jsx
 │       │   ├── EditProfileForm.jsx
@@ -217,12 +218,12 @@ Two build scripts exist — **always use the right one**:
   - `requireAuth` (server.js) re-reads `isAdmin` from the DB on every `/api` request, so promotions/demotions apply immediately and tokens of deleted users get 401. The first admin must be set by hand (`isAdmin: true` in the DB); after that, admins manage roles from the Admin page. Admins cannot demote or delete themselves.
 
 ### Admin page (`/admin`)
-- Shown in the menu only when `user.isAdmin`; `UserProvider` refreshes the stored user from `GET /api/users/:_id` on load so the link appears without re-login. The client check only hides UI — all enforcement is server-side.
+- Reached from the top-right shield button (`NavInfo.jsx`), shown only when `user.isAdmin` (it is not in the burger menu); `UserProvider` refreshes the stored user from `GET /api/users/:_id` on load so the button appears without re-login. The client check only hides UI — all enforcement is server-side.
 - Tabs (`client/src/components/admin/`): **Overview** (`GET /api/admin/stats`), **Users** (`GET /api/admin/users`, `PATCH /api/admin/users/:_id/role`, `DELETE /api/admin/users/:_id` — also deletes their readings; sortable by last reading or A–Z by email; clicking a user opens `AdminUserReadings`: `GET /api/admin/users/:_id/readings?page=&limit=`, `DELETE /api/admin/readings/:_id`), **Cards** (`PUT /api/admin/cards/:_id` — text fields only; `name_short`/`value_int` are not editable).
 - Card `desc` / `meaning_*_long` are rendered as raw HTML (`dangerouslySetInnerHTML`). The CSP (no `unsafe-inline` scripts) blocks injected scripts, but keep edits to simple markup like `<p>`.
 
 ### Card lightbox
-- `components/shared/CardLightbox.jsx` shows a full-size card image (closes on click or Escape). Used on Today (clicking an already revealed card), Past Dailies and a user's readings in the admin Users tab.
+- `components/shared/CardLightbox.jsx` shows a full-size card image (closes on click or Escape). Used on Today (clicking an already revealed card), Past Dailies, a user's readings in the admin Users tab and the admin card editor. It renders through a portal into `<body>` so transformed ancestors can't clip the fixed overlay.
 - Auth errors are cleared before each new login/signup attempt so the error animation always replays
 
 ### Tarot Deck

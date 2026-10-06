@@ -140,12 +140,12 @@
     outline: none;
 }
 
-/* ── Info / login floating buttons ───────────────────────────── */
-#info-button, #login-button {
+/* ── Admin / login floating buttons ───────────────────────────── */
+#admin-button, #login-button {
     text-decoration: none;
 }
 
-#info-button div, #login-button div {
+#admin-button div, #login-button div {
     position: fixed;
     top: 12px;
     right: 16px;
@@ -167,14 +167,18 @@
     transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
+#admin-button div {
+    font-size: 16px;
+}
+
 #login-button div {
     right: auto;
     left: 16px;
     font-size: 16px;
 }
 
-#info-button div:hover, #login-button div:hover,
-#info-button.active div {
+#admin-button div:hover, #login-button div:hover,
+#admin-button.active div {
     color: var(--gold-light);
     border-color: rgba(230, 190, 106, 0.45);
     background-color: var(--gold-soft);

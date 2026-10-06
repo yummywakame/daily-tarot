@@ -84,7 +84,21 @@ body::before {
 }
 
 #outer-container {
+    display: flex;
+    flex-direction: column;
     min-height: 100vh;
+    min-height: 100dvh;
+}
+
+/* Page content grows so the footer sits at the bottom of short pages */
+#outer-container > main,
+#outer-container > #auth-wrap {
+    flex: 1 0 auto;
+    width: 100%;
+}
+
+#outer-container > #auth-wrap {
+    min-height: 0;
 }
 
 /* ── Typography ──────────────────────────────────────────────── */
@@ -596,6 +610,34 @@ h2 + #tabs {
 @keyframes lightboxZoomRev {
     from { opacity: 0; transform: scaleY(-1) scale(0.96); }
     to   { opacity: 1; transform: scaleY(-1); }
+}
+
+/* ── Footer ──────────────────────────────────────────────────── */
+#site-footer {
+    padding: 28px 24px 32px;
+    text-align: center;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-subtle);
+    border-top: 1px solid var(--border);
+    background-color: rgba(11, 10, 20, 0.6);
+}
+
+#site-footer p {
+    margin: 0;
+}
+
+#site-footer a {
+    color: var(--gold);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+#site-footer a:hover,
+#site-footer a.active {
+    color: var(--gold-light);
+    text-decoration: underline;
+    text-underline-offset: 3px;
 }
 
 @media (prefers-reduced-motion: reduce) {

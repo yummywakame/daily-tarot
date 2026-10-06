@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import adminAxios from '../../authAxios.js'
 import { publicUrl } from '../../publicUrl.js'
 import AdminMessage, { errorText } from './AdminMessage.jsx'
+import CardLightbox from '../shared/CardLightbox.jsx'
 
 const EDITABLE = ['name', 'element', 'astrology', 'meaning_up', 'meaning_rev', 'meaning_up_long', 'meaning_rev_long', 'desc']
 const ELEMENTS = ['Air', 'Fire', 'Earth', 'Water']
@@ -16,6 +17,7 @@ const AdminCards = () => {
     const [saving, setSaving] = useState(false)
     const [msg, setMsg] = useState('')
     const [errMsg, setErrMsg] = useState('')
+    const [isZoomed, setIsZoomed] = useState(false)
 
     useEffect(() => {
         adminAxios.get('api/cards')
@@ -66,7 +68,7 @@ const AdminCards = () => {
                 </button>
 
                 <div className="admin-card-head">
-                    <img src={publicUrl(`decks/prisma-visions/${selected.name_short}.jpg`)} alt={selected.name} />
+                    <img className="zoomable" src={publicUrl(`decks/prisma-visions/${selected.name_short}.jpg`)} alt={selected.name} onClick={() => setIsZoomed(true)} />
                     <div>
                         <h2>{selected.name}</h2>
                         <p className="admin-meta"><span>{selected.type}{selected.suit ? ` · ${selected.suit}` : ''}</span><span>{selected.value}</span></p>
@@ -97,6 +99,14 @@ const AdminCards = () => {
                     <button type="button" className="secondary" disabled={!isDirty || saving} onClick={() => setForm(pick(selected))}>Reset</button>
                     <button type="submit" disabled={!isDirty || saving}>{saving ? 'Saving…' : 'Save card'}</button>
                 </div>
+
+                {isZoomed &&
+                    <CardLightbox
+                        src={publicUrl(`decks/prisma-visions/${selected.name_short}.jpg`)}
+                        alt={selected.name}
+                        onClose={() => setIsZoomed(false)}
+                    />
+                }
             </form>
         )
     }
