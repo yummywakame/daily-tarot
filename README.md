@@ -2,9 +2,9 @@
 
 A full-stack tarot card reading app. Log in, draw a card of the day, jot down notes on the reading, and look back through past dailies.
 
-**Live:** <a href="https://yummy-wakame.com/demos/daily-tarot" target="_blank">yummy-wakame.com/demos/daily-tarot</a>
+**Live:** <a href="https://dailytarot.yummywakame.com" target="_blank">dailytarot.yummywakame.com</a>
 
-<a href="https://yummy-wakame.com/demos/daily-tarot" target="_blank"><img src="screenshot-new.png" width="75%" alt="Daily Tarot app screenshot"></a>
+<a href="https://dailytarot.yummywakame.com" target="_blank"><img src="screenshot-new.png" width="75%" alt="Daily Tarot app screenshot"></a>
 
 #### YouTube Demo
 <a href="https://youtu.be/m16gMcxs2N0" target="_blank"><img src="https://img.youtube.com/vi/m16gMcxs2N0/maxresdefault.jpg" width="75%" alt="Daily Tarot demo video"></a>

@@ -39,7 +39,7 @@ daily-tarot-main/
 │   ├── package.json
 │   ├── vite.config.js
 │   ├── .env.development   # VITE_SITE_URL for local builds — committed, not secret
-│   ├── .env.production    # Sets VITE_BASE_PATH and VITE_SITE_URL for prod builds — committed, not secret
+│   ├── .env.production    # Sets VITE_SITE_URL for prod builds — committed, not secret
 │   ├── public/
 │   │   └── decks/                  # Tarot card images, one folder per deck (universal-fantasy/, stained-glass/)
 │   └── src/
@@ -101,18 +101,11 @@ MONGODB_URI=<Atlas connection string>
 SECRET=<long random JWT signing secret>
 PORT=7000           # optional, defaults to 7000
 NODE_ENV=development
-# APP_BASE is intentionally absent — it is auto-derived from NODE_ENV (see below)
+# APP_BASE is intentionally absent — the app serves from the domain root (see below)
 ```
 
-#### APP_BASE auto-detection (server.js)
-`APP_BASE` no longer needs to be set manually. `server.js` derives it from `NODE_ENV`:
-
-| `NODE_ENV` | `APP_BASE` |
-|---|---|
-| `production` | `/demos/daily-tarot` |
-| anything else | `` (root) |
-
-Override at any time by explicitly setting `APP_BASE=<value>` in `.env`.
+#### APP_BASE (server.js)
+The app serves from the domain root both locally and live, so `APP_BASE` is normally unset. To serve it from a subpath instead, set `APP_BASE=/sub/path` (no trailing slash) on the server and build the client with a matching `VITE_BASE_PATH=/sub/path/`.
 
 ### Install
 
@@ -146,11 +139,11 @@ The app runs locally at **http://daily-tarot.test** via Laragon on Windows.
 
 ### Local build
 
-The client must be built with `build:local` so assets use `/` as the base path (not the Mochahost subpath):
+Build the client with `build:local` so the social preview tags point at `daily-tarot.test` rather than the live site:
 
 ```bash
 cd client && npm run build:local
-# Uses `vite build --mode development` → skips .env.production → base = /
+# Uses `vite build --mode development` → loads .env.development instead of .env.production
 # Social preview: index.html's Open Graph/Twitter tags need absolute URLs, built from %VITE_SITE_URL%
 # (.env.development locally, .env.production on prod). Image: client/public/social-preview.jpg (1200×630).
 ```
@@ -177,12 +170,12 @@ cd client && npm run dev   # port 3000, proxies /auth and /api to localhost:7000
 
 ## Builds: Local vs Production
 
-Two build scripts exist — **always use the right one**:
+Two build scripts exist — **always use the right one**. Both use `/` as the asset base; they differ in `VITE_SITE_URL` (absolute URLs in the social preview tags):
 
-| Command | Mode | `VITE_BASE_PATH` | Asset base | Use for |
-|---|---|---|---|---|
-| `cd client && npm run build:local` | development | not set | `/` | Local testing at `daily-tarot.test` |
-| `cd client && npm run build` | production | `/demos/daily-tarot/` (from `client/.env.production`) | `/demos/daily-tarot/` | Mochahost deploy |
+| Command | Mode | `VITE_SITE_URL` | Use for |
+|---|---|---|---|
+| `cd client && npm run build:local` | development | `http://daily-tarot.test` | Local testing at `daily-tarot.test` |
+| `cd client && npm run build` | production | `https://dailytarot.yummywakame.com` | Mochahost deploy |
 
 `client/build/` is gitignored (`client/.gitignore`) — it is never committed. Whichever build you ran last is what's on disk: run `build:local` for `daily-tarot.test`, and `build` right before deploying.
 
@@ -196,7 +189,7 @@ Two build scripts exist — **always use the right one**:
 - CORS enabled globally
 - Morgan request logging
 - JWT authentication middleware protecting all `/api/*` routes
-- Routes: `/auth` (public) and `/api/*` (protected), prefixed with `APP_BASE` in production
+- Routes: `/auth` (public) and `/api/*` (protected), prefixed with `APP_BASE` when it is set
 - Serves the React SPA build as static files; all unmatched routes fall through to `index.html`
 
 ### Frontend (`client/src/`)
@@ -205,7 +198,7 @@ Two build scripts exist — **always use the right one**:
 - `withUser` HOC wraps `App` with `user`, `token`, `logout` from `UserProvider`
 - `ProtectedRoute` wraps authenticated pages
 - `ErrorBoundary` wraps each page-level component
-- `apiSetup.js` sets `axios.defaults.baseURL` from Vite's `import.meta.env.BASE_URL` — this is how API calls find the right subpath in production
+- `apiSetup.js` sets `axios.defaults.baseURL` from Vite's `import.meta.env.BASE_URL` — this is how API calls find the right subpath if the app is served from one
 - `publicUrl.js` helper prefixes `BASE_URL` onto public asset paths (card images, etc.)
 
 ### Styling
@@ -250,17 +243,26 @@ Two build scripts exist — **always use the right one**:
 
 ## Deployment (Mochahost)
 
-1. Build the client for production:
-   ```bash
-   cd client && npm run build
-   # client/.env.production auto-sets VITE_BASE_PATH=/demos/daily-tarot/
-   ```
-2. Upload the files to the server. `client/build/` is not in git, so if you pull on the server, upload `client/build/` separately (or build there)
-3. Ensure the server `.env` has `NODE_ENV=production` — this auto-sets `APP_BASE=/demos/daily-tarot` and re-enables HSTS + `upgrade-insecure-requests`
-4. If `package.json` dependencies changed, run `npm install` on the server (cPanel → **Setup Node.js App** → **Run NPM Install**). The app's Node version is set on that page too — it must be ≥ 20.19 (prod runs 22.x)
-5. Restart the Node process
+Live at: `https://dailytarot.yummywakame.com` (the old `https://yummy-wakame.com/demos/daily-tarot/...` URLs 301-redirect there).
 
-Live at: `https://<domain>/demos/daily-tarot`
+Server layout — the app code lives **outside** the web root so it can't be downloaded:
+
+| Path | What |
+|---|---|
+| `~/daily-tarot-app/` | App root (`server.js`, `package.json`, routes, models, `client/build`, `stderr.log`). Not a git checkout. |
+| `~/public_html/_subdomains/dailytarot/` | Subdomain document root. Holds only the Passenger `.htaccess` that cPanel writes — don't edit it, and don't put app files here. |
+| `~/public_html/demos/daily-tarot/` | Only a redirect `.htaccess` to the subdomain. |
+| `~/nodevenv/daily-tarot-app/22/` | Node virtualenv (`node_modules` lives here). |
+
+Env vars (`MONGODB_URI`, `SECRET`) are set in cPanel → **Setup Node.js App**; there is no `.env` on the server. Application mode is Production, which sets `NODE_ENV=production` (enables HSTS + `upgrade-insecure-requests`). Don't set `APP_BASE`.
+
+The account is limited to 100 processes, threads included, so never run a second copy of the app (e.g. `node server.js` over SSH) alongside the Passenger one.
+
+1. Build the client for production: `cd client && npm run build`
+2. Upload the files to `~/daily-tarot-app/`. `client/build/` is not in git, so upload it separately
+3. If `package.json` dependencies changed, run `npm install --omit=dev` with the app's virtualenv activated (or cPanel → **Setup Node.js App** → **Run NPM Install**). The app's Node version is set on that page too — it must be ≥ 20.19 (prod runs 22.x)
+4. Restart: `touch ~/daily-tarot-app/tmp/restart.txt` (or **Restart** in cPanel)
+5. Rebuild locally with `build:local`
 
 ---
 

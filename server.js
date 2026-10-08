@@ -21,12 +21,9 @@ const path = require('path')
 const User = require('./models/User.js')
 
 const PORT = process.env.PORT || 7000
-// APP_BASE auto-detection: use explicit env var if set; otherwise derive from NODE_ENV.
-// production → '/demos/daily-tarot'  |  anything else → '' (root)
-const APP_BASE = (
-    process.env.APP_BASE ??
-    (process.env.NODE_ENV === 'production' ? '/demos/daily-tarot' : '')
-).replace(/\/$/, '')
+// The app serves from the domain root (prod: https://dailytarot.yummywakame.com).
+// Set APP_BASE (no trailing slash) only to serve from a subpath; it must match VITE_BASE_PATH.
+const APP_BASE = (process.env.APP_BASE ?? '').replace(/\/$/, '')
 
 // Trust proxy (needed for rate limiter when behind a proxy/dev server)
 app.set('trust proxy', 1)
